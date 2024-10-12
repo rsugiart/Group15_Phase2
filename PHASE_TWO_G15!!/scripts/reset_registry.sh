@@ -1,0 +1,1 @@
+# script to reset registry to default state

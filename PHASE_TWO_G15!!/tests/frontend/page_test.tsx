@@ -1,0 +1,1 @@
+// integration tests for frontend pages
