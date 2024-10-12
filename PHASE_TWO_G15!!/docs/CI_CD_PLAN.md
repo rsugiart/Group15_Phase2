@@ -1,0 +1,1 @@
+ci/cd plan and setup details

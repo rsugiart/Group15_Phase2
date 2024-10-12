@@ -1,0 +1,1 @@
+# shell script for running all tests
