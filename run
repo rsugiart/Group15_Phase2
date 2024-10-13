@@ -34,4 +34,5 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # Run the Node.js application with the provided URL_FILE
+tsc
 node dist/src/main.js "$1"
