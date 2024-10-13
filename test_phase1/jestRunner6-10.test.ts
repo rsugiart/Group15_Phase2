@@ -1,4 +1,4 @@
-import { runCommand } from './src/jestRunner';
+import { runCommand } from '../src/jestRunner';
 import { describe, it, expect, afterAll } from '@jest/globals';
 import * as fs from 'fs';
 import * as path from 'path';
