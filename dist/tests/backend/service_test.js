@@ -1,2 +1,0 @@
-"use strict";
-// test cases for backend services (s3, registry)
