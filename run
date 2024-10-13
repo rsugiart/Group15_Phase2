@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Check for the "install" command
+# Check for the "install"
 if [ "$1" == "install" ]; then
   npm install --legacy-peer-deps
   if [ $? -eq 0 ]; then
