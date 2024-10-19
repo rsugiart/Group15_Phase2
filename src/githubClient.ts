@@ -7,14 +7,14 @@ export class GitHubClient {
     this.token = token;
   }
 
-  async request<T>(query: string, variables?: Record<string, any>, stats?: any): Promise<T> {
+  async request<T>(query: string, variables?: Record<string, any>, adj?: any): Promise<T> {
     const response = await fetch('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.token}`,
       },
-      body: JSON.stringify({ query, variables }),
+      body: JSON.stringify({ query, variables, adj }),
     });
 
     if (!response.ok) {
