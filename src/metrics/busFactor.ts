@@ -76,7 +76,7 @@ export async function metricBusFactor(variables: { owner: string, name: string }
   const stats = {
     list_commits_authors: [] as Array<string>
   };
-  return client.request<RepositoryQueryResponse>(query, variables, stats)
+  return client.request<RepositoryQueryResponse>(query, variables)
     .then(response => {
       if (response.data && response.data.repository) { //IF REPOSITORY DATA IS AVAILABLE
         if (response.data.repository.defaultBranchRef && response.data.repository.defaultBranchRef.target) { //IF BRANCH DATA IS AVAILABLE
