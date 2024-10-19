@@ -111,7 +111,10 @@ export async function prFrac(variables: { owner: string, name: string }): Promis
 
 function calcprFrac(stats: any): number {
     // prFrac: # prs with review / total prs
-    logMessage(1, `PRFrac - : ${stats.reviewed} out of ${stats.total}`);
+    logMessage(1, `PRFrac: ${stats.reviewed} out of ${stats.total}`);
+    if(stats.total == 0) {
+      return 0; // ensure no divide by 0
+    }
     return stats.reviewed / stats.total;
 }
 
