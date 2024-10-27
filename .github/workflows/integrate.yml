@@ -15,15 +15,16 @@ jobs:
 
       - name: Install Serverless Framework
         run: |
-          npm install -g serverless
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: "AKIAQ6HIYJ76AI6KVVTY"
-      #     aws-secret-access-key: "MugwOTjFpcVkjUpO4P0MfNaFm69d/Dp9pdSyOT9d"
-      #     aws-region: us-east-1  # Adjust based on your AWS region
+          npm install serverless-plugin-typescript
 
-      # - name: Deploy with Serverless
-      #   run: |
-      #     cd backend/products-api
-      #     serverless deploy
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: "AKIAQ6HIYJ76AI6KVVTY"
+          aws-secret-access-key: "MugwOTjFpcVkjUpO4P0MfNaFm69d/Dp9pdSyOT9d"
+          aws-region: us-east-1  # Adjust based on your AWS region
+
+      - name: Deploy with Serverless
+        run: |
+          cd backend/products-api
+          serverless deploy
