@@ -7,7 +7,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { BinaryLike, createHash } from 'crypto';
 import { CodeartifactClient, PackageFormat, PublishPackageVersionCommand } from "@aws-sdk/client-codeartifact";
-import { http } from "winston";
 import axios from "axios";
 const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 
