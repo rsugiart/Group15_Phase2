@@ -2,7 +2,6 @@ name: Project CI/CD
 
 on: 
   push:
-    branches: [main]
   pull_request:
 
 jobs:
@@ -10,6 +9,7 @@ jobs:
     name: Lint code base
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -17,5 +17,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '22.x'
-      - name: Run Install
-        run: npm install
+      - name: Install Serverless Framework
+        run: npm install -g serverless
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: "AKIAQ6HIYJ76AI6KVVTY"
+          aws-secret-access-key: "MugwOTjFpcVkjUpO4P0MfNaFm69d/Dp9pdSyOT9d"
+          aws-region: us-east-1  # Adjust based on your AWS region
