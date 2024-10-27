@@ -1,4 +1,5 @@
 //UNTESTED !!!!
+import { stat } from 'node:fs/promises';
 import { logMessage } from '../../log.js';
 import { GitHubClient } from '../githubClient.js';
 import * as dotenv from 'dotenv';
@@ -46,7 +47,18 @@ const query1 = `
   }
 `;
 
-const query2 = `
+
+export async function prFrac(variables: { owner: string, name: string }): Promise<number> {
+    const stats = {
+        reviewed: 0 as number,
+        total: 100 as number //await calctotal(variables) as number//separate api request
+        
+    };
+    console.log(stats.total);
+    if(stats.total == -1) {
+      return -1;
+    }
+    const query2 = `
   query GetRepoDetails($owner: String!, $name: String!) {
     rateLimit {
     limit
@@ -55,7 +67,7 @@ const query2 = `
     resetAt
     }  
     repository(owner: $owner, name: $name) {
-      pullRequests(last: $adj) {
+      pullRequests(last: ${stats.total}) {
         totalCount
         nodes {
             reviews {
@@ -67,16 +79,9 @@ const query2 = `
   }
 `;
 
-export async function prFrac(variables: { owner: string, name: string }): Promise<number> {
-    const stats = {
-        reviewed: 0 as number,
-        total: await calctotal(variables) as number//separate api request
-    };
-    if(stats.total == -1) {
-      return -1;
-    }
-      return client.request<RepositoryQueryResponse>(query2, variables, stats.total)
+      return client.request<RepositoryQueryResponse>(query2, variables)
         .then(response => {
+          // console.log(response);
           if (response.data && response.data.repository) { //IF REPOSITORY DATA IS AVAILABLE
             if (response.data.repository.pullRequests && response.data.repository.pullRequests.nodes) { //IF PULL REQUEST INFO IS AVAILABLE
               response.data.repository.pullRequests.nodes.forEach(node => {
@@ -93,6 +98,7 @@ export async function prFrac(variables: { owner: string, name: string }): Promis
           }
           else {
             logMessage(2, 'PRFrac - No repository data available');
+            console.log("erro");
             return -1;
           }
           const rateLimit = response.data.rateLimit;
@@ -100,9 +106,11 @@ export async function prFrac(variables: { owner: string, name: string }): Promis
           logMessage(2, `PRFrac - Cost: ${rateLimit.cost}`);
           logMessage(2, `PRFrac - Remaining: ${rateLimit.remaining}`);
           logMessage(2, `PRFrac - Reset At: ${rateLimit.resetAt}`);
+          console.log(stats.reviewed);
           return calcprFrac(stats);
         })
         .catch(error => {
+          console.log("erro");
           return -1;
           //console.error(error);
           //throw error;
@@ -115,6 +123,7 @@ function calcprFrac(stats: any): number {
     if(stats.total == 0) {
       return 0; // ensure no divide by 0
     }
+    console.log(stats.reviewed / stats.total)
     return stats.reviewed / stats.total;
 }
 
@@ -123,9 +132,11 @@ async function calctotal(variables: { owner: string, name: string }): Promise<nu
     .then(response => {
       if (response.data && response.data.repository) { //IF REPOSITORY DATA IS AVAILABLE
         if (response.data.repository.pullRequests) { //IF PULL REQUEST INFO IS AVAILABLE
+          console.log(response.data.repository.pullRequests.totalCount);
           return response.data.repository.pullRequests.totalCount
         } else {
           logMessage(2, 'PRFrac - No PR history available');
+          console.log("error");
           return -1;
         }
       }
@@ -140,3 +151,9 @@ async function calctotal(variables: { owner: string, name: string }): Promise<nu
       //throw error;
     });
 }
+
+async function main() {
+  await prFrac({owner:"lodash",name:"lodash"});
+}
+
+main();

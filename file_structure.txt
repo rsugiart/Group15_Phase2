@@ -90,6 +90,7 @@ Copy code
 ├── .gitignore                      # Ignore node_modules, logs, coverage reports
 ├── package.json                    # Node.js project configuration (backend/frontend scripts)
 ├── README.md                       # Project README
+
 Explanation of Each Folder/Files:
 Backend: Handles server-side operations like managing packages, debloating, interacting with AWS S3, and fetching package versions. Services are modularized to improve maintainability.
 
