@@ -18,8 +18,10 @@
   },
   "dependencies": {
     "@aws-sdk/client-codeartifact": "^3.679.0",
+    "@aws-sdk/client-dynamodb": "^3.679.0",
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1201.0",
-    "axios": "^1.7.7"
+    "axios": "^1.7.7",
+    "jszip": "^3.10.1"
   }
 }

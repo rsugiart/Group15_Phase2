@@ -36,24 +36,12 @@ functions:
       - httpApi:
           path: /package
           method: post
-  write:
-    handler: src/handlers.write
+  get_rating:
+    handler: src/handlers.get_rating
     events:
       - httpApi:
-          path: /write
-          method: post
-  read:
-    handler: src/handlers.read
-    events:
-      - httpApi:
-          path: /read
-          method: post
-  # get_rating:
-  #   handler: src/handlers.get_rating
-  #   events:
-  #     - httpApi:
-  #         path: /package
-  #         method: GET
+          path: /package/{id}
+          method: get
   # update_package:
   #   handler: src/handlers.update_package
   #   events:
@@ -68,7 +56,7 @@ resources:
     ProductsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ProductsTable
+        TableName: Packages
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
