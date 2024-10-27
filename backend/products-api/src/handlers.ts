@@ -279,3 +279,4 @@ export const get_rating= async (event: APIGatewayProxyEvent): Promise<APIGateway
     };
   }
 };
+
