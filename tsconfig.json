@@ -17,10 +17,7 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "log.ts",
-    "logger.ts"
+    "./"
   ],
   "exclude": [
     "node_modules"

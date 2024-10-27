@@ -1,0 +1,80 @@
+# Welcome to Serverless!
+#
+
+service: products-api
+# app and org for use with dashboard.serverless.com
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  lambdaHashingVersion: 20201221
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "dynamodb:PutItem"
+            - "dynamodb:GetItem"
+            - "dynamodb:DeleteItem"
+            - "dynamodb:Scan"
+          Resource:
+            - { "Fn::GetAtt": ["ProductsTable", "Arn"] }
+
+functions:
+  health:
+    handler: src/handlers.health
+    events:
+      - httpApi:
+          path: /health
+          method: post
+  upload_package:
+    handler: src/handlers.upload_package
+    events:
+      - httpApi:
+          path: /package
+          method: post
+  write:
+    handler: src/handlers.write
+    events:
+      - httpApi:
+          path: /write
+          method: post
+  read:
+    handler: src/handlers.read
+    events:
+      - httpApi:
+          path: /read
+          method: post
+  # get_rating:
+  #   handler: src/handlers.get_rating
+  #   events:
+  #     - httpApi:
+  #         path: /package
+  #         method: GET
+  # update_package:
+  #   handler: src/handlers.update_package
+  #   events:
+  #     - httpApi:
+  #         path: /package
+  #         method: PUT
+plugins:
+  - serverless-plugin-typescript
+# you can add CloudFormation resource templates here
+resources:
+  Resources:
+    ProductsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ProductsTable
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        AttributeDefinitions:
+          - AttributeName: productID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: productID
+            KeyType: HASH

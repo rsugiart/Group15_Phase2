@@ -105,6 +105,7 @@ export async function dependFrac(variables: { owner: string, name: string }): Pr
       logMessage(2, `DependFrac - Cost: ${rateLimit.cost}`);
       logMessage(2, `DependFrac - Remaining: ${rateLimit.remaining}`);
       logMessage(2, `DependFrac - Reset At: ${rateLimit.resetAt}`);
+      console.log(stats.total)
       return calcDependFrac(stats);
     })
     .catch(error => {
@@ -122,3 +123,9 @@ function calcDependFrac(stats: any): number {
   }
   return stats.majmin / stats.total;
 }
+
+async function main() {
+  await dependFrac({owner:"cloudinary",name:"cloudinary_npm"});
+}
+
+main();
