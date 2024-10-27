@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: '22.x'
       - name: Install Serverless Framework
-        run: npm install -g serverless
+        run: npm install -g serverless@3.x
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
