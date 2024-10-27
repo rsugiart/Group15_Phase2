@@ -12,11 +12,9 @@ import { Readable } from "stream";
 import JSZip from "jszip";
 import { DynamoDBClient, PutItemCommand, ReturnConsumedCapacity,GetItemCommand} from "@aws-sdk/client-dynamodb";
 
-
 const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 const client = new DynamoDBClient({ region: 'us-east-1' });
 const tableName = "Packages";
-
 
 function packPackage(package_name:string): string {
   const result = execSync(`npm pack ${package_name}`, { encoding: 'utf-8' }).trim();  // Get the .tgz file name
