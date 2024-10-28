@@ -13,28 +13,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Serverless Framework
-        run: |
-          npm install -g serverless
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Install Serverless Framework
+      #   run: |
+      #     npm install -g serverless
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
         
-      # - name: Configure npm authentication
-      #   run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN }}" > ~/.npmrc
                 
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: "AKIAQ6HIYJ76AI6KVVTY"
-      #     aws-secret-access-key: "MugwOTjFpcVkjUpO4P0MfNaFm69d/Dp9pdSyOT9d"
-      #     aws-region: us-east-1  # Adjust based on your AWS region
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: "AKIAQ6HIYJ76AI6KVVTY"
+          aws-secret-access-key: "MugwOTjFpcVkjUpO4P0MfNaFm69d/Dp9pdSyOT9d"
+          aws-region: us-east-1  # Adjust based on your AWS region
 
-      # - name: Deploy with Serverless
-      #   env:
-      #     SERVERLESS_ACCESS_KEY: "AKZZBuUhiG65YgNACJk7PoSHds2ld5qOVKlIoZoSS8Dju"
-      #   run: |
-      #     npm install
-      #     cd backend/products-api
-      #     serverless deploy
+      - name: Deploy with Serverless
+        env:
+          SERVERLESS_ACCESS_KEY: "AKZZBuUhiG65YgNACJk7PoSHds2ld5qOVKlIoZoSS8Dju"
+        run: |
+          npm install
+          cd backend/products-api
+          serverless deploy
         
