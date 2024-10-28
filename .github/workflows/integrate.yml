@@ -32,7 +32,6 @@ jobs:
         env:
           SERVERLESS_ACCESS_KEY: "AKZZBuUhiG65YgNACJk7PoSHds2ld5qOVKlIoZoSS8Dju"
         run: |
-          npm install
           cd backend/products-api
           serverless deploy
         
