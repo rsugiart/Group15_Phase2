@@ -16,7 +16,6 @@ jobs:
       - name: Install Serverless Framework
         run: |
           npm install -g serverless
-          npm install
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
