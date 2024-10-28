@@ -13,14 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Install Serverless Framework
-      #   run: |
-      #     npm install -g serverless
-      #   env:
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-        
-                
+      - name: Install Serverless Framework
+        run: |
+          npm install -g serverless
+      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
