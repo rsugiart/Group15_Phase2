@@ -4,7 +4,7 @@
 service: products-api
 # app and org for use with dashboard.serverless.com
 
-frameworkVersion: "3"
+frameworkVersion: '>=4.0.0'  
 
 provider:
   name: aws
@@ -23,6 +23,7 @@ provider:
           Resource:
             - { "Fn::GetAtt": ["ProductsTable", "Arn"] }
 
+            
 functions:
   health:
     handler: src/handlers.health
@@ -36,39 +37,26 @@ functions:
       - httpApi:
           path: /package
           method: post
-  write:
-    handler: src/handlers.write
+  get_rating:
+    handler: src/handlers.get_rating
     events:
       - httpApi:
-          path: /write
-          method: post
-  read:
-    handler: src/handlers.read
-    events:
-      - httpApi:
-          path: /read
-          method: post
-  # get_rating:
-  #   handler: src/handlers.get_rating
-  #   events:
-  #     - httpApi:
-  #         path: /package
-  #         method: GET
+          path: /package/{id}
+          method: get
   # update_package:
   #   handler: src/handlers.update_package
   #   events:
   #     - httpApi:
   #         path: /package
   #         method: PUT
-plugins:
-  - serverless-plugin-typescript
+
 # you can add CloudFormation resource templates here
 resources:
   Resources:
     ProductsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ProductsTable
+        TableName: Packages
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
