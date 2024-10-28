@@ -22,6 +22,7 @@ provider:
             - "dynamodb:Scan"
           Resource:
             - { "Fn::GetAtt": ["ProductsTable", "Arn"] }
+
             
 functions:
   health:
