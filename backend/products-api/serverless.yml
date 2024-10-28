@@ -4,7 +4,7 @@
 service: products-api
 # app and org for use with dashboard.serverless.com
 
-frameworkVersion: "3"
+frameworkVersion: '>=4.0.0'  
 
 provider:
   name: aws
@@ -22,7 +22,7 @@ provider:
             - "dynamodb:Scan"
           Resource:
             - { "Fn::GetAtt": ["ProductsTable", "Arn"] }
-
+            
 functions:
   health:
     handler: src/handlers.health
@@ -48,8 +48,7 @@ functions:
   #     - httpApi:
   #         path: /package
   #         method: PUT
-plugins:
-  - serverless-plugin-typescript
+
 # you can add CloudFormation resource templates here
 resources:
   Resources:
