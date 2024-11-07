@@ -1,1 +1,0 @@
-// main app component (react)

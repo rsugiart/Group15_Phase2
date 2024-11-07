@@ -1,1 +1,0 @@
-// react component for displaying package directory

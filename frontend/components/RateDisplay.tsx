@@ -1,1 +1,0 @@
-// Component to display package rating details
