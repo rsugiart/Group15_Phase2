@@ -1,1 +1,0 @@
-"jest configuration file for running tests"
