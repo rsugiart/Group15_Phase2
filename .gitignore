@@ -4,5 +4,5 @@ backend/dist
 backend/.serverless
 frontend/node_modules
 frontend/.env
-
+utils
 node_modules
