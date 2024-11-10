@@ -33,6 +33,6 @@ jobs:
         run: |
           npm set "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
           cd backend
-          npm install
+          npm ci
           serverless deploy
       
