@@ -12,7 +12,6 @@ const PackageUpload: React.FC = () => {
     const [message, setMessage] = useState<string>('');
     const [packageName, setPackageName] = useState<string>('');
 
-
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
         if (selectedFile && selectedFile.type === 'application/zip') {
@@ -22,6 +21,16 @@ const PackageUpload: React.FC = () => {
             setFile(null);
             setMessage('Please select a zip file.');
         }
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const input = event.target.value;
+        if (input) {
+            setPackageName(input)
+        } else {
+            console.error("No Input")
+        }
+
     };
     const covertToBase64 = (file: File) => {
         return new Promise<string>((resolve, reject) => {
@@ -41,7 +50,6 @@ const PackageUpload: React.FC = () => {
         const base64String = await covertToBase64(file);
         // setBase64(base64Stirng);
         const modifiedBase64String = (base64String.split('data:application/zip;base64,'))[1];
-        setPackageName('underscore')
         try {
             console.log(packageName)
             const response = await fetch(`https://t65oyfcrxb.execute-api.us-east-1.amazonaws.com/package`, {
@@ -53,10 +61,11 @@ const PackageUpload: React.FC = () => {
             });
             const result = await response.json();
             console.log(result.message)
+            // setMessage(result.message)
             
         }
         catch (error) {
-            setMessage(String(error))
+            setMessage("erro")
         }
         
     }
@@ -64,6 +73,7 @@ const PackageUpload: React.FC = () => {
     return (
         <div>
             <input type="file" accept=".zip" onChange={handleFileChange} />
+            <input type="text" onChange={handleInputChange}/>
             <button onClick={upload}>Upload</button>
             {message && <h3> {message}</h3>}
             {/* <div style={{ marginTop: '20px' }}>

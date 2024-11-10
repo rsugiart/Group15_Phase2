@@ -44,735 +44,80 @@
         "stage": "dev",
         "region": "us-east-1",
         "versionFunctions": true,
-        "compiledCloudFormationTemplate": {
-          "AWSTemplateFormatVersion": "2010-09-09",
-          "Description": "The AWS CloudFormation template for this Serverless application",
-          "Resources": {
-            "ServerlessDeploymentBucket": {
-              "Type": "AWS::S3::Bucket",
-              "Properties": {
-                "BucketEncryption": {
-                  "ServerSideEncryptionConfiguration": [
-                    {
-                      "ServerSideEncryptionByDefault": {
-                        "SSEAlgorithm": "AES256"
-                      }
-                    }
-                  ]
-                }
+        "remoteFunctionData": {
+          "Configuration": {
+            "FunctionName": "products-api-dev-upload_package",
+            "FunctionArn": "arn:aws:lambda:us-east-1:448049804598:function:products-api-dev-upload_package",
+            "Runtime": "nodejs20.x",
+            "Role": "arn:aws:iam::448049804598:role/products-api-dev-us-east-1-lambdaRole",
+            "Handler": "src/handlers.upload_package",
+            "CodeSize": 1733869,
+            "Description": "",
+            "Timeout": 6,
+            "MemorySize": 1024,
+            "LastModified": "2024-11-10T16:35:35.000+0000",
+            "CodeSha256": "86VQHFiP/hCoJqWvCRBQ1MZqbWoPw71kw+pDiCa1nb0=",
+            "Version": "$LATEST",
+            "VpcConfig": {
+              "SubnetIds": [],
+              "SecurityGroupIds": [],
+              "VpcId": "",
+              "Ipv6AllowedForDualStack": false
+            },
+            "Environment": {
+              "Variables": {
+                "NODE_OPTIONS": "--enable-source-maps"
               }
             },
-            "ServerlessDeploymentBucketPolicy": {
-              "Type": "AWS::S3::BucketPolicy",
-              "Properties": {
-                "Bucket": {
-                  "Ref": "ServerlessDeploymentBucket"
-                },
-                "PolicyDocument": {
-                  "Statement": [
-                    {
-                      "Action": "s3:*",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Resource": [
-                        {
-                          "Fn::Join": [
-                            "",
-                            [
-                              "arn:",
-                              {
-                                "Ref": "AWS::Partition"
-                              },
-                              ":s3:::",
-                              {
-                                "Ref": "ServerlessDeploymentBucket"
-                              },
-                              "/*"
-                            ]
-                          ]
-                        },
-                        {
-                          "Fn::Join": [
-                            "",
-                            [
-                              "arn:",
-                              {
-                                "Ref": "AWS::Partition"
-                              },
-                              ":s3:::",
-                              {
-                                "Ref": "ServerlessDeploymentBucket"
-                              }
-                            ]
-                          ]
-                        }
-                      ],
-                      "Condition": {
-                        "Bool": {
-                          "aws:SecureTransport": false
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
+            "KMSKeyArn": null,
+            "TracingConfig": {
+              "Mode": "PassThrough"
             },
-            "HealthLogGroup": {
-              "Type": "AWS::Logs::LogGroup",
-              "Properties": {
-                "LogGroupName": "/aws/lambda/products-api-dev-health"
-              }
+            "MasterArn": null,
+            "RevisionId": "8face1ff-a07d-4d9e-8b5b-79bd466b096c",
+            "State": "Active",
+            "StateReason": null,
+            "StateReasonCode": null,
+            "LastUpdateStatus": "Successful",
+            "LastUpdateStatusReason": null,
+            "LastUpdateStatusReasonCode": null,
+            "PackageType": "Zip",
+            "SigningProfileVersionArn": null,
+            "SigningJobArn": null,
+            "Architectures": [
+              "x86_64"
+            ],
+            "EphemeralStorage": {
+              "Size": 512
             },
-            "UploadUnderscorepackageLogGroup": {
-              "Type": "AWS::Logs::LogGroup",
-              "Properties": {
-                "LogGroupName": "/aws/lambda/products-api-dev-upload_package"
-              }
+            "SnapStart": {
+              "ApplyOn": "None",
+              "OptimizationStatus": "Off"
             },
-            "GetUnderscoreratingLogGroup": {
-              "Type": "AWS::Logs::LogGroup",
-              "Properties": {
-                "LogGroupName": "/aws/lambda/products-api-dev-get_rating"
-              }
+            "RuntimeVersionConfig": {
+              "RuntimeVersionArn": "arn:aws:lambda:us-east-1::runtime:d087c1f568d9696a7d95ae9c69575a67caf267109d19d9167c4ac5672dab9019"
             },
-            "IamRoleLambdaExecution": {
-              "Type": "AWS::IAM::Role",
-              "Properties": {
-                "AssumeRolePolicyDocument": {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Service": [
-                          "lambda.amazonaws.com"
-                        ]
-                      },
-                      "Action": [
-                        "sts:AssumeRole"
-                      ]
-                    }
-                  ]
-                },
-                "Policies": [
-                  {
-                    "PolicyName": {
-                      "Fn::Join": [
-                        "-",
-                        [
-                          "products-api",
-                          "dev",
-                          "lambda"
-                        ]
-                      ]
-                    },
-                    "PolicyDocument": {
-                      "Version": "2012-10-17",
-                      "Statement": [
-                        {
-                          "Effect": "Allow",
-                          "Action": [
-                            "logs:CreateLogStream",
-                            "logs:CreateLogGroup",
-                            "logs:TagResource"
-                          ],
-                          "Resource": [
-                            {
-                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/products-api-dev*:*"
-                            }
-                          ]
-                        },
-                        {
-                          "Effect": "Allow",
-                          "Action": [
-                            "logs:PutLogEvents"
-                          ],
-                          "Resource": [
-                            {
-                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/products-api-dev*:*:*"
-                            }
-                          ]
-                        },
-                        {
-                          "Effect": "Allow",
-                          "Action": [
-                            "dynamodb:PutItem",
-                            "dynamodb:GetItem",
-                            "dynamodb:DeleteItem",
-                            "dynamodb:Scan"
-                          ],
-                          "Resource": [
-                            {
-                              "Fn::GetAtt": [
-                                "ProductsTable",
-                                "Arn"
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "Path": "/",
-                "RoleName": {
-                  "Fn::Join": [
-                    "-",
-                    [
-                      "products-api",
-                      "dev",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      "lambdaRole"
-                    ]
-                  ]
-                }
-              }
+            "LoggingConfig": {
+              "LogFormat": "Text",
+              "ApplicationLogLevel": null,
+              "SystemLogLevel": null,
+              "LogGroup": "/aws/lambda/products-api-dev-upload_package"
             },
-            "HealthLambdaFunction": {
-              "Type": "AWS::Lambda::Function",
-              "Properties": {
-                "Code": {
-                  "S3Bucket": {
-                    "Ref": "ServerlessDeploymentBucket"
-                  },
-                  "S3Key": "serverless/products-api/dev/1730949176217-2024-11-07T03:12:56.217Z/products-api.zip"
-                },
-                "Handler": "src/handlers.health",
-                "Runtime": "nodejs20.x",
-                "FunctionName": "products-api-dev-health",
-                "MemorySize": 1024,
-                "Timeout": 6,
-                "Environment": {
-                  "Variables": {
-                    "NODE_OPTIONS": "--enable-source-maps"
-                  }
-                },
-                "Role": {
-                  "Fn::GetAtt": [
-                    "IamRoleLambdaExecution",
-                    "Arn"
-                  ]
-                }
-              },
-              "DependsOn": [
-                "HealthLogGroup"
-              ]
-            },
-            "UploadUnderscorepackageLambdaFunction": {
-              "Type": "AWS::Lambda::Function",
-              "Properties": {
-                "Code": {
-                  "S3Bucket": {
-                    "Ref": "ServerlessDeploymentBucket"
-                  },
-                  "S3Key": "serverless/products-api/dev/1730949176217-2024-11-07T03:12:56.217Z/products-api.zip"
-                },
-                "Handler": "src/handlers.upload_package",
-                "Runtime": "nodejs20.x",
-                "FunctionName": "products-api-dev-upload_package",
-                "MemorySize": 1024,
-                "Timeout": 6,
-                "Environment": {
-                  "Variables": {
-                    "NODE_OPTIONS": "--enable-source-maps"
-                  }
-                },
-                "Role": {
-                  "Fn::GetAtt": [
-                    "IamRoleLambdaExecution",
-                    "Arn"
-                  ]
-                }
-              },
-              "DependsOn": [
-                "UploadUnderscorepackageLogGroup"
-              ]
-            },
-            "GetUnderscoreratingLambdaFunction": {
-              "Type": "AWS::Lambda::Function",
-              "Properties": {
-                "Code": {
-                  "S3Bucket": {
-                    "Ref": "ServerlessDeploymentBucket"
-                  },
-                  "S3Key": "serverless/products-api/dev/1730949176217-2024-11-07T03:12:56.217Z/products-api.zip"
-                },
-                "Handler": "src/handlers.get_rating",
-                "Runtime": "nodejs20.x",
-                "FunctionName": "products-api-dev-get_rating",
-                "MemorySize": 1024,
-                "Timeout": 6,
-                "Environment": {
-                  "Variables": {
-                    "NODE_OPTIONS": "--enable-source-maps"
-                  }
-                },
-                "Role": {
-                  "Fn::GetAtt": [
-                    "IamRoleLambdaExecution",
-                    "Arn"
-                  ]
-                }
-              },
-              "DependsOn": [
-                "GetUnderscoreratingLogGroup"
-              ]
-            },
-            "HealthLambdaVersionpr510epxMUN4YyJlSWxVPYADJvAqhuLVawIj3zQoc": {
-              "Type": "AWS::Lambda::Version",
-              "DeletionPolicy": "Retain",
-              "Properties": {
-                "FunctionName": {
-                  "Ref": "HealthLambdaFunction"
-                },
-                "CodeSha256": "lJg21XbjIlDvCfdNmENEWYy/Yw89cvX6Y6YG94GwJog="
-              }
-            },
-            "UploadUnderscorepackageLambdaVersiontXPjB52ZmMMymgyzBqeEM7LCi4D4spz4dg8tAK6iI": {
-              "Type": "AWS::Lambda::Version",
-              "DeletionPolicy": "Retain",
-              "Properties": {
-                "FunctionName": {
-                  "Ref": "UploadUnderscorepackageLambdaFunction"
-                },
-                "CodeSha256": "lJg21XbjIlDvCfdNmENEWYy/Yw89cvX6Y6YG94GwJog="
-              }
-            },
-            "GetUnderscoreratingLambdaVersionN5TCH18acTf2M3tIui7FIgDZqZEbS7oVwpuvn1fKD2s": {
-              "Type": "AWS::Lambda::Version",
-              "DeletionPolicy": "Retain",
-              "Properties": {
-                "FunctionName": {
-                  "Ref": "GetUnderscoreratingLambdaFunction"
-                },
-                "CodeSha256": "lJg21XbjIlDvCfdNmENEWYy/Yw89cvX6Y6YG94GwJog="
-              }
-            },
-            "HttpApi": {
-              "Type": "AWS::ApiGatewayV2::Api",
-              "Properties": {
-                "Name": "dev-products-api",
-                "ProtocolType": "HTTP"
-              }
-            },
-            "HttpApiStage": {
-              "Type": "AWS::ApiGatewayV2::Stage",
-              "Properties": {
-                "ApiId": {
-                  "Ref": "HttpApi"
-                },
-                "StageName": "$default",
-                "AutoDeploy": true,
-                "DefaultRouteSettings": {
-                  "DetailedMetricsEnabled": false
-                }
-              }
-            },
-            "HealthLambdaPermissionHttpApi": {
-              "Type": "AWS::Lambda::Permission",
-              "Properties": {
-                "FunctionName": {
-                  "Fn::GetAtt": [
-                    "HealthLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "Action": "lambda:InvokeFunction",
-                "Principal": "apigateway.amazonaws.com",
-                "SourceArn": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "HttpApi"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              }
-            },
-            "HttpApiIntegrationHealth": {
-              "Type": "AWS::ApiGatewayV2::Integration",
-              "Properties": {
-                "ApiId": {
-                  "Ref": "HttpApi"
-                },
-                "IntegrationType": "AWS_PROXY",
-                "IntegrationUri": {
-                  "Fn::GetAtt": [
-                    "HealthLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "PayloadFormatVersion": "2.0",
-                "TimeoutInMillis": 30000
-              }
-            },
-            "HttpApiRoutePostHealth": {
-              "Type": "AWS::ApiGatewayV2::Route",
-              "Properties": {
-                "ApiId": {
-                  "Ref": "HttpApi"
-                },
-                "RouteKey": "POST /health",
-                "Target": {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      "integrations",
-                      {
-                        "Ref": "HttpApiIntegrationHealth"
-                      }
-                    ]
-                  ]
-                }
-              },
-              "DependsOn": "HttpApiIntegrationHealth"
-            },
-            "UploadUnderscorepackageLambdaPermissionHttpApi": {
-              "Type": "AWS::Lambda::Permission",
-              "Properties": {
-                "FunctionName": {
-                  "Fn::GetAtt": [
-                    "UploadUnderscorepackageLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "Action": "lambda:InvokeFunction",
-                "Principal": "apigateway.amazonaws.com",
-                "SourceArn": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "HttpApi"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              }
-            },
-            "HttpApiIntegrationUploadUnderscorepackage": {
-              "Type": "AWS::ApiGatewayV2::Integration",
-              "Properties": {
-                "ApiId": {
-                  "Ref": "HttpApi"
-                },
-                "IntegrationType": "AWS_PROXY",
-                "IntegrationUri": {
-                  "Fn::GetAtt": [
-                    "UploadUnderscorepackageLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "PayloadFormatVersion": "2.0",
-                "TimeoutInMillis": 30000
-              }
-            },
-            "HttpApiRoutePostPackage": {
-              "Type": "AWS::ApiGatewayV2::Route",
-              "Properties": {
-                "ApiId": {
-                  "Ref": "HttpApi"
-                },
-                "RouteKey": "POST /package",
-                "Target": {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      "integrations",
-                      {
-                        "Ref": "HttpApiIntegrationUploadUnderscorepackage"
-                      }
-                    ]
-                  ]
-                }
-              },
-              "DependsOn": "HttpApiIntegrationUploadUnderscorepackage"
-            },
-            "GetUnderscoreratingLambdaPermissionHttpApi": {
-              "Type": "AWS::Lambda::Permission",
-              "Properties": {
-                "FunctionName": {
-                  "Fn::GetAtt": [
-                    "GetUnderscoreratingLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "Action": "lambda:InvokeFunction",
-                "Principal": "apigateway.amazonaws.com",
-                "SourceArn": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "HttpApi"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              }
-            },
-            "HttpApiIntegrationGetUnderscorerating": {
-              "Type": "AWS::ApiGatewayV2::Integration",
-              "Properties": {
-                "ApiId": {
-                  "Ref": "HttpApi"
-                },
-                "IntegrationType": "AWS_PROXY",
-                "IntegrationUri": {
-                  "Fn::GetAtt": [
-                    "GetUnderscoreratingLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "PayloadFormatVersion": "2.0",
-                "TimeoutInMillis": 30000
-              }
-            },
-            "HttpApiRouteGetPackageIdVar": {
-              "Type": "AWS::ApiGatewayV2::Route",
-              "Properties": {
-                "ApiId": {
-                  "Ref": "HttpApi"
-                },
-                "RouteKey": "GET /package/{id}",
-                "Target": {
-                  "Fn::Join": [
-                    "/",
-                    [
-                      "integrations",
-                      {
-                        "Ref": "HttpApiIntegrationGetUnderscorerating"
-                      }
-                    ]
-                  ]
-                }
-              },
-              "DependsOn": "HttpApiIntegrationGetUnderscorerating"
-            },
-            "ProductsTable": {
-              "Type": "AWS::DynamoDB::Table",
-              "Properties": {
-                "TableName": "Packages",
-                "ProvisionedThroughput": {
-                  "ReadCapacityUnits": 1,
-                  "WriteCapacityUnits": 1
-                },
-                "AttributeDefinitions": [
-                  {
-                    "AttributeName": "productID",
-                    "AttributeType": "S"
-                  }
-                ],
-                "KeySchema": [
-                  {
-                    "AttributeName": "productID",
-                    "KeyType": "HASH"
-                  }
-                ]
-              }
-            }
+            "Layers": []
           },
-          "Outputs": {
-            "ServerlessDeploymentBucketName": {
-              "Value": {
-                "Ref": "ServerlessDeploymentBucket"
-              },
-              "Export": {
-                "Name": "sls-products-api-dev-ServerlessDeploymentBucketName"
-              }
-            },
-            "HealthLambdaFunctionQualifiedArn": {
-              "Description": "Current Lambda function version",
-              "Value": {
-                "Ref": "HealthLambdaVersionpr510epxMUN4YyJlSWxVPYADJvAqhuLVawIj3zQoc"
-              },
-              "Export": {
-                "Name": "sls-products-api-dev-HealthLambdaFunctionQualifiedArn"
-              }
-            },
-            "UploadUnderscorepackageLambdaFunctionQualifiedArn": {
-              "Description": "Current Lambda function version",
-              "Value": {
-                "Ref": "UploadUnderscorepackageLambdaVersiontXPjB52ZmMMymgyzBqeEM7LCi4D4spz4dg8tAK6iI"
-              },
-              "Export": {
-                "Name": "sls-products-api-dev-UploadUnderscorepackageLambdaFunctionQualifiedArn"
-              }
-            },
-            "GetUnderscoreratingLambdaFunctionQualifiedArn": {
-              "Description": "Current Lambda function version",
-              "Value": {
-                "Ref": "GetUnderscoreratingLambdaVersionN5TCH18acTf2M3tIui7FIgDZqZEbS7oVwpuvn1fKD2s"
-              },
-              "Export": {
-                "Name": "sls-products-api-dev-GetUnderscoreratingLambdaFunctionQualifiedArn"
-              }
-            },
-            "HttpApiId": {
-              "Description": "Id of the HTTP API",
-              "Value": {
-                "Ref": "HttpApi"
-              },
-              "Export": {
-                "Name": "sls-products-api-dev-HttpApiId"
-              }
-            },
-            "HttpApiUrl": {
-              "Description": "URL of the HTTP API",
-              "Value": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "https://",
-                    {
-                      "Ref": "HttpApi"
-                    },
-                    ".execute-api.",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ".",
-                    {
-                      "Ref": "AWS::URLSuffix"
-                    }
-                  ]
-                ]
-              },
-              "Export": {
-                "Name": "sls-products-api-dev-HttpApiUrl"
-              }
-            }
-          }
-        },
-        "coreCloudFormationTemplate": {
-          "AWSTemplateFormatVersion": "2010-09-09",
-          "Description": "The AWS CloudFormation template for this Serverless application",
-          "Resources": {
-            "ServerlessDeploymentBucket": {
-              "Type": "AWS::S3::Bucket",
-              "Properties": {
-                "BucketEncryption": {
-                  "ServerSideEncryptionConfiguration": [
-                    {
-                      "ServerSideEncryptionByDefault": {
-                        "SSEAlgorithm": "AES256"
-                      }
-                    }
-                  ]
-                }
-              }
-            },
-            "ServerlessDeploymentBucketPolicy": {
-              "Type": "AWS::S3::BucketPolicy",
-              "Properties": {
-                "Bucket": {
-                  "Ref": "ServerlessDeploymentBucket"
-                },
-                "PolicyDocument": {
-                  "Statement": [
-                    {
-                      "Action": "s3:*",
-                      "Effect": "Deny",
-                      "Principal": "*",
-                      "Resource": [
-                        {
-                          "Fn::Join": [
-                            "",
-                            [
-                              "arn:",
-                              {
-                                "Ref": "AWS::Partition"
-                              },
-                              ":s3:::",
-                              {
-                                "Ref": "ServerlessDeploymentBucket"
-                              },
-                              "/*"
-                            ]
-                          ]
-                        },
-                        {
-                          "Fn::Join": [
-                            "",
-                            [
-                              "arn:",
-                              {
-                                "Ref": "AWS::Partition"
-                              },
-                              ":s3:::",
-                              {
-                                "Ref": "ServerlessDeploymentBucket"
-                              }
-                            ]
-                          ]
-                        }
-                      ],
-                      "Condition": {
-                        "Bool": {
-                          "aws:SecureTransport": false
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+          "Code": {
+            "RepositoryType": "S3",
+            "Location": "https://prod-iad-c1-djusa-tasks.s3.us-east-1.amazonaws.com/snapshots/448049804598/products-api-dev-upload_package-4d0273af-0aad-4ca1-82aa-ca5293341507?versionId=Io2_ZItmtW9DJffwclwPuWAHsCTyH9Of&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEAUaCXVzLWVhc3QtMSJHMEUCIEexzkaoEPsqIXwpXZvIVc9SuMb1Yo%2BUMqPQ%2F%2FPb93UjAiEApEUzOLf5gxS%2BnO0%2FIVELwPRRB2MRvDFqP8qYLfavZ0oqkgIIjv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAEGgw0NzkyMzMwMjUzNzkiDOKn6LfgIchRqRAf5SrmARp9a3toT1rAa9y3B%2B2ED3%2BI3xw87HV3wUmBFiHWKQ7dobU1rQmEiJyq5W4YBND2cTxHxNT3c578IWC7rozP6j0Pe8IOjPSUvLRCgRm7xr4S58LLcUCuNPA8v1m08FViLD8OGGkzYDLFnXFvFtRMfd4fJHxhtKgU%2FeJkNikfjoFvyIMgCOuh7d%2BafTj78VfqqcGzg2i4tkkMsPubtmnJozVPCLXOFgbDgzh518wHJOHsve2s8IZzaYbh5KX7uppCdHBfAd7k7TgZPMXgIIyiMmOVJrSDuPuq2lr3pJCJLQFG%2FkRKQjy4MP%2FPwrkGOo8BwLUcnB3L%2Fa61k0uGfqA32XHBLzHsWh1vbvK4RvLL3kyCE0vgiKXoGEfh7Yl%2BTe0FJ5szQh2I8uzllM6cdrP36xlIt6rJo4W7r23DpsgZ0lNvcvI6Jp9uK04Ma049jsyYKxsJUGQ8%2Be7gcA3uDKFq%2BseXlgkr5F%2FhgNJZOZ%2Fx%2Fhvg9pdanTtBY5O1OcNpXis%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241110T164347Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIAW7FEDUVRWOMPOA7I%2F20241110%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=43a538907c5be4843c3d8a6ac8cd3604fcb8442eebe94cf46f83d8ceb97fb96b",
+            "ImageUri": null,
+            "ResolvedImageUri": null
           },
-          "Outputs": {
-            "ServerlessDeploymentBucketName": {
-              "Value": {
-                "Ref": "ServerlessDeploymentBucket"
-              }
-            }
+          "Tags": {
+            "aws:cloudformation:stack-name": "products-api-dev",
+            "aws:cloudformation:stack-id": "arn:aws:cloudformation:us-east-1:448049804598:stack/products-api-dev/a95415d0-8e51-11ef-973a-0e6f16ab4627",
+            "STAGE": "dev",
+            "aws:cloudformation:logical-id": "UploadUnderscorepackageLambdaFunction"
           }
-        },
-        "vpc": {}
+        }
       },
       "functions": {
         "health": {
@@ -782,21 +127,10 @@
               "httpApi": {
                 "path": "/health",
                 "method": "post"
-              },
-              "resolvedMethod": "POST",
-              "resolvedPath": "/health"
+              }
             }
           ],
-          "name": "products-api-dev-health",
-          "environment": {
-            "NODE_OPTIONS": "--enable-source-maps"
-          },
-          "package": {},
-          "memory": 1024,
-          "timeout": 6,
-          "runtime": "nodejs20.x",
-          "vpc": {},
-          "versionLogicalId": "HealthLambdaVersionpr510epxMUN4YyJlSWxVPYADJvAqhuLVawIj3zQoc"
+          "name": "products-api-dev-health"
         },
         "upload_package": {
           "handler": "src/handlers.upload_package",
@@ -805,21 +139,13 @@
               "httpApi": {
                 "path": "/package",
                 "method": "post"
-              },
-              "resolvedMethod": "POST",
-              "resolvedPath": "/package"
+              }
             }
           ],
           "name": "products-api-dev-upload_package",
           "environment": {
             "NODE_OPTIONS": "--enable-source-maps"
-          },
-          "package": {},
-          "memory": 1024,
-          "timeout": 6,
-          "runtime": "nodejs20.x",
-          "vpc": {},
-          "versionLogicalId": "UploadUnderscorepackageLambdaVersiontXPjB52ZmMMymgyzBqeEM7LCi4D4spz4dg8tAK6iI"
+          }
         },
         "get_rating": {
           "handler": "src/handlers.get_rating",
@@ -828,21 +154,10 @@
               "httpApi": {
                 "path": "/package/{id}",
                 "method": "get"
-              },
-              "resolvedMethod": "GET",
-              "resolvedPath": "/package/{id}"
+              }
             }
           ],
-          "name": "products-api-dev-get_rating",
-          "environment": {
-            "NODE_OPTIONS": "--enable-source-maps"
-          },
-          "package": {},
-          "memory": 1024,
-          "timeout": 6,
-          "runtime": "nodejs20.x",
-          "vpc": {},
-          "versionLogicalId": "GetUnderscoreratingLambdaVersionN5TCH18acTf2M3tIui7FIgDZqZEbS7oVwpuvn1fKD2s"
+          "name": "products-api-dev-get_rating"
         }
       },
       "resources": {
@@ -869,18 +184,20 @@
               ]
             }
           }
-        },
-        "Outputs": {}
+        }
       }
     },
     "serviceRawFile": "# Welcome to Serverless!\n#\n\nservice: products-api\n# app and org for use with dashboard.serverless.com\n\nframeworkVersion: '4.4.7'  \n\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  lambdaHashingVersion: 20201221\n\n  iam:\n    role:\n      statements:\n        - Effect: Allow\n          Action:\n            - \"dynamodb:PutItem\"\n            - \"dynamodb:GetItem\"\n            - \"dynamodb:DeleteItem\"\n            - \"dynamodb:Scan\"\n          Resource:\n            - { \"Fn::GetAtt\": [\"ProductsTable\", \"Arn\"] }\n\n            \nfunctions:\n  health:\n    handler: src/handlers.health\n    events:\n      - httpApi:\n          path: /health\n          method: post\n  upload_package:\n    handler: src/handlers.upload_package\n    events:\n      - httpApi:\n          path: /package\n          method: post\n  get_rating:\n    handler:  src/handlers.get_rating\n    events:\n      - httpApi:\n          path: /package/{id}\n          method: get\n  # update_package:\n  #   handler: src/handlers.update_package\n  #   events:\n  #     - httpApi:\n  #         path: /package\n  #         method: PUT\n\n# you can add CloudFormation resource templates here\nresources:\n  Resources:\n    ProductsTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: Packages\n        ProvisionedThroughput:\n          ReadCapacityUnits: 1\n          WriteCapacityUnits: 1\n        AttributeDefinitions:\n          - AttributeName: productID\n            AttributeType: S\n        KeySchema:\n          - AttributeName: productID\n            KeyType: HASH",
     "command": [
-      "deploy"
+      "deploy",
+      "function"
     ],
-    "options": {},
+    "options": {
+      "function": "upload_package"
+    },
     "error": null,
     "params": {},
-    "machineId": "6a18c2f5b99c46fd1e468afb10f36489",
+    "machineId": "c7b99766a13435b654b06a99f0b944d5",
     "stage": "dev",
     "accessKeyV2": "<REDACTED>",
     "accessKeyV1": "<REDACTED>",
@@ -909,18 +226,18 @@
     "serviceUniqueId": "arn:aws:cloudformation:us-east-1:448049804598:stack/products-api-dev/a95415d0-8e51-11ef-973a-0e6f16ab4627",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:448049804598:stack/products-api-dev/a95415d0-8e51-11ef-973a-0e6f16ab4627",
     "serviceProviderAwsCfStackCreated": "2024-10-19T19:38:05.684Z",
-    "serviceProviderAwsCfStackUpdated": "2024-11-07T03:13:02.626Z",
+    "serviceProviderAwsCfStackUpdated": "2024-11-10T11:35:30.998Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "GetUnderscoreratingLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:448049804598:function:products-api-dev-get_rating:49",
+        "OutputValue": "arn:aws:lambda:us-east-1:448049804598:function:products-api-dev-get_rating:56",
         "Description": "Current Lambda function version",
         "ExportName": "sls-products-api-dev-GetUnderscoreratingLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "HealthLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:448049804598:function:products-api-dev-health:102",
+        "OutputValue": "arn:aws:lambda:us-east-1:448049804598:function:products-api-dev-health:109",
         "Description": "Current Lambda function version",
         "ExportName": "sls-products-api-dev-HealthLambdaFunctionQualifiedArn"
       },
@@ -932,7 +249,7 @@
       },
       {
         "OutputKey": "UploadUnderscorepackageLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:448049804598:function:products-api-dev-upload_package:99",
+        "OutputValue": "arn:aws:lambda:us-east-1:448049804598:function:products-api-dev-upload_package:106",
         "Description": "Current Lambda function version",
         "ExportName": "sls-products-api-dev-UploadUnderscorepackageLambdaFunctionQualifiedArn"
       },
