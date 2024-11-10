@@ -7,11 +7,23 @@ const SearchButton: React.FC = () => {
     const [image, setImage] = useState<string>('');
     const [message, setMessage] = useState<string>('');
 
-    const getPackageName = (url: string) => {
+    const getPackageNameGithub = (url: string):string => {
         const mod = url.substring(19);
         const sep = mod.indexOf('/');
         const name = mod.substring(sep+1);
         return name
+    }
+    //getting package name from npm url
+    const getPackageNameNpm= (url: string):string => {
+        const specificVersionRegex = /\/v\/\d+\.\d+\.\d+/;
+        const match = url.match(specificVersionRegex);
+        if (match) {
+            console.log(match[0].split('/v/')[1])
+            return url.split(match[0])[0].split('/package/')[1]
+        }
+        else {
+            return url.split('/package/')[1]
+        }
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,8 +47,14 @@ const SearchButton: React.FC = () => {
             setMessage('No Input');
             return;
         }
-        const packageName = getPackageName(packageUrl);
-        setPackageName(packageName);
+        if (packageUrl.includes("npmjs.com/package")) {
+            const packageName = getPackageNameNpm(packageUrl);
+            setPackageName(packageName);
+        }
+        else if (packageUrl.includes("github.com")) {
+            const packageName = getPackageNameGithub(packageUrl);
+            setPackageName(packageName)
+        }
 
         try {
             const response = await fetch(`https://t65oyfcrxb.execute-api.us-east-1.amazonaws.com/package`, {
@@ -47,7 +65,7 @@ const SearchButton: React.FC = () => {
               body: JSON.stringify({Name: packageName,url:packageUrl})
             });
             const result = await response.json();
-            console.log(result.message)
+            console.log(result)
             
         }
         catch (error) {
@@ -55,7 +73,6 @@ const SearchButton: React.FC = () => {
         }
     
     }
-
 
     return (
         <div>
