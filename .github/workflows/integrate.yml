@@ -28,10 +28,10 @@ jobs:
       - name: Deploy with Serverless
         env:
           SERVERLESS_ACCESS_KEY: "AKZZBuUhiG65YgNACJk7PoSHds2ld5qOVKlIoZoSS8Dju"
-          NPM_TOKEN: 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
+          NPM_TOKEN: "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"
           
         run: |
-          npm set "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
+          npm set "//registry.npmjs.org/:_authToken=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"
           cd backend
           npm ci
           serverless deploy
