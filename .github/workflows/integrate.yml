@@ -31,7 +31,7 @@ jobs:
           NPM_TOKEN: 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
           
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN}}" > ~/.npmrc
+          npm set "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
           cd backend
           npm install
           serverless deploy
