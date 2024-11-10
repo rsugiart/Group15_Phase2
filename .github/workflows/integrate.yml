@@ -28,7 +28,10 @@ jobs:
       - name: Deploy with Serverless
         env:
           SERVERLESS_ACCESS_KEY: "AKZZBuUhiG65YgNACJk7PoSHds2ld5qOVKlIoZoSS8Dju"
+          NPM_TOKEN: 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
+          
         run: |
+          echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN}}" > ~/.npmrc
           cd backend
           npm install
           serverless deploy
