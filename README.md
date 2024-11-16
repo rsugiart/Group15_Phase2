@@ -4,7 +4,7 @@ Repository Inherited from: Sydney Chang, Sam Johnson, Harrison Smith, Doha Hafez
 Contributors: Areej Mirani, Ethan Hunt, Yingchen Jin, Varun Venkatesh, Ruth Sugiarto
 
 
-welcome to Group 15's Package Registry Webservice!!
+Welcome to Group 15's Package Registry Webservice!!
 
 
 ## Introduction
