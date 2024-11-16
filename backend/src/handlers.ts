@@ -69,7 +69,7 @@ function tarToZip(tarStream: Readable): Readable {
   return zipStream;  // Return the readable zip stream
 }
 
-async function zipStreamToBase64(zipStream: Readable): Promise<string> {
+export async function zipStreamToBase64(zipStream: Readable): Promise<string> {
   const chunks: Buffer[] = [];
 
   return new Promise((resolve, reject) => {
