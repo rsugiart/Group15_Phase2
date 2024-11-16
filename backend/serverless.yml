@@ -42,14 +42,21 @@ functions:
     handler:  src/handlers.get_rating
     events:
       - httpApi:
+          path: /package/{id}/rate
+          method: get
+  get_package:
+    handler:  src/download.get_package
+    events:
+      - httpApi:
           path: /package/{id}
           method: get
-  # update_package:
-  #   handler: src/handlers.update_package
-  #   events:
-  #     - httpApi:
-  #         path: /package
-  #         method: PUT
+  download_package:
+    handler: src/download.download_package
+    events:
+      - httpApi:
+          path: /package/download
+          method: post
+
 
 # you can add CloudFormation resource templates here
 resources:

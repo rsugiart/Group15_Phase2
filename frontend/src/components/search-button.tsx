@@ -41,6 +41,38 @@ const SearchButton: React.FC = () => {
         }
     };
 
+    const download = async () => {  
+
+        try {
+            const response = await fetch(`https://t65oyfcrxb.execute-api.us-east-1.amazonaws.com/package/lodash`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json"
+              }
+            });
+            const result = await response.json();
+            const content = result.data.Content;
+            console.log(content)
+            const response_2  = await fetch(`https://t65oyfcrxb.execute-api.us-east-1.amazonaws.com/package/download`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({name: 'lodash',version: '4.17.21',content: content})
+              });
+            const blob = await response_2.blob()
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'package.zip';
+            link.click();
+            
+        }
+        catch (error) {
+            setMessage(String(error))
+        }
+
+    }
+
     const upload = async () => {
 
         if (!packageUrl) {
@@ -77,7 +109,7 @@ const SearchButton: React.FC = () => {
     return (
         <div>
             <input type="text" onChange={handleInputChange} onKeyDown={handleKeyDown}/>
-            <button onClick={upload}>Search</button>
+            <button onClick={download}>Search</button>
             {message && <h3> {message}</h3>}
         </div>
     );
