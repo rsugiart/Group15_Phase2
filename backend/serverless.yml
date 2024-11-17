@@ -13,6 +13,8 @@ provider:
   lambdaHashingVersion: 20201221
   environment:
     GITHUB_TOKEN: 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
+    JWT_ACCESS_SECRET: 205e1c518d01d377ca4e68757d5be52118aace1e7482457b86e65c94ed190a155a7f6df1354db15a6c2a661ee449827faeaec868bb7b93e36097766a65aa0935
+    JWT_REFRESH_SECRET: 1186f6b6b3bd389c91b9d84c64c5a6da4c56af6a167c535d8e706038b4745561cdd4303de9e70ea8787497c474dd57765906a018bfb6b01201e704d54968a306
 
   iam:
     role:
@@ -33,7 +35,7 @@ functions:
     events:
       - httpApi:
           path: /health
-          method: post
+          method: get
   upload_package:
     handler: src/handlers.upload_package
     events:
@@ -58,6 +60,13 @@ functions:
       - httpApi:
           path: /package/download
           method: post
+  login:
+    handler: src/authenticate.login
+    events:
+      - httpApi:
+          path: /login
+          method: post
+  
 
 
 # you can add CloudFormation resource templates here

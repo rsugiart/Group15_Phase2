@@ -18,24 +18,61 @@ import { calculateSHA256AndBuffer,tarToZip,zipStreamToBase64,get_package_json } 
 import { analyzeURL } from "./rating/main.js";
 import {RateParameters} from "./interfaces.js";
 import { version } from "os";
+import jwt from "jsonwebtoken";
+
 
 const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 const client = new DynamoDBClient({ region: 'us-east-1' });
 const tableName = "PackagesTable";
 
+
 export const health = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
-  
+  const auth_header = event.headers['x-authorization']
+  const token = auth_header && auth_header.split(' ')[1]
+  if (token == null) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify(
+        {
+          message: token
+        })
+    }
+  }
+  if (!process.env.JWT_ACCESS_SECRET) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify(
+        {
+          message: "Blah"
+        })
+    }
+    throw new Error("JWT_ACCESS_SECRET not set")
+  }
+try {
+
+  const result = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
   return {
     statusCode: 200,
     body: JSON.stringify(
       {
-        message: "Go Serverless v1.0! Your function executed successfully!",
-        input: event,
+        message: result
       },
       null,
       2,
     ),
   };
+}
+catch(err) {
+  return {
+    statusCode: 401,
+    body: JSON.stringify(
+      {
+        message: String(err)
+      })
+  }
+}
+
+
 };
 
 const package_exists = async (package_name:string) => {
@@ -179,7 +216,6 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
 
     const command = new PublishPackageVersionCommand(input);
     let response = await codeartifact_client.send(command);
-
     const db_input = {
       "TableName": tableName,
       "Item": {
@@ -190,7 +226,7 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
           "S": version 
         },
         "rating": {
-          "N": "1"
+          "N": rating
         },
         "productID": {
           "S": `${package_name}-${version}`
