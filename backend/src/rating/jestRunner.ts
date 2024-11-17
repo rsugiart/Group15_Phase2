@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { processUrlFile } from './main';
+import { processUrlFile } from './main.js';
 
 export function runCommand(command: string): Promise<{ stdout: string; exitCode: number }> {
   return new Promise((resolve, reject) => {

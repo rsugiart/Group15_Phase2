@@ -10,11 +10,12 @@ import path from 'path';
 import axios from 'axios';
 import { logMessage } from './log.js';
 import { log } from 'console';
+import {RateParameters} from "../interfaces.js";
 
 // Main function to execute the metrics and repository analysis
 
 // Check URL for GitHub or npm
-export async function analyzeURL(url: string) {
+export async function analyzeURL(url: string){
   const originalUrl = url;
   const loc = checkURL(url);
   logMessage(2, `URL Location: ${loc}`);
@@ -56,7 +57,6 @@ export async function analyzeURL(url: string) {
       const busFactor: number = parseFloat((await metricBusFactor(variables)).toFixed(3));
       const busFactorLatency: number = parseFloat(((Date.now() - busFactorStartTime) / 1000).toFixed(3));
       logMessage(1, `BusFactor: ${busFactor} (Latency: ${busFactorLatency}s)`);
-
 
       // Analyze repository
       const localPath = path.join('./temp-repo');
@@ -117,23 +117,25 @@ export async function analyzeURL(url: string) {
 
       // Output as NDJSON
       const output = {
-        URL: originalUrl,
         NetScore: netScore,
-        NetScore_Latency: netScoreLatency,
+        NetScoreLatency: netScoreLatency,
         RampUp: rampUpTime,
-        RampUp_Latency: rampUpLatency,
+        RampUpLatency: rampUpLatency,
         Correctness: cadScore,
-        Correctness_Latency: correctnessScoreLatency,
+        CorrectnessLatency: correctnessScoreLatency,
         BusFactor: busFactor,
-        BusFactor_Latency: busFactorLatency,
+        BusFactorLatency: busFactorLatency,
         ResponsiveMaintainer: responsiveness,
-        ResponsiveMaintainer_Latency: responsivenessLatency,
+        ResponsiveMaintainerLatency: responsivenessLatency,
         License: licenseScore,
-        License_Latency: licenseScoreLatency
+        LicenseLatency: licenseScoreLatency,
+        GoodPinningPractice: 0,
+        GoodPinningPracticeLatency: 0,
+        PullRequest: 0,
+        PullRequestLatency: 0
       };
 
       return output;
-      process.exit(1);
     } catch (error) {
       console.error('Error during analysis:', error);
       return null; // Indicate failure
@@ -257,12 +259,3 @@ export async function processUrlFile(filePath: string) {
   }
 }
 
-// Check for command-line arguments
-const args = process.argv.slice(2);
-if (args.length !== 1) {
-  console.error('Usage: ./run URL_FILE');
-  process.exit(1);
-}
-
-const urlFilePath = args[0];
-processUrlFile(urlFilePath);

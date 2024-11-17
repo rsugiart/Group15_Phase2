@@ -1,4 +1,4 @@
-import { logMessage } from '../../log.js';
+import { logMessage } from '../log.js';
 import { GitHubClient } from '../githubClient.js';
 import * as dotenv from 'dotenv';
 dotenv.config();

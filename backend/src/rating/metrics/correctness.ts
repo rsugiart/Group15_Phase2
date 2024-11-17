@@ -1,5 +1,5 @@
 import * as git from 'isomorphic-git';
-import { logMessage } from '../../log.js';
+import { logMessage } from '../log.js';
 import fs from 'fs';
 
 // Analyze Commit Activity Density (CAD)

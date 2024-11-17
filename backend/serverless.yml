@@ -11,6 +11,8 @@ provider:
   name: aws
   runtime: nodejs20.x
   lambdaHashingVersion: 20201221
+  environment:
+    GITHUB_TOKEN: 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
 
   iam:
     role:
@@ -64,13 +66,17 @@ resources:
     ProductsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Packages
+        TableName: PackagesTable
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         AttributeDefinitions:
-          - AttributeName: productID
+          - AttributeName: packageName
+            AttributeType: S
+          - AttributeName: version
             AttributeType: S
         KeySchema:
-          - AttributeName: productID
+          - AttributeName: packageName
             KeyType: HASH
+          - AttributeName: version
+            KeyType: RANGE

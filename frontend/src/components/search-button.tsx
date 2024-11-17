@@ -109,7 +109,7 @@ const SearchButton: React.FC = () => {
     return (
         <div>
             <input type="text" onChange={handleInputChange} onKeyDown={handleKeyDown}/>
-            <button onClick={download}>Search</button>
+            <button onClick={upload}>Search</button>
             {message && <h3> {message}</h3>}
         </div>
     );

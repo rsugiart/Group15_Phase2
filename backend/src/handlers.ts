@@ -10,119 +10,18 @@ import { CodeartifactClient, PackageFormat, PublishPackageVersionCommand } from 
 import axios from "axios";
 import { Readable } from "stream";
 import JSZip from "jszip";
-import { DynamoDBClient, PutItemCommand, ReturnConsumedCapacity,GetItemCommand} from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, PutItemCommand, ReturnConsumedCapacity,GetItemCommand, QueryCommand} from "@aws-sdk/client-dynamodb";
 import * as tar from 'tar';
 import archiver from 'archiver';
 import { PassThrough } from 'stream';
-
+import { calculateSHA256AndBuffer,tarToZip,zipStreamToBase64,get_package_json } from "../helpers.js";
+import { analyzeURL } from "./rating/main.js";
+import {RateParameters} from "./interfaces.js";
+import { version } from "os";
 
 const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 const client = new DynamoDBClient({ region: 'us-east-1' });
-const tableName = "Packages";
-
-
-export async function calculateSHA256AndBuffer(stream: NodeJS.ReadableStream): Promise<{ hash: string, buffer: Buffer }> {
-  return new Promise((resolve, reject) => {
-      const hash = createHash("sha256");
-      const chunks: Buffer[] = [];
-
-      stream.on("data", (chunk) => {
-          hash.update(chunk);
-          chunks.push(chunk); // Store chunks for later
-      });
-
-      stream.on("end", () => {
-          const buffer = Buffer.concat(chunks); // Combine chunks into a single Buffer
-          const hashValue = hash.digest("hex"); // Calculate the hash
-          resolve({ hash: hashValue, buffer }); // Return hash and buffer
-      });
-
-      stream.on("error", reject);
-  });
-}
-
-function tarToZip(tarStream: Readable): Readable {
-  const zipStream = new PassThrough();
-  const archive = archiver('zip', { zlib: { level: 9 } });
-
-  // Pipe the archive data into the PassThrough zipStream
-  archive.pipe(zipStream);
-
-  // Parse the tar stream and add files to the zip archive
-  tarStream.pipe(
-      new tar.Parser()
-          .on('entry', (entry) => {
-              if (entry.type === 'Directory') return;
-
-              const chunks: Buffer[] = [];
-              entry.on('data', (chunk: Buffer) => chunks.push(chunk));
-              entry.on('end', () => {
-                  const fileContent = Buffer.concat(chunks);
-                  archive.append(fileContent, { name: entry.path });
-              });
-          })
-          .on('finish', () => {
-              archive.finalize();  // Finalize the archive when parsing is complete
-          })
-  );
-
-  return zipStream;  // Return the readable zip stream
-}
-
-export async function zipStreamToBase64(zipStream: Readable): Promise<string> {
-  const chunks: Buffer[] = [];
-
-  return new Promise((resolve, reject) => {
-      zipStream.on('data', (chunk: Buffer) => chunks.push(chunk));
-      zipStream.on('end', () => {
-          // Concatenate all chunks into a single buffer
-          const buffer = Buffer.concat(chunks);
-          // Convert the buffer to a base64 string
-          const base64String = buffer.toString('base64');
-          resolve(base64String);
-      });
-      zipStream.on('error', (err) => reject(err));
-  });
-}
-
-
-async function get_package_json(base64Zip: string) {
-  try {
-    // Decode Base64 to binary data in a Uint8Array
-    const binaryString = atob(base64Zip);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    // Load zip data using JSZip
-    const zip = await JSZip.loadAsync(bytes);
-
-    // Search for package.json in the ZIP contents
-    let packageFile: JSZip.JSZipObject | undefined;
-    zip.forEach((relativePath, file) => {
-      if (relativePath.endsWith("package.json")) {
-        packageFile = file;
-      }
-    });
-
-    // Check if package.json was found
-    if (!packageFile) {
-      console.log("package.json not found in the ZIP file.");
-      return;
-    }
-
-    // Read and print the contents of package.json
-    const content = await packageFile.async("string");
-    return content;
-    console.log("Contents of package.json:", content);
-  } catch (error) {
-    console.error("Error reading package.json from ZIP:", error);
-  }
-}
-
-
+const tableName = "PackagesTable";
 
 export const health = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
   
@@ -139,15 +38,45 @@ export const health = async (event: APIGatewayProxyEvent): Promise<APIGatewayPro
   };
 };
 
+const package_exists = async (package_name:string) => {
+  const input = {
+    "ExpressionAttributeValues": {
+      ":v1": {"S":package_name},
+    },
+    "TableName": tableName,
+    "KeyConditionExpression": "packageName = :v1",
+    "ProjectionExpression": "productID"
+  };
+  const db_command = new QueryCommand(input)
+  const db_response = await client.send(db_command)
+  if (db_response.Items) {  
+    return true
+  }
+  return false;
+
+}
+
 
 export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   
   try {
     const body = JSON.parse(event.body as string);
     const package_name = body.Name;
+    const db_response2 = await package_exists(package_name);
+    if (await package_exists(package_name)) {
+      return {
+        statusCode: 409,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+        {
+          Error: "Package already exists"
+        })
+      };
+    }
     var version;
     let stream
     let content;
+    let url
     if (body.hasOwnProperty('Content')) {
       content = body.Content;
       const zipBuffer = Buffer.from(body.Content, 'base64');
@@ -158,11 +87,16 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
         throw new Error("Error");
       }
       const info = JSON.parse(package_json);
-      version = info.version;
+      if (info.hasOwnProperty('version')) {
+        version = info.version;
+      }
+      else {
+        version = "1.0.0";
+      }
       
     }
     else {
-      const url = body.url;
+      url = body.url;
       const mod = url.substring(19);
       const sep = mod.indexOf('/');
       const owner = mod.substring(0, sep);
@@ -206,6 +140,25 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
       }
 
     }
+    const result = await analyzeURL("https://github.com/lodash/lodash");
+    // if (!result) {
+    //   throw new Error("Erro");
+    // }
+    // console.log(result);
+    // if (url.includes("npmjs.com/package")) {
+    //   if (result.BusFactor <0.5 || result.ResponsiveMaintainer <0.5 || result.RampUp <0.5 || result.Correctness <0.5 || result.License <0.5 || result.GoodPinningPractice <0.5 || result.PullRequest <0.5 || result.NetScore <0.5) {
+    //     return {
+    //       statusCode: 500,
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(
+    //       {
+    //         Error: "Package could not be ingested due to low rating"
+    //       })
+    //     };
+    //   }
+    // }
+    const rating = JSON.stringify(result);
+
     if (!stream) {
       throw new Error("Stream is undefined.");
     }
@@ -222,23 +175,25 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
     assetSHA256: assetSHA256 // required
     }    
     
+    //console.log(result)
+
     const command = new PublishPackageVersionCommand(input);
     let response = await codeartifact_client.send(command);
 
     const db_input = {
       "TableName": tableName,
       "Item": {
-        "Name": {
+        "packageName": {
           "S": package_name
         },
-        "Version": {
+        "version": {
           "S": version 
         },
-        "Rating": {
-          "S": "0.5"
+        "rating": {
+          "N": "1"
         },
         "productID": {
-          "S": package_name
+          "S": `${package_name}-${version}`
         }
 
       },
@@ -284,65 +239,14 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
     catch(error) {
 
     return {
-      statusCode: 200,
+      statusCode: 500,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
       {
-        message: String(error),
-        input: event,
-      },
-      null,
-      2,
-      ),
+        Error: String(error),
+      })
     };
     }
-    
-    
+     
   };
-
-  export const get_rating= async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  try {
-    const id = event.pathParameters?.id as string
-    const input = {
-      "Key": {
-        "productID": {
-          "S": id
-        }
-      },
-      "TableName": tableName
-    };
-    const command = new GetItemCommand(input);
-    const response = await client.send(command);
-    if (!(response && response.Item)) {
-      throw new Error("Failed")
-    }
-    const rating = response.Item.rating.S
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        {
-          message: rating,
-          input: event,
-        },
-        null,
-        2,
-      ),
-    };
-
-  } catch (error) {
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        {
-          message: String(error),
-          input: event,
-        },
-        null,
-        2,
-      ),
-    };
-  }
-};
 
