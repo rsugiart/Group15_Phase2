@@ -8,8 +8,11 @@ function Home() {
       <p className="home-text">
         Explore our features and enjoy a seamless experience with our platform.
       </p>
-      <button className="nav-button" onClick={() => window.location.href = '/get-started'}>
+      {/* <button className="nav-button" onClick={() => window.location.href = '/get-started'}>
           Get Started
+        </button> */}
+      <button className="nav-button" onClick={() => window.location.href = '/login'}>
+          Login
         </button>
     </div>
   );
