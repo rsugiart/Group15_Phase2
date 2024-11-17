@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --header-height: 3.5rem;
+  --first-color: hsl(28, 88%, 62%);
+  --title-color: hsl(0, 0%, 95%);
+  --text-color: hsl(0, 0%, 75%);
+  --body-color: hsl(0, 0%, 6%);
+  --body-font: "Montserrat", sans-serif;
+  --second-font: "Dancing Script", cursive;
+  --h2-font-size: 1.5rem;
+  --input-padding: 0.75rem;
+  --input-border-radius: 6px;
+  --input-border: 2px solid hsl(0, 0%, 75%);
+}
+
+/* Page Background */
+body {
+  background-color: var(--body-color);
+  color: var(--text-color);
+  font-family: var(--body-font);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Login Container */
+.login-container {
+  background-color: var(--body-color);
+  border: 2px solid var(--text-color);
+  border-radius: 10px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Title */
+.login-title {
+  font-size: var(--h2-font-size);
+  color: var(--title-color);
+  font-family: var(--second-font);
+  margin-bottom: 1rem;
+}
+
+/* Input Fields */
+.login-input {
+  width: 100%;
+  padding: var(--input-padding);
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: transparent;
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
+  outline: none;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.login-input:focus {
+  border-color: var(--first-color);
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  padding: var(--input-padding);
+  font-size: 1rem;
+  color: var(--title-color);
+  background-color: var(--first-color);
+  border: none;
+  border-radius: var(--input-border-radius);
+  cursor: pointer;
+  font-weight: var(--font-semi-bold);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-button:hover {
+  background-color: hsl(28, 88%, 50%);
+  transform: scale(1.02);
+}
+
+.login-button:active {
+  transform: scale(0.98);
+}
+
+/* Additional Text */
+.login-text {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  margin-top: 1rem;
+}
+
+.login-link {
+  color: var(--first-color);
+  text-decoration: none;
+  font-weight: var(--font-semi-bold);
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
