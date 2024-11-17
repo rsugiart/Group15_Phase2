@@ -1,4 +1,4 @@
-/* Overall App Styling */
+/* Overall App Styling
 .App {
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -14,7 +14,7 @@
 }
 
 /* Animated Background */
-.App::before {
+/* .App::before {
   content: '';
   position: absolute;
   top: 0;
@@ -34,10 +34,10 @@
   to {
     background: radial-gradient(circle, #355c7d, #6c5b7b, #c06c84);
   }
-}
+} */
 
 /* Header Styling with Shadow and Border */
-.App-header {
+/* .App-header {
   background-color: rgba(40, 44, 52, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -58,10 +58,10 @@
 @keyframes fadeIn {
   0% { opacity: 0; transform: translateY(-20px); }
   100% { opacity: 1; transform: translateY(0); }
-}
+} */
 
 /* Logo Style */
-.App-logo {
+/* .App-logo {
   height: 30vmin;
   pointer-events: none;
   transition: transform 0.3s ease-in-out;
@@ -70,7 +70,7 @@
 
 .App-logo:hover {
   transform: scale(1.1) rotate(10deg); /* Rotate slightly on hover */
-}
+/* }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -81,10 +81,10 @@
 @keyframes App-logo-spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
+}  */
 
 /* Link Styling with Hover Effect */
-.App-link {
+/* .App-link {
   color: #61dafb;
   font-weight: 500;
   padding: 10px 20px;
@@ -102,7 +102,7 @@
 }
 
 /* Button Styling */
-button {
+/* button {
   background: linear-gradient(135deg, #56ccf2, #2f80ed);
   color: white;
   font-weight: bold;
@@ -123,10 +123,10 @@ button:hover {
 button:focus {
   outline: none;
   box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0.3);
-}
+} */
 
 /* Input Styling */
-input[type="text"] {
+/* input[type="text"] {
   padding: 10px 20px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -139,5 +139,43 @@ input[type="text"]:focus {
   border-color: #61dafb;
   box-shadow: 0px 0px 8px rgba(97, 218, 251, 0.5);
   outline: none;
+} */ 
+
+
+
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
+
+* {
+ box-sizing: border-box;
+ padding: 0;
+ margin: 0;
 }
 
+:root {
+ --header-height: 3.5rem;
+ --first-color: hsl(28, 88%, 62%);
+ --title-color: hsl(0, 0%, 95%);
+ --text-color: hsl(0, 0%, 75%);
+ --body-color: hsl(0, 0%, 6%);
+ --body-font: "Montserrat", sans-serif;
+ --second-font: "Dancing Script", cursive;
+ --h2-font-size: 1.25rem;
+ --small-font-size: 0.813rem;
+ --font-semi-bold: 600;
+ --z-tooltip: 10;
+ --z-fixed: 100;
+}
+
+body {
+ background-color: var(--body-color);
+ color: var(--text-color);
+ font-family: var(--body-font);
+}
+
+ul {
+ list-style: none;
+}
+
+a {
+ text-decoration: none;
+}
