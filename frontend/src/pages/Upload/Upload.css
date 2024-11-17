@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --header-height: 3.5rem;
+  --first-color: hsl(28, 88%, 62%);
+  --title-color: hsl(0, 0%, 95%);
+  --text-color: hsl(0, 0%, 75%);
+  --body-color: hsl(0, 0%, 6%);
+  --body-font: "Montserrat", sans-serif;
+  --second-font: "Dancing Script", cursive;
+  --h2-font-size: 1.25rem;
+  --small-font-size: 0.813rem;
+  --font-semi-bold: 600;
+  --z-tooltip: 10;
+  --z-fixed: 100;
+}
+
+/* Upload Container */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--body-color);
+  color: var(--text-color);
+}
+
+/* Title */
+.upload-title {
+  font-size: 2rem;
+  font-family: var(--second-font);
+  color: var(--title-color);
+  margin-bottom: 1.5rem;
+}
+
+/* Input Fields */
+.file-input-container {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-input-label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: var(--title-color);
+  font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+}
+
+.file-input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: transparent;
+  border: 2px solid var(--text-color);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.file-input:focus {
+  border-color: var(--first-color);
+}
+
+.upload-input {
+  padding: 0.5rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: transparent;
+  border: 2px solid var(--text-color);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.upload-input:focus {
+  border-color: var(--first-color);
+}
+
+/* Upload Button */
+.upload-button {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+  color: var(--title-color);
+  background-color: var(--first-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.upload-button:hover {
+  background-color: hsl(28, 88%, 50%);
+  transform: scale(1.05);
+}
+
+.upload-button:active {
+  transform: scale(0.95);
+}
+
+/* Message Display */
+.upload-message {
+  font-size: 1rem;
+  color: var(--first-color);
+  margin-top: 1rem;
+  font-weight: var(--font-semi-bold);
+  text-align: center;
+}
