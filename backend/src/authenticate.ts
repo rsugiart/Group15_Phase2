@@ -12,7 +12,8 @@ import { userInfo } from "os";
 const docClient = new AWS.DynamoDB.DocumentClient();
 const USERS_TABLE = process.env.USERS_TABLE || "UsersTable";
 
-const authenticate = async (username: string, password: string): Promise<boolean> => {
+// export const authenticate = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const authenticate = async (username: string, password: string): Promise<boolean> => {
     const params = {
         TableName: USERS_TABLE,
         Key: {
