@@ -33,6 +33,9 @@ const LoginPage: React.FC = () => {
       <p className="login-text">
         Don't have an account? <a href="/register" className="login-link">Sign Up</a>
       </p>
+      <p className="login-text">
+        Administrator? <a href="/admin" className="login-link">Admin Login</a>
+      </p>
     </div>
   );
 };

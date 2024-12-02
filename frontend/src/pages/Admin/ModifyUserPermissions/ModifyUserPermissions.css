@@ -1,0 +1,106 @@
+/* Page Styling */
+.modify-users-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: hsl(0, 0%, 6%);
+    color: hsl(0, 0%, 75%);
+    font-family: "Montserrat", sans-serif;
+    min-height: 100vh;
+  }
+  
+  /* Welcome Message */
+  .modify-users-welcome {
+    font-size: 2rem;
+    color: hsl(28, 88%, 62%);
+    margin-bottom: 2rem;
+    font-family: "Dancing Script", cursive;
+    text-align: center;
+  }
+  
+  /* Users Container */
+  .users-container {
+    background-color: hsl(0, 0%, 10%);
+    border: 2px solid hsl(0, 0%, 75%);
+    border-radius: 10px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modify-users-title {
+    font-size: 1.5rem;
+    color: hsl(0, 0%, 95%);
+    font-family: "Dancing Script", cursive;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Table Styling */
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    color: hsl(0, 0%, 75%);
+  }
+  
+  .users-table th,
+  .users-table td {
+    border: 1px solid hsl(0, 0%, 30%);
+    padding: 0.75rem;
+    text-align: center;
+  }
+  
+  .users-table th {
+    background-color: hsl(0, 0%, 15%);
+    color: hsl(0, 0%, 95%);
+  }
+  
+  .users-table tr:nth-child(even) {
+    background-color: hsl(0, 0%, 12%);
+  }
+  
+/* Save Button */
+.save-button {
+    padding: 0.5rem 1rem;
+    background-color: hsl(28, 88%, 62%);
+    color: hsl(0, 0%, 95%);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-right: 0.5rem; /* Added margin-right for spacing */
+  }
+  
+  .save-button:hover {
+    background-color: hsl(28, 88%, 50%);
+    transform: scale(1.02);
+  }
+  
+  .save-button:active {
+    transform: scale(0.98);
+  }
+  
+  /* Delete Button */
+  .delete-button {
+    padding: 0.5rem 1rem;
+    background-color: hsl(0, 100%, 40%);
+    color: hsl(0, 0%, 95%);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: hsl(0, 100%, 30%);
+    transform: scale(1.02);
+  }
+  
+  .delete-button:active {
+    transform: scale(0.98);
+  }
+  
+  
