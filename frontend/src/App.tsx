@@ -12,6 +12,9 @@ import Search from './pages/Search/Search';
 import Get_Started from './pages/Get_Started/Get_Started';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import AdminPage from './pages/Admin/Admin';
+import CreateUserPage from './pages/Admin/CreateUser/CreateUser';
+import ModifyUsersPage from './pages/Admin/ModifyUserPermissions/ModifyUserPermissions';
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
         {/* <Route path="/rate" element={<Rate />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin/create-user" element={<CreateUserPage />} />
+        <Route path="/admin/modify-user-permissions" element={<ModifyUsersPage />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       </div>

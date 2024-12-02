@@ -27,8 +27,15 @@ provider:
             - "dynamodb:Scan"
           Resource:
             - { "Fn::GetAtt": ["ProductsTable", "Arn"] }
-
-            
+        - Effect: Allow
+          Action:
+            - "dynamodb:PutItem"
+            - "dynamodb:GetItem"
+            - "dynamodb:DeleteItem"
+            - "dynamodb:Scan"
+          Resource:
+            - { "Fn::GetAtt": ["UsersTable", "Arn"] }
+     
 functions:
   health:
     handler: src/handlers.health
@@ -68,7 +75,6 @@ functions:
           method: post
   
 
-
 # you can add CloudFormation resource templates here
 resources:
   Resources:
@@ -89,3 +95,16 @@ resources:
             KeyType: HASH
           - AttributeName: version
             KeyType: RANGE
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: UsersTable
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH
