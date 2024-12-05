@@ -6,10 +6,33 @@ const RegisterPage: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     // Implement your registration logic here
+    try {
+      console.log(password)
+      const response = await fetch(`https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(password)
+    })
+
+    const result = await response.json();
+     if (response.status === 200) {
+      navigate('/login')
+     }
+     else {
+      setMessage(result.message)
+     }
+
+  }
+  catch (error) {
+      setMessage(String(error))
+  }
     console.log('Registering user:', { name, username, password });
     // Navigate to login page after successful registration
     navigate('/login');

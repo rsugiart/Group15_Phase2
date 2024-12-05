@@ -4,3 +4,4 @@ backend/dist
 backend/.serverless
 frontend/node_modules
 frontend/.env
+node_modules

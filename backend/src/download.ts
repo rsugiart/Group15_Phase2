@@ -12,13 +12,17 @@ import axios from "axios";
 import { Readable } from "stream";
 import JSZip from "jszip";
 import { DynamoDBClient, PutItemCommand, ReturnConsumedCapacity,GetItemCommand} from "@aws-sdk/client-dynamodb";
-import { zipStreamToBase64 } from "../helpers.js";
+import { zipStreamToBase64 } from "./helpers.js";
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
+import jwt from 'jsonwebtoken';
+import { verify_token } from "./authenticate.js";
 
-
+const USERS_TABLE = process.env.USERS_TABLE || "UsersTable";
 const tableName = "PackagesTable";
 const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 const client = new DynamoDBClient({ region: 'us-east-1' });
+const docClient = new AWS.DynamoDB.DocumentClient();
+
 
 const package_exists = async (package_name:string,version:string) => {
   const input = {
@@ -42,17 +46,32 @@ const package_exists = async (package_name:string,version:string) => {
 
 export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => { 
   try {
+    console.log("Enter")
+    console.log(event.pathParameters)
     const id = event.pathParameters?.id as string
+    const body = JSON.parse(event.body as string);
+    console.log(body)
+    // const auth_header = event.headers['X-Authorization']
+    // const [success,message] = await verify_token(auth_header,"download") || [];
+    // if (!success) {
+    //   return {
+    //     statusCode: 403,
+    //     body: JSON.stringify(
+    //       {
+    //         message: message
+    //       })
+    //   }
+    // }
       //check if id has a -
-      if (!id.includes("-")) {
+      if (!id.includes("....")) {
           return {
               statusCode: 400,
               headers: { "Content-Type": "application/json" },
               body: "Invalid Package ID"
           }
       } 
-      const package_name = id.split("-")[0]
-      const version = id.split("-")[1]
+      const package_name = id.split("....")[0]
+      const version = id.split("....")[1]
       const input = { // GetPackageVersionAssetRequest
           domain: "group15", // required
           repository: "SecurePackageRegistry", // required
@@ -71,7 +90,9 @@ export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatew
       catch {
         return {
           statusCode: 404,
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          },
           body: JSON.stringify(
             {
               Error: "Package not found"
@@ -87,6 +108,7 @@ export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatew
             ID: string}, 
           data: {
             Content: string, 
+            JSProgram: string
           }
         }
         const api_response:Response  = 
@@ -94,12 +116,14 @@ export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatew
           "metadata": {
             "Name": package_name,
             "Version": version,
-            "ID": package_name
+            "ID": id
           },
           "data": {
-            "Content": base64String
+            "Content": base64String,
+            "JSProgram": ''
           }
         }
+      console.log(api_response)
       return {
           statusCode: 200,
           headers: {
