@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import PackageUpload from './components/upload-button';
@@ -17,6 +17,8 @@ import CreateUserPage from './pages/Admin/CreateUser/CreateUser';
 import ModifyUsersPage from './pages/Admin/ModifyUserPermissions/ModifyUserPermissions';
 
 function App() {
+  const [token, setToken] = useState<string>('');
+  
   return (
     <Router>
       <Navbar />
@@ -26,11 +28,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/get-started" element={<Get_Started />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="/search" element={<Search token={token} />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/download" element={<Download />} />
         {/* <Route path="/rate" element={<Rate />} /> */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login token={token} setToken = {setToken} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/create-user" element={<CreateUserPage />} />
@@ -43,3 +45,5 @@ function App() {
 }
 
 export default App;
+
+

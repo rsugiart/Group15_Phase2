@@ -1,10 +1,18 @@
 # Welcome to Serverless!
 #
 
-service: products-api
+service: packages2-api
 # app and org for use with dashboard.serverless.com
 
 frameworkVersion: '4.4.7'  
+package:
+  patterns:
+    - '!node_modules/**'
+  individually: true
+# #     - '!venv/**'
+# #     - '!apienv/**'
+# #     - '!__pycache__/**'
+
 
 
 provider:
@@ -15,6 +23,18 @@ provider:
     GITHUB_TOKEN: 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
     JWT_ACCESS_SECRET: 205e1c518d01d377ca4e68757d5be52118aace1e7482457b86e65c94ed190a155a7f6df1354db15a6c2a661ee449827faeaec868bb7b93e36097766a65aa0935
     JWT_REFRESH_SECRET: 1186f6b6b3bd389c91b9d84c64c5a6da4c56af6a167c535d8e706038b4745561cdd4303de9e70ea8787497c474dd57765906a018bfb6b01201e704d54968a306
+  httpApi:
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedHeaders:
+        - Content-Type
+        - X-Authorization
+      allowedMethods:
+        - OPTIONS
+        - GET
+        - POST
+      allowCredentials: false
 
   iam:
     role:
@@ -35,14 +55,8 @@ provider:
             - "dynamodb:Scan"
           Resource:
             - { "Fn::GetAtt": ["UsersTable", "Arn"] }
-     
+
 functions:
-  health:
-    handler: src/handlers.health
-    events:
-      - httpApi:
-          path: /health
-          method: get
   upload_package:
     handler: src/handlers.upload_package
     events:
@@ -50,7 +64,7 @@ functions:
           path: /package
           method: post
   get_rating:
-    handler:  src/handlers.get_rating
+    handler:  src/rating.get_rating
     events:
       - httpApi:
           path: /package/{id}/rate
@@ -61,20 +75,50 @@ functions:
       - httpApi:
           path: /package/{id}
           method: get
+  update_package:
+    handler:  src/handlers.update_package
+    events:
+      - httpApi:
+          path: /package/{id}
+          method: post
   download_package:
     handler: src/download.download_package
     events:
       - httpApi:
           path: /package/download
           method: post
-  login:
-    handler: src/authenticate.login
+  register:
+    handler: src/authenticate.register
     events:
       - httpApi:
-          path: /login
+          path: /register
           method: post
-  
+  track:
+    handler: src/handlers.track
+    events:
+      - httpApi:
+          path: /tracks
+          method: get
+  rest:
+    handler: src/handlers.reset
+    events:
+      - httpApi:
+          path: /reset
+          method: delete
+  authenticate:
+    handler: src/authenticate.authenticate_user
+    events:
+      - httpApi:
+          path: /authenticate
+          method: put
+  list_packages:
+    handler: src/authenticate.list_packages
+    events:
+      - httpApi:
+          path: /packages
+          method: post
 
+      
 # you can add CloudFormation resource templates here
 resources:
   Resources:

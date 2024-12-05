@@ -1,8 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import AWS from "aws-sdk";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import { userInfo } from "os";
+import { DynamoDBClient, PutItemCommand, ReturnConsumedCapacity } from "@aws-sdk/client-dynamodb";
+import bcrypt from 'bcryptjs';
+import { String } from "aws-sdk/clients/cloudhsm.js";
 
 // ====================================================================
 //
@@ -11,25 +13,8 @@ import { userInfo } from "os";
 // ====================================================================
 const docClient = new AWS.DynamoDB.DocumentClient();
 const USERS_TABLE = process.env.USERS_TABLE || "UsersTable";
+const client = new DynamoDBClient({ region: 'us-east-1' });
 
-// export const authenticate = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-export const authenticate = async (username: string, password: string): Promise<boolean> => {
-    const params = {
-        TableName: USERS_TABLE,
-        Key: {
-            username,
-        },
-    };
-    const result = await docClient.get(params).promise();
-    if (result.Item) {
-        return result.Item.password === password;
-    }
-    return false;
-
-    // compare passwords
-    const hashedPassword = result.Item.password;
-    return password === hashedPassword;
-};
 
 // ====================================================================
 //
@@ -37,52 +22,71 @@ export const authenticate = async (username: string, password: string): Promise<
 //
 // ====================================================================
 export const register = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    
     const body = JSON.parse(event.body as string);
-    const { username, password } = body;
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
+    const { username, password} = body;
+    console.log(password)
+    return {
+        statusCode: 200,
+        body: JSON.stringify(
+            {
+                message: password
+            },
+            null,
+            2
+        ),
+    }
+    const permissions = ["upload","download","delete","rate"];
+    const hashedPassword = await bcrypt.hash(password, 10);
     const params = {
         TableName: USERS_TABLE,
         Item: {
             username,
             password: hashedPassword,
-            role: "user", // default role
+            group: "user", // default role
+            permissions: permissions
         },
     };
-
-    await docClient.put(params).promise();
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify(
-            {
-                message: "User created",
-            },
-            null,
-            2
-        ),
-    };
+    try {
+        await docClient.put(params).promise();
+        return {
+            statusCode: 200,
+            body: JSON.stringify(
+                {
+                    message: "User Created"
+                },
+                null,
+                2
+            ),
+        };
+    }
+    catch (err) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify(
+                {
+                    message: err
+                },
+                null,
+                2
+            ),
+        };
+    }
 };
 
-// ====================================================================
-//
-// add role-based access control
-//
-// ====================================================================
-// const access_token = jwt.sign(
-//     {
-//         username, 
-//         role: user.Item.role 
-//     },
-//     process.env.JWT_ACCESS_SECRET || "defaultSecret",
-// );
-export const verifyToken = async (event: APIGatewayProxyEvent, requiredRole?: string): Promise<APIGatewayProxyResult> => {
+
+  export const authenticate_user = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
     const body = JSON.parse(event.body as string);
-    const username = body.username;
-    const password = body.password;
-    const authenticated = await authenticate(username, password);
-    // const event.headers.Authorization?.split(" ")[1];
-    if (!authenticated) {
+    const username = body.User.name;
+    const password = body.Secret.password;
+    const params = {
+        TableName: USERS_TABLE,
+        Key: {
+            username,
+        },
+    };
+    const result = await docClient.get(params).promise();
+    if (!result.Item) {
         return {
             statusCode: 401,
             body: JSON.stringify(
@@ -92,69 +96,66 @@ export const verifyToken = async (event: APIGatewayProxyEvent, requiredRole?: st
                 null,
                 2
             ),
-        };
+        }
     }
-    const access_token = jwt.sign(username, process.env.JWT_ACCESS_SECRET || "defaultSecret");
-    if (requiredRole) {
-        const user = await docClient.get({
-            TableName: USERS_TABLE,
-            Key: {
-                username,
-            },
-        }).promise();
-        if (user.Item.role !== requiredRole) {
-            return {
-                statusCode: 403,
-                body: JSON.stringify(
-                    {
-                        message: "Forbidden",
-                    },
-                    null,
-                    2
-                ),
-            };
-        };
-    };
+    const hashedPassword = result.Item.password;
+    console.log("hashedPassword:",hashedPassword)
+    if (await bcrypt.compare(password, hashedPassword)) {
+        const access_token = jwt.sign(username, process.env.JWT_ACCESS_SECRET || "defaultSecret");
+        return {
+            statusCode: 200,
+            body: access_token
+
+        }
+    }
     return {
-        statusCode: 200,
+        statusCode: 500,
         body: JSON.stringify(
             {
-                accessToken: access_token,
-            }
+                message: "Entered password is incorrect",
+            },
+            null,
+            2
         ),
-    };
-};
-
-// export const login = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
-//     const body = JSON.parse(event.body as string);
-//     const username = body.username;
-//     const password = body.password;
-//     const authenticated = await authenticate(username,password);
-//     if (!authenticated) {
-//         return {
-//             statusCode: 401,
-//             body: JSON.stringify(
-//               {
-//                 message: "User Not Found"
-//               },
-//               null,
-//               2,
-//             ),
-//         }
-//     }
-//     const access_token = jwt.sign(username, process.env.JWT_ACCESS_SECRET || "defaultSecret");
-//     return {
-//       statusCode: 200,
-//       body: JSON.stringify(
-//         {
-//           accessToken: access_token
-//         }
-//       )
-//     };
-//   };
+    }
+  };
 
 
-// const authenticate = async (login:string,password:string) => {
+export const verify_token = async (auth_header:string|undefined, permission:string) => {
+    const token = auth_header && auth_header.split(' ')[1]
+    console.log("token:",token)  
+    if (token == null) {
+      return [false,"Authentication error"];
+    }
+    if (!process.env.JWT_ACCESS_SECRET) {
+        return [false,"Authentication error"];
+    }
+    let username:string | jwt.JwtPayload = ""
+    try {
 
-//     return true
-// }
+      username = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+      console.log("username:",username)
+      
+    }
+    catch(err) {
+      return [false,String(err)]
+    }
+    console.log("username:",username)
+    const params = {
+      TableName: USERS_TABLE,
+      Key: {
+          username,
+      },
+  };
+  const result = await docClient.get(params).promise();
+  if (!result.Item) {
+      return [false,"Authentication error"]
+  }
+  const permissions = result.Item.permissions;
+  console.log("permissions:",permissions)
+  if (!permissions.includes(permission)) {
+    return [false,`You do not have permission to ${permission} package`]
+  }
+  return [true,""]
+
+}

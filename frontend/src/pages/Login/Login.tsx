@@ -1,12 +1,47 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
-const LoginPage: React.FC = () => {
+interface LoginPageProps {
+  token: string;
+  setToken: (token: string) => void;
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Implement your login logic here
+    try {
+      const response = await fetch(`https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+      })
+    })
+
+
+    const result = await response.json();
+     if (response.status === 200) {
+      setToken(result.accessToken)
+      navigate('/')
+     }
+     else {
+      setMessage(result.message)
+     }
+
+  }
+  catch (error) {
+      setMessage(String(error))
+  }
+
     console.log('Logging in with', { username, password });
   };
 
@@ -33,9 +68,13 @@ const LoginPage: React.FC = () => {
       <p className="login-text">
         Don't have an account? <a href="/register" className="login-link">Sign Up</a>
       </p>
+<<<<<<< Updated upstream
       <p className="login-text">
         Administrator? <a href="/admin" className="login-link">Admin Login</a>
       </p>
+=======
+      {message && <h3> {message}</h3>}
+>>>>>>> Stashed changes
     </div>
   );
 };
