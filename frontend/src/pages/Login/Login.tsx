@@ -54,6 +54,7 @@ const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        aria-label="Enter your Username"
       />
       <input
         type="password"
@@ -61,6 +62,7 @@ const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        aria-label="Enter your Password"
       />
       <button className="login-button" onClick={handleLogin}>
         Login
@@ -68,13 +70,10 @@ const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
       <p className="login-text">
         Don't have an account? <a href="/register" className="login-link">Sign Up</a>
       </p>
-<<<<<<< Updated upstream
       <p className="login-text">
         Administrator? <a href="/admin" className="login-link">Admin Login</a>
       </p>
-=======
       {message && <h3> {message}</h3>}
->>>>>>> Stashed changes
     </div>
   );
 };

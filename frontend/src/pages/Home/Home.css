@@ -13,6 +13,7 @@
   --title-color: hsl(0, 0%, 95%);
   --text-color: hsl(0, 0%, 75%);
   --body-color: hsl(0, 0%, 6%);
+  --button-color: hsl(0, 0%, 0%);
   --body-font: "Montserrat", sans-serif;
   --second-font: "Dancing Script", cursive;
   --h2-font-size: 1.25rem;
@@ -45,7 +46,7 @@ a {
   width: 100%;
   top: 0;
   left: 0;
-  background-color: transparent;
+  background-color: transparent; 
   z-index: var(--z-fixed);
 }
 
@@ -80,7 +81,7 @@ a {
 
 .nav__cta {
   background-color: var(--first-color);
-  color: var(--title-color);
+  color: var(--button-color);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -137,7 +138,7 @@ a {
 
 .home-button {
   background-color: var(--first-color);
-  color: var(--title-color);
+  color: var(--button-color);
   border: none;
   border-radius: 4px;
   padding: 1rem 2rem;
@@ -145,6 +146,8 @@ a {
   font-weight: var(--font-semi-bold);
   cursor: pointer;
   transition: background-color 0.3s ease;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
 }
 
 .home-button:hover {

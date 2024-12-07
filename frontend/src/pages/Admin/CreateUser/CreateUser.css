@@ -9,6 +9,17 @@
     color: hsl(0, 0%, 75%);
     font-family: "Montserrat", sans-serif;
   }
+
+  /* Global Styles */
+  body {
+    background-color: var(--body-color);
+    color: var(--text-color);
+    font-family: var(--body-font);
+    line-height: 1.6;
+    padding-top: var(--header-height);
+    text-align: center;
+    padding-top: var(--header-height); /* To avoid overlap with the fixed navbar */
+  }
   
   /* Welcome Message */
   .createuser-welcome {
@@ -59,6 +70,8 @@
   
   .createuser-input:focus {
     border-color: hsl(28, 88%, 62%);
+    outline: 2px solid var(--first-color);
+    outline-offset: 2px;
   }
   
   .createuser-permissions {
@@ -78,13 +91,15 @@
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
-    color: hsl(0, 0%, 95%);
+    color: hsl(0, 0%, 0%);
     background-color: hsl(28, 88%, 62%);
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    outline: 2px solid var(--first-color);
+    outline-offset: 2px;
   }
   
   .createuser-button:hover {
