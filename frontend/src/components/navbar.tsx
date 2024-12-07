@@ -40,7 +40,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav__item">
-              <NavLink to="/get-started" className="nav__link nav__cta" onClick={() => setMenuVisible(false)}>
+              <NavLink to="/get-started" className="nav__cta" onClick={() => setMenuVisible(false)}>
                 Get Started
               </NavLink>
             </li>

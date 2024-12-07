@@ -76,15 +76,19 @@
   .nav__cta {
     background-color: var(--first-color);
     color: hsl(0, 0%, 0%);
+    font-weight: var(--font-semi-bold);
     border: none;
     border-radius: 4px;
     padding: 0.5rem 1rem;
     text-align: center;
     transition: background-color 0.3s ease;
+    outline: 2px solid var(--first-color);
+    outline-offset: 2px;
   }
   
   .nav__cta:hover {
-    background-color: var(--first-color-alt);
+    background-color: var(--title-color-alt);
+    color: #fff;
   }
   
   /* Responsive Styles */
