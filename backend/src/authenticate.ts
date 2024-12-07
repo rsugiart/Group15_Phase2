@@ -153,3 +153,56 @@ export const verify_token = async (auth_header:string|undefined, permission:stri
   return [true,""]
 
 }
+
+
+
+export const login = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
+    const body = JSON.parse(event.body as string);
+    const username = body.username;
+    const password = body.password
+    const params = {
+        TableName: USERS_TABLE,
+        Key: {
+            username,
+        },
+    };
+    const result = await docClient.get(params).promise();
+    if (!result.Item) {
+        return {
+            statusCode: 401,
+            body: JSON.stringify(
+                {
+                    message: "User Not Found",
+                },
+                null,
+                2
+            ),
+        }
+    }
+
+    const hashedPassword = result.Item.password;
+    console.log("hashedPassword:",hashedPassword)
+    if (await bcrypt.compare(password, hashedPassword)) {
+        const access_token = jwt.sign(username, process.env.JWT_ACCESS_SECRET || "defaultSecret");
+        return {
+            statusCode: 200,
+            body: JSON.stringify( {
+                accessToken: `bearer ${access_token}`,
+                permissions: result.Item.permissions,
+                isAdmin: result.Item.group == "admin"
+
+            })
+
+        }
+    }
+    return {
+        statusCode: 500,
+        body: JSON.stringify(
+            {
+                message: "Entered password is incorrect",
+            },
+            null,
+            2
+        ),
+    }
+  };

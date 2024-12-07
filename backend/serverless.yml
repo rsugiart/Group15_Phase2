@@ -150,7 +150,7 @@ functions:
           path: /users/{username}/delete
           method: delete
   login:
-    handler: src/users.login
+    handler: src/authenticate.login
     events:
       - httpApi:
           path: /login

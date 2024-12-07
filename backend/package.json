@@ -10,7 +10,8 @@
     "start": "npm run build && node dist/src/metrics/dependFrac.js",
     "start2": "npm run build && node dist/test.js",
     "start3": "npm run build && node dist/test2.js",
-    "start4": "serverless deploy"
+    "start4": "serverless deploy",
+    "start5": "npm run build && node dist/rating/main.js"
   },
   "repository": {
     "type": "git",
