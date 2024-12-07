@@ -87,6 +87,8 @@ a {
   cursor: pointer;
   transition: background-color 0.3s ease;
   padding: 0.75rem 1.5rem;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
 }
 
 .nav__list {
