@@ -3,21 +3,33 @@ import './Download.css';
 
 const Download: React.FC = () => {
   const [packageName, setPackageName] = useState<string>('');
-  const [packageVersion, setPackageVersion] = useState<string>('');
+  const [versionParts, setVersionParts] = useState<{ major: string; minor: string; patch: string }>({
+    major: '',
+    minor: '',
+    patch: '',
+  });
+
+  const handleVersionChange = (part: 'major' | 'minor' | 'patch', value: string) => {
+    if (/^\d*$/.test(value)) { // Ensure only numbers are entered
+      setVersionParts((prev) => ({ ...prev, [part]: value }));
+    }
+  };
 
   const handleDownload = () => {
-    if (!packageName || !packageVersion) {
-      alert('Please provide both a package name and version.');
+    const { major, minor, patch } = versionParts;
+
+    if (!packageName || !major || !minor || !patch) {
+      alert('Please provide a package name and complete version (major.minor.patch).');
       return;
     }
 
-    // Construct the download URL using the name and version
-    const filePath = `/packages/${packageName}-${packageVersion}.zip`; // Update this path according to your backend file structure
+    const version = `${major}.${minor}.${patch}`;
+    const filePath = `/packages/${packageName}-${version}.zip`; // Update this path according to your backend file structure
 
     // Simulate file download
     const link = document.createElement('a');
     link.href = filePath;
-    link.download = `${packageName}-${packageVersion}.zip`;
+    link.download = `${packageName}-${version}.zip`;
     link.click();
   };
 
@@ -35,28 +47,52 @@ const Download: React.FC = () => {
           placeholder="Enter package name"
           value={packageName}
           onChange={(e) => setPackageName(e.target.value)}
-          aria-label="Enter the name of the package"
+          aria-label="Enter the package name"
           required
         />
 
         <label htmlFor="package-version" className="file-input-label">
           Package Version:
         </label>
-        <input
-          id="package-version"
-          className="text-input"
-          type="text"
-          placeholder="Enter version (e.g., 1.0.0)"
-          value={packageVersion}
-          onChange={(e) => setPackageVersion(e.target.value)}
-          aria-label="Enter the version of the package"
-          required
-        />
+        <div className="version-input-group">
+          <input
+            id="major-version"
+            className="version-input"
+            type="text"
+            placeholder="0"
+            value={versionParts.major}
+            onChange={(e) => handleVersionChange('major', e.target.value)}
+            required
+            aria-label="Major version"
+          />
+          <span className="version-separator">.</span>
+          <input
+            id="minor-version"
+            className="version-input"
+            type="text"
+            placeholder="0"
+            value={versionParts.minor}
+            onChange={(e) => handleVersionChange('minor', e.target.value)}
+            required
+            aria-label="Minor version"
+          />
+          <span className="version-separator">.</span>
+          <input
+            id="patch-version"
+            className="version-input"
+            type="text"
+            placeholder="0"
+            value={versionParts.patch}
+            onChange={(e) => handleVersionChange('patch', e.target.value)}
+            required
+            aria-label="Patch version"
+          />
+        </div>
 
         <button
           className="download-button"
           onClick={handleDownload}
-          aria-label="Download the specified package" 
+          aria-label="Download the specified package"
         >
           Download Package
         </button>
