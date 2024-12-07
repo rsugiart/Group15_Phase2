@@ -35,6 +35,7 @@ const Download: React.FC = () => {
           placeholder="Enter package name"
           value={packageName}
           onChange={(e) => setPackageName(e.target.value)}
+          aria-label="Enter the name of the package"
           required
         />
 
@@ -48,13 +49,14 @@ const Download: React.FC = () => {
           placeholder="Enter version (e.g., 1.0.0)"
           value={packageVersion}
           onChange={(e) => setPackageVersion(e.target.value)}
+          aria-label="Enter the version of the package"
           required
         />
 
         <button
           className="download-button"
           onClick={handleDownload}
-          aria-label="Download the specified package"
+          aria-label="Download the specified package" 
         >
           Download Package
         </button>
