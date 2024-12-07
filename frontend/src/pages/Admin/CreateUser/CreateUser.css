@@ -1,113 +1,122 @@
-/* Page Container */
+/* Page Styling */
 .createuser-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: hsl(0, 0%, 6%);
-    color: hsl(0, 0%, 75%);
-    font-family: "Montserrat", sans-serif;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align content below the navbar */
+  min-height: 100vh;
+  padding-top: calc(var(--header-height) + 50%); /* Account for navbar height with extra spacing */
+  background-color: hsl(0, 0%, 6%);
+  color: hsl(0, 0%, 75%);
+  font-family: "Montserrat", sans-serif;
+}
 
-  /* Global Styles */
-  body {
-    background-color: var(--body-color);
-    color: var(--text-color);
-    font-family: var(--body-font);
-    line-height: 1.6;
-    padding-top: var(--header-height);
-    text-align: center;
-    padding-top: var(--header-height); /* To avoid overlap with the fixed navbar */
-  }
-  
-  /* Welcome Message */
-  .createuser-welcome {
-    font-size: 2rem;
-    color: hsl(28, 88%, 62%);
-    margin-bottom: 2rem;
-    text-align: center;
-    font-family: "Dancing Script", cursive;
-  }
-  
-  /* Create User Container */
-  .createuser-container {
-    background-color: hsl(0, 0%, 6%);
-    border: 2px solid hsl(0, 0%, 75%);
-    border-radius: 10px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .createuser-title {
-    font-size: 1.5rem;
-    color: hsl(0, 0%, 95%);
-    font-family: "Dancing Script", cursive;
-    margin-bottom: 1rem;
-  }
-  
-  /* Form Styling */
-  .createuser-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .createuser-input {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    color: hsl(0, 0%, 75%);
-    background-color: transparent;
-    border: 2px solid hsl(0, 0%, 75%);
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  
-  .createuser-input:focus {
-    border-color: hsl(28, 88%, 62%);
-    outline: 2px solid var(--first-color);
-    outline-offset: 2px;
-  }
-  
-  .createuser-permissions {
-    text-align: left;
-    margin-bottom: 1rem;
-  }
-  
-  .createuser-permissions label {
-    display: block;
-    font-size: 0.9rem;
-    color: hsl(0, 0%, 75%);
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-  }
-  
-  .createuser-button {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    color: hsl(0, 0%, 0%);
-    background-color: hsl(28, 88%, 62%);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    outline: 2px solid var(--first-color);
-    outline-offset: 2px;
-  }
-  
-  .createuser-button:hover {
-    background-color: hsl(28, 88%, 50%);
-    transform: scale(1.02);
-  }
-  
-  .createuser-button:active {
-    transform: scale(0.98);
-  }
-  
+/* Welcome Message */
+.createuser-welcome {
+  font-size: 2rem;
+  color: hsl(28, 88%, 62%);
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: "Dancing Script", cursive;
+}
+
+/* Create User Container */
+.createuser-container {
+  background-color: hsl(0, 0%, 6%);
+  border: 2px solid hsl(0, 0%, 75%);
+  border-radius: 10px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.createuser-title {
+  font-size: 1.5rem;
+  color: hsl(0, 0%, 95%);
+  font-family: "Dancing Script", cursive;
+  margin-bottom: 1rem;
+}
+
+/* Form Styling */
+.createuser-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.createuser-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: hsl(0, 0%, 75%);
+  background-color: transparent;
+  border: 2px solid hsl(0, 0%, 75%);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.createuser-input:focus {
+  border-color: hsl(28, 88%, 62%);
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
+}
+
+.createuser-permissions {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.createuser-permissions label {
+  display: block;
+  font-size: 0.9rem;
+  color: hsl(0, 0%, 75%);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.createuser-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.createuser-dropdown {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid hsl(0, 0%, 75%);
+  border-radius: 6px;
+  background-color: transparent;
+  color: hsl(0, 0%, 75%);
+}
+
+.createuser-dropdown:focus {
+  border-color: hsl(28, 88%, 62%);
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
+}
+
+/* Button Styling */
+.createuser-button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: hsl(0, 0%, 0%);
+  background-color: hsl(28, 88%, 62%);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.createuser-button:hover {
+  background-color: hsl(28, 88%, 50%);
+  transform: scale(1.02);
+}
+
+.createuser-button:active {
+  transform: scale(0.98);
+}

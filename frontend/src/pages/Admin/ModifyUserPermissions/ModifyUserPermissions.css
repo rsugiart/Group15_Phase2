@@ -73,44 +73,44 @@
     background-color: hsl(0, 0%, 12%);
   }
   
-  /* Save Button */
-  .save-button {
-    padding: 0.5rem 1rem;
-    background-color: hsl(28, 88%, 62%);
-    color: hsl(0, 0%, 0%);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-right: 0.5rem; /* Added margin-right for spacing */
-    outline: 2px solid var(--first-color);
-    outline-offset: 2px;
-  }
-  
-  .save-button:hover {
-    background-color: hsl(28, 88%, 50%);
-    transform: scale(1.02);
-  }
-  
-  .save-button:active {
-    transform: scale(0.98);
-  }
+/* Save Button */
+.save-button {
+  padding: 0.5rem 1rem;
+  background-color: hsl(120, 60%, 40%); /* WCAG-compliant green */
+  color: hsl(0, 0%, 0%); /* black text */
+  font-weight: var(--font-semi-bold);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 0.5rem; /* Added margin-right for spacing */
+}
+
+.save-button:hover, .save-button:focus {
+  background-color: hsl(120, 60%, 35%); /* Darker green for hover/focus state */
+  transform: scale(1.02);
+  outline: 2px solid hsl(120, 60%, 35%); /* Outline for focus accessibility */
+}
+
+.save-button:active {
+  transform: scale(0.98);
+}
+
   
   /* Delete Button */
   .delete-button {
     padding: 0.5rem 1rem;
-    background-color: hsl(0, 100%, 40%);
+    background-color: hsl(0, 75%, 60%);
     color: hsl(0, 0%, 0%);
+    font-weight: var(--font-semi-bold);
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    outline: 2px solid var(--first-color);
-    outline-offset: 2px;
   }
   
   .delete-button:hover {
-    background-color: hsl(0, 100%, 30%);
+    background-color: hsl(0, 75%, 70%);
     transform: scale(1.02);
   }
   

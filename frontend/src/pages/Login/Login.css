@@ -120,6 +120,8 @@ body {
   color: var(--first-color);
   text-decoration: none;
   font-weight: bold;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
 }
 
 .login-link:hover {
