@@ -18,8 +18,8 @@ import ProtectedRoute from './components/useAuth';
 function App() {
   const [token, setToken] = useState<string>('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState<string[]>(['Admin']);
-  const [permissions, setPermissions] = useState<string[]>(['upload', 'download', 'search']);
+  const [isAdmin, setIsAdmin] = useState<string[]>([]);
+  const [permissions, setPermissions] = useState<string[]>([]);
   // setToken(localStorage.getItem('accessToken') || '');
   // setPermissions(localStorage.getItem('permissions')?.split(',') || []);
   

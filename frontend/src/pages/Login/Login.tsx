@@ -30,10 +30,13 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin}) => {
     const result = await response.json();
 
      if (response.status === 200) {
-      localStorage.setItem('accessToken', result.accessToken)
+      localStorage.setItem('accessToken', result.accessToken.split(' ')[1])
       localStorage.setItem('permissions',result.permissions)
-      setIsAdmin(result.isAdmin)
+      if (result.isAdmin) {
+        setIsAdmin(["Admin"])
+      }
       setPermissions(result.permissions)
+      console.log(result.permissions)
       // setPermissions(result.permissions)
       console.log('Login successful')
       navigate('/')
