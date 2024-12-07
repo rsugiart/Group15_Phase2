@@ -7,8 +7,8 @@ export interface RateParameters {
     RampUpLatency: number;
     Correctness: number;
     CorrectnessLatency: number;
-    License: number;
-    LicenseLatency: number;
+    LicenseScore: number;
+    LicenseScoreLatency: number;
     GoodPinningPractice: number;
     GoodPinningPracticeLatency: number;
     PullRequest: number;

@@ -4,7 +4,7 @@ import "./CreateUser.css";
 interface Permissions {
   upload: boolean;
   download: boolean;
-  edit: boolean;
+  search: boolean;
 }
 
 const CreateUserPage: React.FC = () => {
@@ -13,7 +13,7 @@ const CreateUserPage: React.FC = () => {
   const [permissions, setPermissions] = useState<Permissions>({
     upload: false,
     download: false,
-    edit: false,
+    search: false,
   });
 
   const handlePermissionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,13 +21,31 @@ const CreateUserPage: React.FC = () => {
     setPermissions({ ...permissions, [name]: checked });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newUser = {
       username,
       password,
       permissions,
     };
+    try {
+    console.log(permissions)
+    const response = await fetch(`https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        permissions: permissions
+    })
+  })
+
+  const result = await response.json();
+  if (response.status !== 200) {
+    throw new Error(result.message);
+  }
     console.log("User Created:", newUser);
     alert("User created successfully!");
     setUsername("");
@@ -35,9 +53,15 @@ const CreateUserPage: React.FC = () => {
     setPermissions({
       upload: false,
       download: false,
-      edit: false,
+      search: false,
     });
-  };
+
+  }
+  catch (error) {
+    console.error("Error creating user:", error);
+    alert("Error creating user. Please try again.");
+  }
+}
 
   return (
     <div className="createuser-page">
@@ -88,18 +112,8 @@ const CreateUserPage: React.FC = () => {
             <label>
               <input
                 type="checkbox"
-                name="rate"
-                checked={permissions.edit}
-                onChange={handlePermissionChange}
-                aria-label="Toggle Rate Permission"
-              />{" "}
-              Rate 
-            </label>
-            <label>
-              <input
-                type="checkbox"
                 name="search"
-                checked={permissions.edit}
+                checked={permissions.search}
                 onChange={handlePermissionChange}
                 aria-label="Toggle Search Permission"
               />{" "}

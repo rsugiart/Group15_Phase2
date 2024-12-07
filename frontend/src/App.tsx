@@ -16,6 +16,8 @@ import ModifyUsersPage from './pages/Admin/ModifyUserPermissions/ModifyUserPermi
 
 function App() {
   const [token, setToken] = useState<string>('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   
   return (
     <Router>
@@ -29,7 +31,10 @@ function App() {
         <Route path="/search" element={<Search token={token} />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/download" element={<Download />} />
-        <Route path="/login" element={<Login token={token} setToken = {setToken} />} />
+        {/* <Route path="/rate" element={<Rate />} /> */}
+        <Route path="/login" element={<Login token={token} setToken = {setToken} isLoggedIn={isLoggedIn} setIsAdmin={setIsAdmin} 
+        isAdmin={isAdmin} setIsLoggedIn={setIsLoggedIn}/>} />
+        <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/create-user" element={<CreateUserPage />} />
         <Route path="/admin/modify-user-permissions" element={<ModifyUsersPage />} />
@@ -41,5 +46,6 @@ function App() {
 }
 
 export default App;
+
 
 

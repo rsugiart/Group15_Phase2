@@ -24,7 +24,7 @@ const client = new DynamoDBClient({ region: 'us-east-1' });
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 
-const package_exists = async (package_name:string,version:string) => {
+export const package_version_exists = async (package_name:string,version:string) => {
   const input = {
     "ExpressionAttributeValues": {
       ":v1": {"S":package_name},
@@ -36,7 +36,7 @@ const package_exists = async (package_name:string,version:string) => {
   };
   const db_command = new QueryCommand(input)
   const db_response = await client.send(db_command)
-  console.log(db_response)
+  // console.log(db_response)
   if (db_response.Items && db_response.Items.length== 0) {  
     return false
   }
@@ -65,13 +65,23 @@ export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatew
       //check if id has a -
       if (!id.includes("....")) {
           return {
-              statusCode: 400,
+              statusCode: 404,
               headers: { "Content-Type": "application/json" },
               body: "Invalid Package ID"
           }
-      } 
+      }
       const package_name = id.split("....")[0]
       const version = id.split("....")[1]
+      if (!(await package_version_exists(package_name,version))) {
+        return {
+          statusCode: 404,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(
+            {
+              Error: "Package not found"
+            })
+        }
+      }
       const input = { // GetPackageVersionAssetRequest
           domain: "group15", // required
           repository: "SecurePackageRegistry", // required

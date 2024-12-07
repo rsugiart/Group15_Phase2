@@ -5,9 +5,13 @@ import { useNavigate } from 'react-router-dom';
 interface LoginPageProps {
   token: string;
   setToken: (token: string) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  isAdmin: boolean;
+  setIsAdmin: (isAdmin: boolean) => void;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
+const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken, isLoggedIn,setIsLoggedIn,isAdmin,setIsAdmin}) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [message, setMessage] = useState<string>('');

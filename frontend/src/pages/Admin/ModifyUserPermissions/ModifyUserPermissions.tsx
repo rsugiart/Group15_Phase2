@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ModifyUserPermissions.css";
 
 interface User {
@@ -14,38 +14,41 @@ interface User {
 
 const ModifyUsersPage: React.FC = () => {
   // Mock Data
-  const [users, setUsers] = useState<User[]>([
-    {
-      id: 1,
-      username: "john_doe",
-      permissions: {
-        upload: true,
-        download: false,
-        rate: true,
-        search: true,
-      },
-    },
-    {
-      id: 2,
-      username: "jane_smith",
-      permissions: {
-        upload: false,
-        download: true,
-        rate: true,
-        search: true,
-      },
-    },
-    {
-      id: 3,
-      username: "admin_user",
-      permissions: {
-        upload: true,
-        download: true,
-        rate: true,
-        search: true,
-      },
-    },
-  ]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [oldUsers, setOldUsers] = useState<User[]>([]);
+  useEffect(() => {
+    // Fetch user data when the component mounts
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(
+          "https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/users"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch users");
+        }
+        const data = await response.json();
+    
+        // Transform API response into a User array
+        const userList: User[] = data.users.map((user: any, index: number) => ({
+          id: index + 1, // Incremental ID
+          username: user.username,
+          permissions: {
+            upload: Array.isArray(user.permissions) && user.permissions.includes("upload"),
+            download: Array.isArray(user.permissions) && user.permissions.includes("download"),
+            rate: Array.isArray(user.permissions) && user.permissions.includes("rate"),
+            search: Array.isArray(user.permissions) && user.permissions.includes("search"),
+          },
+        }));
+    
+        setUsers(userList);
+        setOldUsers(userList);
+      } catch (err: any) {
+        console.error("Error fetching users:", err.message);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handlePermissionChange = (
     userId: number,
@@ -64,18 +67,78 @@ const ModifyUsersPage: React.FC = () => {
     );
   };
 
-  const handleSave = (userId: number) => {
+  const handleSave = async (userId: number) => {
     const user = users.find((user) => user.id === userId);
-    if (user) {
-      console.log(`Saved user:`, user);
-      alert(`Permissions updated for ${user.username}`);
+    const oldUser = oldUsers.find((user) => user.id === userId);
+
+    if (user && oldUser) {
+      const hasChanged =
+      JSON.stringify(user.permissions) !== JSON.stringify(oldUser.permissions);
+      if (hasChanged) {
+          setOldUsers((prevOldUsers) =>
+          prevOldUsers.map((oldUser) =>
+            oldUser.id === userId ? { ...oldUser, permissions: { ...user.permissions } } : oldUser
+          )
+        );
+        const updatedPermissions = Object.keys(user.permissions).filter(
+          (key) => user.permissions[key as keyof User["permissions"]]
+        );
+        console.log(updatedPermissions)
+        try {
+        const response = await fetch(
+          `https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/users/${user.username}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: user.username,
+            permissions: updatedPermissions
+          })
+        }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch users");
+        }
+        alert("User permissions updated successfully.");
+        const data = await response.json();
+    
+      
+      } catch (err: any) {
+        console.error("Error fetching users:", err.message);
+      }
+        // Update user permissions
+      }
+      console.log(hasChanged)
+      
+
+
     }
   };
 
-  const handleDelete = (userId: number) => {
-    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-    alert("User deleted successfully.");
+  const handleDelete = async (userId: number) => {
+    const user = users.find((user) => user.id === userId);
+    try {
+      const response = await fetch(`https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/users/${user?.username}/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+      )
+      if (!response.ok) {
+        throw new Error("Failed to delete user");
+      }
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      alert("User deleted successfully.");
+
+    }
+    catch (err: any) {
+      console.error("Error deleting user", err.message);
+    }
+    
   };
+
 
   return (
     <div className="modify-users-page">
