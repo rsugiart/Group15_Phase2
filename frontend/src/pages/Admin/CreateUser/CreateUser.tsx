@@ -47,7 +47,7 @@ const CreateUserPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userGroup) {
       alert("Please assign the user to a group or create a new group.");
@@ -140,16 +140,6 @@ const CreateUserPage: React.FC = () => {
                 aria-label="Toggle Download Permission"
               />{" "}
               Download
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="edit"
-                checked={permissions.edit}
-                onChange={handlePermissionChange}
-                aria-label="Toggle Edit Permission"
-              />{" "}
-              Edit
             </label>
             <label>
               <input
