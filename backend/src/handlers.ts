@@ -11,6 +11,7 @@ import { package_version_exists } from "./download.js";
 import {RateParameters} from "./interfaces.js";
 import { off } from "process";
 import safeRegex from "safe-regex";
+import { verify_token } from "./authenticate.js";
 
 const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 const client = new DynamoDBClient({ region: 'us-east-1' });
@@ -220,20 +221,20 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
     const body = JSON.parse(event.body as string);
     const package_name = body.Name;
     console.log(body)
-    // const auth_header = event.headers["x-authorization"];
-    // const [success,message] = await verify_token(auth_header,"upload") || [];
-    // if (!success) {
-    //   return {
-    //     statusCode: 403,
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //   },
-    //     body: JSON.stringify(
-    //       {
-    //         message: auth_header
-    //       })
-    //   }
-    // }
+    const auth_header = event.headers["x-authorization"];
+    const [success,message] = await verify_token(auth_header,"upload") || [];
+    if (!success) {
+      return {
+        statusCode: 403,
+        headers: {
+          "Content-Type": "application/json"
+      },
+        body: JSON.stringify(
+          {
+            message: auth_header
+          })
+      }
+    }
     if (await package_exists(package_name)) {
       return {
         statusCode: 409,

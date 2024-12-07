@@ -10,12 +10,11 @@ import path from 'path';
 import axios from 'axios';
 import { logMessage } from './log.js';
 import { log } from 'console';
-import {RateParameters} from "../interfaces.js";
 
 // Main function to execute the metrics and repository analysis
 
 // Check URL for GitHub or npm
-export async function analyzeURL(url: string){
+export async function analyzeURL(url: string) {
   const originalUrl = url;
   const loc = checkURL(url);
   logMessage(2, `URL Location: ${loc}`);
@@ -58,20 +57,15 @@ export async function analyzeURL(url: string){
       const busFactorLatency: number = parseFloat(((Date.now() - busFactorStartTime) / 1000).toFixed(3));
       logMessage(1, `BusFactor: ${busFactor} (Latency: ${busFactorLatency}s)`);
 
-      // Analyze repository
-      const localPath = path.join('./temp-repo');
-      await cloneRepository(url, localPath);
       const licenseScoreStartTime = Date.now();
-      const licenseScore: number = parseFloat((await analyzeLicense(localPath)).toFixed(3));
+      const licenseScore: number = parseFloat((await analyzeLicense(variables)).toFixed(3));
       const licenseScoreLatency: number = parseFloat(((Date.now() - licenseScoreStartTime) / 1000).toFixed(3));
       logMessage(1, `License: ${licenseScore} (Latency: ${licenseScoreLatency}s)`);
 
       const correctnessScoreStartTime = Date.now();
-      const cadScore: number = parseFloat((await calculateCAD(localPath)).toFixed(3));
+      const cadScore: number = parseFloat((await calculateCAD(variables)).toFixed(3));
       const correctnessScoreLatency: number = parseFloat(((Date.now() - correctnessScoreStartTime) / 1000).toFixed(3));
       logMessage(1, `Correctness: ${cadScore} (Latency: ${correctnessScoreLatency}s)`);
-
-      cleanDirectory(localPath);
 
       // Define weights for metrics
       let weights = { rampUp: 0.15, correctness: 0.2, busFactor: 0.3, responsiveness: 0.15, license: 0.2 };
@@ -117,25 +111,23 @@ export async function analyzeURL(url: string){
 
       // Output as NDJSON
       const output = {
+        URL: originalUrl,
         NetScore: netScore,
-        NetScoreLatency: netScoreLatency,
+        NetScore_Latency: netScoreLatency,
         RampUp: rampUpTime,
-        RampUpLatency: rampUpLatency,
+        RampUp_Latency: rampUpLatency,
         Correctness: cadScore,
-        CorrectnessLatency: correctnessScoreLatency,
+        Correctness_Latency: correctnessScoreLatency,
         BusFactor: busFactor,
-        BusFactorLatency: busFactorLatency,
+        BusFactor_Latency: busFactorLatency,
         ResponsiveMaintainer: responsiveness,
-        ResponsiveMaintainerLatency: responsivenessLatency,
+        ResponsiveMaintainer_Latency: responsivenessLatency,
         License: licenseScore,
-        LicenseLatency: licenseScoreLatency,
-        GoodPinningPractice: 0,
-        GoodPinningPracticeLatency: 0,
-        PullRequest: 0,
-        PullRequestLatency: 0
+        License_Latency: licenseScoreLatency
       };
 
       return output;
+      process.exit(1);
     } catch (error) {
       console.error('Error during analysis:', error);
       return null; // Indicate failure
@@ -259,3 +251,5 @@ export async function processUrlFile(filePath: string) {
   }
 }
 
+// Check for command-line arguments
+processUrlFile("/Users/apple/Group15_Phase2/backend/src/rating/url.txt");

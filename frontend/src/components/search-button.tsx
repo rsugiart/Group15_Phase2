@@ -96,7 +96,7 @@ const SearchButton: React.FC<SearchPageProps> = ({token}) => {
                 "Content-Type": "application/json",
                 "X-Authorization": "bearer " + token
               },
-              body: JSON.stringify({Name: packageName,url:packageUrl})
+              body: JSON.stringify({Name: packageName,URL:packageUrl})
             });
             const result = await response.json();
             console.log(result)
