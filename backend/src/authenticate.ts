@@ -24,27 +24,21 @@ const client = new DynamoDBClient({ region: 'us-east-1' });
 export const register = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     
     const body = JSON.parse(event.body as string);
-    const { username, password} = body;
-    console.log(password)
-    return {
-        statusCode: 200,
-        body: JSON.stringify(
-            {
-                message: password
-            },
-            null,
-            2
-        ),
-    }
-    const permissions = ["upload","download","delete","rate"];
+    const { username, password,permissions} = body;
     const hashedPassword = await bcrypt.hash(password, 10);
+    let permissions_array:string[] = []
+    for (const [key, value] of Object.entries(permissions)) {
+        if (value) {
+            permissions_array.push(key)
+        }
+    }
     const params = {
         TableName: USERS_TABLE,
         Item: {
             username,
             password: hashedPassword,
             group: "user", // default role
-            permissions: permissions
+            permissions: permissions_array
         },
     };
     try {
@@ -104,7 +98,7 @@ export const register = async (event: APIGatewayProxyEvent): Promise<APIGatewayP
         const access_token = jwt.sign(username, process.env.JWT_ACCESS_SECRET || "defaultSecret");
         return {
             statusCode: 200,
-            body: access_token
+            body: `bearer ${access_token}`
 
         }
     }

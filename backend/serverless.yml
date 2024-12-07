@@ -14,7 +14,6 @@ package:
 # #     - '!__pycache__/**'
 
 
-
 provider:
   name: aws
   runtime: nodejs20.x
@@ -34,6 +33,9 @@ provider:
         - OPTIONS
         - GET
         - POST
+        - PATCH
+        - DELETE
+        - PUT
       allowCredentials: false
 
   iam:
@@ -112,11 +114,47 @@ functions:
           path: /authenticate
           method: put
   list_packages:
-    handler: src/authenticate.list_packages
+    handler: src/handlers.list_packages
     events:
       - httpApi:
           path: /packages
           method: post
+  packages_regex:
+    handler: src/handlers.get_by_regex
+    events:
+      - httpApi:
+          path: /package/byRegEx
+          method: post
+  get_cost:
+    handler: src/handlers.get_cost
+    events:
+      - httpApi:
+          path: /package/{id}/cost
+          method: get
+  users:
+    handler: src/users.get_users
+    events:
+      - httpApi:
+          path: /users
+          method: get
+  modify_user:
+    handler: src/users.modify_user
+    events:
+      - httpApi:
+          path: /users/{username}
+          method: patch
+  delete_user:
+    handler: src/users.delete_user
+    events:
+      - httpApi:
+          path: /users/{username}/delete
+          method: delete
+  login:
+    handler: src/users.login
+    events:
+      - httpApi:
+          path: /login
+          method: put
 
       
 # you can add CloudFormation resource templates here

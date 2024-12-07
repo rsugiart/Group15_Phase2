@@ -3,11 +3,11 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
 interface LoginPageProps {
-  token: string;
-  setToken: (token: string) => void;
+  setPermissions: (permissions: string[]) => void;
+  setIsAdmin: (isAdmin: string[]) => void;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
+const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin}) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [message, setMessage] = useState<string>('');
@@ -17,7 +17,7 @@ const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
     // Implement your login logic here
     try {
       const response = await fetch(`https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/login`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json"
         },
@@ -27,19 +27,25 @@ const LoginPage: React.FC<LoginPageProps> = ({token:string, setToken}) => {
       })
     })
 
-
     const result = await response.json();
+
      if (response.status === 200) {
-      setToken(result.accessToken)
+      localStorage.setItem('accessToken', result.accessToken)
+      localStorage.setItem('permissions',result.permissions)
+      setIsAdmin(result.isAdmin)
+      setPermissions(result.permissions)
+      // setPermissions(result.permissions)
+      console.log('Login successful')
       navigate('/')
      }
      else {
-      setMessage(result.message)
+      setMessage(String(result))
      }
 
   }
   catch (error) {
       setMessage(String(error))
+      console.error("Error logging in:", error);
   }
 
     console.log('Logging in with', { username, password });
