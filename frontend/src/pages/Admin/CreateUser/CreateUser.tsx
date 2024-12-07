@@ -15,18 +15,49 @@ const CreateUserPage: React.FC = () => {
     download: false,
     search: false,
   });
+  const [userGroups, setUserGroups] = useState<string[]>([]);
+  const [userGroup, setUserGroup] = useState<string>("");
+  const [newGroupName, setNewGroupName] = useState<string>("");
+  const [isCreatingGroup, setIsCreatingGroup] = useState<boolean>(false);
 
   const handlePermissionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setPermissions({ ...permissions, [name]: checked });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (value === "create-group") {
+      setIsCreatingGroup(true);
+      setUserGroup("");
+    } else {
+      setUserGroup(value);
+      setIsCreatingGroup(false);
+    }
+  };
+
+  const handleCreateGroup = () => {
+    if (newGroupName && !userGroups.includes(newGroupName)) {
+      setUserGroups([...userGroups, newGroupName]);
+      setUserGroup(newGroupName);
+      setNewGroupName("");
+      setIsCreatingGroup(false);
+    } else {
+      alert("Group name is either empty or already exists.");
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userGroup) {
+      alert("Please assign the user to a group or create a new group.");
+      return;
+    }
     const newUser = {
       username,
       password,
       permissions,
+      userGroup,
     };
     try {
     console.log(permissions)
@@ -55,6 +86,7 @@ const CreateUserPage: React.FC = () => {
       download: false,
       search: false,
     });
+      setUserGroup("");
 
   }
   catch (error) {
@@ -112,6 +144,16 @@ const CreateUserPage: React.FC = () => {
             <label>
               <input
                 type="checkbox"
+                name="edit"
+                checked={permissions.edit}
+                onChange={handlePermissionChange}
+                aria-label="Toggle Edit Permission"
+              />{" "}
+              Edit
+            </label>
+            <label>
+              <input
+                type="checkbox"
                 name="search"
                 checked={permissions.search}
                 onChange={handlePermissionChange}
@@ -119,6 +161,46 @@ const CreateUserPage: React.FC = () => {
               />{" "}
               Search
             </label>
+          </div>
+          <div className="createuser-group">
+            <h3 className="createuser-title">Assign User to a Group</h3>
+            {isCreatingGroup ? (
+              <div className="create-group-container">
+                <input
+                  type="text"
+                  className="createuser-input"
+                  placeholder="Enter new group name"
+                  value={newGroupName}
+                  onChange={(e) => setNewGroupName(e.target.value)}
+                  aria-label="Enter new group name"
+                />
+                <button
+                  type="button"
+                  className="createuser-button"
+                  onClick={handleCreateGroup}
+                >
+                  Create Group
+                </button>
+              </div>
+            ) : (
+              <select
+                value={userGroup}
+                onChange={handleGroupChange}
+                className="createuser-dropdown"
+                aria-label="Select User Group"
+                required
+              >
+                <option value="" disabled>
+                  Select a group
+                </option>
+                {userGroups.map((group, index) => (
+                  <option key={index} value={group}>
+                    {group}
+                  </option>
+                ))}
+                <option value="create-group">Create New Group</option>
+              </select>
+            )}
           </div>
           <button type="submit" className="createuser-button">
             Create User
