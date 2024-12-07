@@ -104,6 +104,7 @@ const ModifyUsersPage: React.FC = () => {
                     onChange={(e) =>
                       handlePermissionChange(user.id, "upload", e.target.checked)
                     }
+                    aria-label="Toggle Upload Permission"
                   />
                 </td>
                 <td>
@@ -113,6 +114,7 @@ const ModifyUsersPage: React.FC = () => {
                     onChange={(e) =>
                       handlePermissionChange(user.id, "download", e.target.checked)
                     }
+                    aria-label="Toggle Download Permission"
                   />
                 </td>
                 <td>
@@ -122,6 +124,7 @@ const ModifyUsersPage: React.FC = () => {
                     onChange={(e) =>
                       handlePermissionChange(user.id, "rate", e.target.checked)
                     }
+                    aria-label="Toggle Rate Permission"
                   />
                 </td>
                 <td>
@@ -131,6 +134,7 @@ const ModifyUsersPage: React.FC = () => {
                     onChange={(e) =>
                       handlePermissionChange(user.id, "search", e.target.checked)
                     }
+                    aria-label="Toggle Search Permission"
                   />
                 </td>
                 <td>

@@ -52,6 +52,7 @@ const CreateUserPage: React.FC = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            aria-label="Enter the new User's Username"
           />
           <input
             type="password"
@@ -60,6 +61,7 @@ const CreateUserPage: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            aria-label="Enter the new User's Password"
           />
           <div className="createuser-permissions">
             <h3 className="createuser-title">Select User's Permissions</h3>
@@ -69,6 +71,7 @@ const CreateUserPage: React.FC = () => {
                 name="upload"
                 checked={permissions.upload}
                 onChange={handlePermissionChange}
+                aria-label="Toggle Upload Permission"
               />{" "}
               Upload
             </label>
@@ -78,6 +81,7 @@ const CreateUserPage: React.FC = () => {
                 name="download"
                 checked={permissions.download}
                 onChange={handlePermissionChange}
+                aria-label="Toggle Download Permission"
               />{" "}
               Download
             </label>
@@ -87,6 +91,7 @@ const CreateUserPage: React.FC = () => {
                 name="rate"
                 checked={permissions.edit}
                 onChange={handlePermissionChange}
+                aria-label="Toggle Rate Permission"
               />{" "}
               Rate 
             </label>
@@ -96,6 +101,7 @@ const CreateUserPage: React.FC = () => {
                 name="search"
                 checked={permissions.edit}
                 onChange={handlePermissionChange}
+                aria-label="Toggle Search Permission"
               />{" "}
               Search
             </label>

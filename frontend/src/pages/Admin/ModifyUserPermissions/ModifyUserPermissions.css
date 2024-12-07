@@ -9,6 +9,17 @@
     font-family: "Montserrat", sans-serif;
     min-height: 100vh;
   }
+
+  /* Global Styles */
+  body {
+    background-color: var(--body-color);
+    color: var(--text-color);
+    font-family: var(--body-font);
+    line-height: 1.6;
+    padding-top: var(--header-height);
+    text-align: center;
+    padding-top: var(--header-height); /* To avoid overlap with the fixed navbar */
+  }
   
   /* Welcome Message */
   .modify-users-welcome {
@@ -62,16 +73,18 @@
     background-color: hsl(0, 0%, 12%);
   }
   
-/* Save Button */
-.save-button {
+  /* Save Button */
+  .save-button {
     padding: 0.5rem 1rem;
     background-color: hsl(28, 88%, 62%);
-    color: hsl(0, 0%, 95%);
+    color: hsl(0, 0%, 0%);
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-right: 0.5rem; /* Added margin-right for spacing */
+    outline: 2px solid var(--first-color);
+    outline-offset: 2px;
   }
   
   .save-button:hover {
@@ -87,11 +100,13 @@
   .delete-button {
     padding: 0.5rem 1rem;
     background-color: hsl(0, 100%, 40%);
-    color: hsl(0, 0%, 95%);
+    color: hsl(0, 0%, 0%);
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    outline: 2px solid var(--first-color);
+    outline-offset: 2px;
   }
   
   .delete-button:hover {
