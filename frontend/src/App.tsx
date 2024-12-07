@@ -20,8 +20,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState<string[]>(['Admin']);
   const [permissions, setPermissions] = useState<string[]>(['upload', 'download', 'search']);
-  setToken(localStorage.getItem('accessToken') || '');
-  setPermissions(localStorage.getItem('permissions')?.split(',') || []);
+  // setToken(localStorage.getItem('accessToken') || '');
+  // setPermissions(localStorage.getItem('permissions')?.split(',') || []);
   
   return (
     <Router>
@@ -45,7 +45,7 @@ function App() {
           path="/upload"
           element={
             <ProtectedRoute permissions={permissions} permission='upload'>
-              <AdminPage />
+              <Upload/>
             </ProtectedRoute>
           }
         />
@@ -53,7 +53,7 @@ function App() {
           path="/search"
           element={
             <ProtectedRoute permissions={permissions} permission='download'>
-              <AdminPage />
+              <Search token={token}/>
             </ProtectedRoute>
           }
         />
@@ -61,7 +61,7 @@ function App() {
           path="/download"
           element={
             <ProtectedRoute permissions={permissions} permission='search'>
-              <AdminPage />
+              <Download />
             </ProtectedRoute>
           }
         />
