@@ -37,7 +37,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin,setToken
       // localStorage.setItem('permissions',result.permissions)
       if (result.isAdmin) {
         setIsAdmin(["Admin"])
-        localStorage.setItem('isAdmin', JSON.stringify(result.isAdmin));
+        localStorage.setItem('isAdmin', JSON.stringify(["Admin"]));
       }
       setPermissions(result.permissions)
       // console.log(result.permissions)
@@ -49,7 +49,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin,setToken
       localStorage.setItem('accessToken', result.accessToken.split(' ')[1]);
       localStorage.setItem('permissions', JSON.stringify(result.permissions));
       // console.log("Yellow:")
-      navigate('/')
+      navigate('/get-started')
      }
      else {
       setMessage(String(result))

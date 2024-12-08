@@ -86,6 +86,15 @@ const Navbar: React.FC<NavbarProps> = ({ loggedIn = true }) => {
                     </li>
                     <li className="nav__item">
                       <NavLink
+                        to="/admin"
+                        className="nav__link"
+                        onClick={() => setMenuVisible(false)}
+                      >
+                        Admin
+                      </NavLink>
+                    </li>
+                    <li className="nav__item">
+                      <NavLink
                         to="/"
                         className="nav__cta"
                         onClick={() => setMenuVisible(false)}

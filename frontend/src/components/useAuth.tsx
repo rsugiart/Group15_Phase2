@@ -10,7 +10,8 @@ interface UseAuthProps {
 const ProtectedRoute: React.FC<UseAuthProps> = ({permissions, permission, children }) => {
   if (!permissions.includes(permission)) {
     // Redirect to an unauthorized page or login page if the user role is not allowed
-    return <Navigate to="/unauthorized" />;
+    alert("You are not authorized to view this page");
+    return <Navigate to="/login" />;
   }
 
   return <>{children}</>;
