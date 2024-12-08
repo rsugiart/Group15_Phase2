@@ -1,0 +1,173 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --header-height: 3.5rem;
+  --first-color: hsl(28, 88%, 62%);
+  --title-color: hsl(0, 0%, 95%);
+  --text-color: hsl(0, 0%, 85%); /* Adjusted for better contrast */
+  --body-color: hsl(0, 0%, 10%); /* Adjusted for better contrast */
+  --button-color: hsl(0, 0%, 95%);
+  --focus-color: hsl(28, 88%, 50%);
+  --body-font: "Montserrat", sans-serif;
+  --second-font: "Dancing Script", cursive;
+  --h2-font-size: 1.25rem;
+}
+
+/* Global Styles */
+body {
+  background-color: var(--body-color);
+  color: var(--text-color);
+  font-family: var(--body-font);
+  line-height: 1.8; /* Increased for readability */
+  text-align: center;
+  padding-top: var(--header-height);
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+a:focus,
+a:hover {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+ul {
+  list-style: none;
+}
+
+/* View Registry Page Styles */
+.view_registry-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--body-color);
+  color: var(--text-color);
+}
+
+.view_registry-title {
+  font-size: 2.5rem;
+  color: var(--title-color);
+  margin-bottom: 2rem;
+  font-family: var(--second-font);
+}
+
+.view_registry-message {
+  font-size: 1rem;
+  color: var(--first-color);
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.view_registry-results-table {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 2rem;
+  border-collapse: collapse;
+  color: var(--title-color);
+}
+
+.table-caption {
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.view_registry-results-table th,
+.view_registry-results-table td {
+  border: 1px solid var(--text-color);
+  padding: 1rem; /* Increased for better readability */
+  text-align: center;
+}
+
+.view_registry-results-table th {
+  background-color: var(--first-color);
+  color: var(--button-color); /* Ensure good contrast for header text */
+  font-weight: 700;
+}
+
+.view_registry-results-table td {
+  color: var(--text-color);
+}
+
+.view_registry-results-table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.view_registry-results-table tr:hover {
+  background-color: hsl(28, 88%, 50%); /* Highlight row for better visibility */
+  color: var(--body-color);
+}
+
+/* Focus States for Keyboard Navigation */
+button,
+input,
+th,
+td {
+  outline: none;
+}
+
+button:focus,
+input:focus,
+th:focus,
+td:focus {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--body-font);
+  font-weight: 600;
+  color: var(--button-color);
+  background-color: var(--first-color);
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  outline: 2px solid transparent;
+}
+
+button:hover {
+  background-color: hsl(28, 88%, 50%);
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .view_registry-results-table {
+    font-size: 0.875rem; /* Reduce font size for smaller screens */
+  }
+
+  .view_registry-title {
+    font-size: 2rem;
+  }
+
+  .view_registry-message {
+    font-size: 0.875rem;
+  }
+}

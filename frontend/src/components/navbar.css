@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 10px 1rem; /* Add padding to the navbar */
   height: var(--header-height);
 }
 
@@ -28,6 +28,8 @@
   color: var(--first-color);
   text-decoration: none;
   transition: color 0.3s ease; /* Smooth logo color transition */
+  font-size: clamp(1.5rem, 4vw, 3rem); /* Larger range for logos */
+
 }
 
 .nav__logo:hover {
@@ -56,10 +58,11 @@
   display: none; /* Hidden by default */
   flex-direction: row; /* Menu items appear in a row */
   background: transparent; /* Transparent to blend with navbar */
-  padding: 0;
+  padding: 0.25rem 0; /* Reduce padding */
   position: static; /* Positioned directly on the navbar */
   height: 100%; /* Matches navbar height */
   align-items: center;
+  margin-left: 0.05rem;
 }
 
 .nav__menu.show-menu {
@@ -68,10 +71,10 @@
 
 .nav__list {
   list-style: none;
-  padding: 0;
+  padding: 0.5;
   margin: 0;
   display: flex;
-  gap: 1rem; /* Add spacing between items */
+  gap: 10rem; /* Reduce spacing between items */
   align-items: center;
 }
 
@@ -83,8 +86,10 @@
   text-decoration: none;
   color: var(--title-color);
   font-weight: var(--font-semi-bold);
-  padding: 0.5rem 1rem;
+  padding: 0.15rem 0.3rem; /* Compact padding */
   transition: color 0.3s ease, background-color 0.3s ease;
+  font-size: clamp(0.5rem, 1vw, 1rem); /* Min: 0.8rem, Preferred: 2vw, Max: 1.2rem */
+  gap: 10rem; /* Reduce spacing between items */
 }
 
 .nav__link:hover {
@@ -98,11 +103,14 @@
   font-weight: var(--font-semi-bold);
   border: none;
   border-radius: 4px;
-  padding: 0.5rem 1rem;
+  padding: 0.15rem 0.3rem; /* Compact padding */
   text-align: center;
   transition: background-color 0.3s ease, transform 0.3s ease;
   outline: 2px solid var(--first-color);
   outline-offset: 2px;
+  font-size: clamp(0.5rem, 1vw, 1rem); /* Smaller range for buttons */
+  gap: 10rem; /* Reduce spacing between items */
+
 }
 
 .nav__cta:hover {

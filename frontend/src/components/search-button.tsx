@@ -1,8 +1,8 @@
 import { url } from 'inspector';
 import React, {useState,FC } from 'react';
-import { SearchPageProps } from '../pages/Search/Search';
+import { GetRatingPageProps } from '../pages/Search/Get_Rating/get_rating';
 
-const SearchButton: React.FC<SearchPageProps> = ({token}) => {
+const SearchButton: React.FC<GetRatingPageProps> = ({token}) => {
     const [packageUrl, setPackageUrl] = useState<string>('');
     const [message, setMessage] = useState<string>('');
 
