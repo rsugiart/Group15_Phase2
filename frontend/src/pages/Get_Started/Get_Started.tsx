@@ -18,8 +18,8 @@ function GetStarted() {
         <button className="nav-button" onClick={() => window.location.href = '/download'}>
           Go to Download Page
         </button>
-        <button className="nav-button" onClick={() => window.location.href = '/rate'}>
-          Go to Rate Page
+        <button className="nav-button" onClick={() => window.location.href = '/'}>
+          Go to Home Page
         </button>
       </div>
     </div>

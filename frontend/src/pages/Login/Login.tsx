@@ -77,7 +77,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin}) => {
         Login
       </button>
       <p className="login-text">
-        Administrator? <a href="/admin" className="login-link">Admin Login</a>
+        Administrator? <a href="/upload" className="login-link">Admin Login</a>
       </p>
       {message && <h3> {message}</h3>}
     </div>

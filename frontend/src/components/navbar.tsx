@@ -3,7 +3,11 @@ import { NavLink, useLocation } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import "./navbar.css";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  loggedIn?: boolean; // Make loggedIn optional
+}
+
+const Navbar: React.FC<NavbarProps> = ({ loggedIn = true }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -40,49 +44,62 @@ const Navbar: React.FC = () => {
             <NavLink to="/" className="nav__logo">
               Internal Package Registry
             </NavLink>
-            <div className={`nav__menu ${menuVisible ? "show-menu" : ""}`}>
-              <ul className="nav__list">
-                <li className="nav__item">
-                  <NavLink
-                    to="/search"
-                    className="nav__link"
-                    onClick={() => setMenuVisible(false)}
-                  >
-                    Search
-                  </NavLink>
-                </li>
-                <li className="nav__item">
-                  <NavLink
-                    to="/upload"
-                    className="nav__link"
-                    onClick={() => setMenuVisible(false)}
-                  >
-                    Upload
-                  </NavLink>
-                </li>
-                <li className="nav__item">
-                  <NavLink
-                    to="/download"
-                    className="nav__link"
-                    onClick={() => setMenuVisible(false)}
-                  >
-                    Download
-                  </NavLink>
-                </li>
-                <li className="nav__item">
-                  <NavLink
-                    to="/get-started"
-                    className="nav__cta"
-                    onClick={() => setMenuVisible(false)}
-                  >
-                    Get Started
-                  </NavLink>
-                </li>
-              </ul>
-            </div>
-            <div className="nav__toggle" onClick={toggleMenu}>
-              <IoMenu />
-            </div>
+            {loggedIn && (
+              <>
+                <div className={`nav__menu ${menuVisible ? "show-menu" : ""}`}>
+                  <ul className="nav__list">
+                    <li className="nav__item">
+                      <NavLink
+                        to="/get-started"
+                        className="nav__link"
+                        onClick={() => setMenuVisible(false)}
+                      >
+                        Get Started
+                      </NavLink>
+                    </li>
+                    <li className="nav__item">
+                      <NavLink
+                        to="/search"
+                        className="nav__link"
+                        onClick={() => setMenuVisible(false)}
+                      >
+                        Search
+                      </NavLink>
+                    </li>
+                    <li className="nav__item">
+                      <NavLink
+                        to="/upload"
+                        className="nav__link"
+                        onClick={() => setMenuVisible(false)}
+                      >
+                        Upload
+                      </NavLink>
+                    </li>
+                    <li className="nav__item">
+                      <NavLink
+                        to="/download"
+                        className="nav__link"
+                        onClick={() => setMenuVisible(false)}
+                      >
+                        Download
+                      </NavLink>
+                    </li>
+                    <li className="nav__item">
+                      <NavLink
+                        to="/"
+                        className="nav__cta"
+                        onClick={() => setMenuVisible(false)}
+                      >
+                        Log Out
+                      </NavLink>
+                    </li>
+                  </ul>
+                </div>
+                <div className="nav__toggle" onClick={toggleMenu}>
+                  <IoMenu />
+                </div>
+              </>
+            )}
           </>
         )}
       </nav>
