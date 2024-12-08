@@ -66,6 +66,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin,setToken
 
   return (
     <div className="login-container">
+      <img src="../registry_logo.png" alt="Registry Logo" className="registry-logo" />
       <h1 className="login-title">Welcome Back</h1>
       <input
         type="text"
@@ -86,9 +87,6 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin,setToken
       <button className="login-button" onClick={handleLogin}>
         Login
       </button>
-      <p className="login-text">
-        Administrator? <a href="/upload" className="login-link">Admin Login</a>
-      </p>
       {message && <h3> {message}</h3>}
     </div>
   );
