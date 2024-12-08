@@ -1,24 +1,53 @@
 import React, { useState } from 'react';
 import './Upload.css';
 
-const Upload: React.FC = () => {
-  const [url, setUrl] = useState('');
+export interface UploadPageProps {
+  token: string;
+}
+
+const Upload: React.FC<UploadPageProps> = ({token}) => {
+  const [packageUrl, setPackageUrl] = useState('');
   const [major, setMajor] = useState('');
   const [minor, setMinor] = useState('');
   const [patch, setPatch] = useState('');
-  const [isSecret, setIsSecret] = useState(false);
-  const [userGroup, setUserGroup] = useState('default');
+  const [packageName, setPackageName] = useState('');
+  const [message, setMessage] = useState<string>('');
+  const [isSecret, setIsSecret] = useState<boolean>(false);
+  const [userGroup, setUserGroup] = useState<string>('default');
 
-  const handleUpload = () => {
-    const packageData = {
-      url,
-      version: `${major}.${minor}.${patch}`,
-      isSecret,
-      userGroup,
-    };
+  const upload = async () => {
 
-    console.log('Uploading package:', packageData);
-  };
+    if (!packageUrl) {
+        setMessage('No Input');
+        return;
+    }
+    try {
+        console.log("token:", token)
+        console.log("package name:", packageName)
+        var numApiCalls = parseInt(localStorage.getItem('numApiCalls') || '0');
+        console.log("numApiCalls:", numApiCalls)
+        numApiCalls = numApiCalls + 1;
+        const response = await fetch(`https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/package`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Authorization": "bearer " + token
+          },
+          body: JSON.stringify({Name: packageName,URL:packageUrl})
+        });
+        const result = await response.json();
+        console.log(result)
+        localStorage.setItem('numApiCalls', String(numApiCalls));
+
+        
+    }
+    catch (error) {
+        console.log(error)
+        setMessage(String(error))
+    }
+
+}
+
 
   return (
     <div className="upload-container">
@@ -34,8 +63,7 @@ const Upload: React.FC = () => {
             id="url-upload"
             className="upload-input"
             placeholder="Enter package URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={(e) => setPackageUrl(e.target.value)}
             aria-label="Enter a URL to upload the package from"
           />
         </div>
@@ -63,6 +91,7 @@ const Upload: React.FC = () => {
           id="package-name"
           className="upload-input"
           placeholder="Enter package name"
+          onChange={(e) => setPackageName(e.target.value)}
           aria-label="Enter the name of the package you are uploading"
         />
       </div>
@@ -98,7 +127,6 @@ const Upload: React.FC = () => {
           />
         </div>
       </div>
-
       <div className="upload-input-options">
         <div className="file-input-container">
           <label className="file-input-label" htmlFor="user-group">
@@ -141,7 +169,7 @@ const Upload: React.FC = () => {
       <button
         className="upload-button"
         aria-label="Click to upload the package"
-        onClick={handleUpload}
+        onClick={upload}
       >
         Upload!
       </button>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import PackageUpload from './components/upload-button';
 import SearchButton from './components/search-button';
@@ -14,15 +14,31 @@ import AdminPage from './pages/Admin/Admin';
 import CreateUserPage from './pages/Admin/CreateUser/CreateUser';
 import ModifyUsersPage from './pages/Admin/ModifyUserPermissions/ModifyUserPermissions';
 import ProtectedRoute from './components/useAuth';
+import {jwtDecode} from 'jwt-decode';
+import { checkTokenExpiration } from './utils/jwt_utils';
+
 
 function App() {
-  const [token, setToken] = useState<string>('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState<string[]>([]);
-  // const [permissions, setPermissions] = useState<string[]>([]);
-  const [permissions, setPermissions] = useState<string[]>(["upload", "download", "search"]);
-  // setToken(localStorage.getItem('accessToken') || '');
-  // setPermissions(localStorage.getItem('permissions')?.split(',') || []);
+  const [token, setToken] = useState<string>(localStorage.getItem('accesstoken') || '');
+  const [isAdmin, setIsAdmin] = useState<string[]>(JSON.parse(localStorage.getItem('isAdmin') || '[]'));
+  const [permissions, setPermissions] = useState<string[]>(JSON.parse(localStorage.getItem('permissions') || '[]'));
+  // const navigate = useNavigate();
+  // console.log("Token:", token)
+  useEffect(() => {
+    const stored_token = localStorage.getItem('accessToken') || '';
+    setToken(stored_token);
+    const storedAdmin  = (JSON.parse(localStorage.getItem('isAdmin') || '[]'));
+    setIsAdmin(isAdmin);
+    const storedPermissions = JSON.parse(localStorage.getItem('permissions') || '[]');
+    setPermissions(storedPermissions);
+    // console.log("Token:", token)
+    // if (parseInt(localStorage.getItem('numApiCalls') || '0') >= 5) {
+    //   console.log("You have exceeded the number of API calls")
+    // }
+    // if (token!== '' && !checkTokenExpiration(token)) {
+    //   console.log("Hello")
+    // }
+  }, [token]); 
   
   return (
     <Router>
@@ -33,7 +49,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/get-started" element={<Get_Started />} />
-        <Route path="/login" element={<Login setPermissions={setPermissions} setIsAdmin={setIsAdmin}/>} />
+        <Route path="/login" element={<Login setPermissions={setPermissions} setIsAdmin={setIsAdmin} setToken={setToken}/>} />
         <Route
           path="/admin"
           element={
@@ -46,7 +62,7 @@ function App() {
           path="/upload"
           element={
             <ProtectedRoute permissions={permissions} permission='upload'>
-              <Upload/>
+              <Upload token={token}/>
             </ProtectedRoute>
           }
         />

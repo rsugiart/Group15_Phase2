@@ -5,13 +5,16 @@ import { useNavigate } from 'react-router-dom';
 interface LoginPageProps {
   setPermissions: (permissions: string[]) => void;
   setIsAdmin: (isAdmin: string[]) => void;
+  setToken: (token: string) => void;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin}) => {
+const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin,setToken}) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const navigate = useNavigate();
+  localStorage.setItem('permissions', '[]');
+  localStorage.setItem('isAdmin', '[]');
 
   const handleLogin = async () => {
     // Implement your login logic here
@@ -30,15 +33,22 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin}) => {
     const result = await response.json();
 
      if (response.status === 200) {
-      localStorage.setItem('accessToken', result.accessToken.split(' ')[1])
-      localStorage.setItem('permissions',result.permissions)
+      // localStorage.setItem('accessToken', result.accessToken.split(' ')[1])
+      // localStorage.setItem('permissions',result.permissions)
       if (result.isAdmin) {
         setIsAdmin(["Admin"])
+        localStorage.setItem('isAdmin', JSON.stringify(result.isAdmin));
       }
       setPermissions(result.permissions)
-      console.log(result.permissions)
+      // console.log(result.permissions)
       // setPermissions(result.permissions)
-      console.log('Login successful')
+      // console.log('Login successful')
+      // console.log(result.accessToken)
+      setToken(result.accessToken.split(' ')[1])
+      localStorage.setItem('numApiCalls', '0');
+      localStorage.setItem('accessToken', result.accessToken.split(' ')[1]);
+      localStorage.setItem('permissions', JSON.stringify(result.permissions));
+      // console.log("Yellow:")
       navigate('/')
      }
      else {
