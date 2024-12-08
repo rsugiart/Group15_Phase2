@@ -8,6 +8,10 @@ import Home from './pages/Home/Home';
 import Download from './pages/Download/Download';
 import Upload from './pages/Upload/Upload';
 import Search from './pages/Search/Search';
+import GetRatingPage from './pages/Search/Get_Rating/get_rating';
+import ViewRegistryPage from './pages/Search/View Registry/view_registry';
+import SearchByVersionPage from './pages/Search/Search by Version/version_search';
+import SearchByRegexPage from './pages/Search/Search by Regex/regex_search';
 import Get_Started from './pages/Get_Started/Get_Started';
 import Login from './pages/Login/Login';
 import AdminPage from './pages/Admin/Admin';
@@ -69,8 +73,40 @@ function App() {
         <Route
           path="/search"
           element={
-            <ProtectedRoute permissions={permissions} permission='download'>
-              <Search token={token}/>
+            <ProtectedRoute permissions={permissions} permission='search'>
+              <Search/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/search/get-rating"
+          element={
+            <ProtectedRoute permissions={permissions} permission='search'>
+              <GetRatingPage token={token}/>
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/search/view-registry"
+          element={
+            <ProtectedRoute permissions={permissions} permission='search'>
+              <ViewRegistryPage token={token}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path="/search/version-search"
+          element={
+            <ProtectedRoute permissions={permissions} permission='search'>
+              <SearchByVersionPage/>
+            </ProtectedRoute>
+          } 
+        />
+        <Route
+          path="/search/regex-search"
+          element={
+            <ProtectedRoute permissions={permissions} permission='search'>
+              <SearchByRegexPage/>
             </ProtectedRoute>
           }
         />

@@ -29,6 +29,7 @@ body {
   color: var(--text-color);
   font-family: var(--body-font);
   line-height: 1.6;
+  padding-top: var(--header-height);
   text-align: center;
   padding-top: var(--header-height); /* To avoid overlap with the fixed navbar */
 }
@@ -45,8 +46,8 @@ a {
 .search-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
   padding: 2rem;
 }
@@ -58,124 +59,47 @@ a {
   font-family: var(--second-font);
 }
 
-.search-page-version {
-  display: flex;
-  align-items: center; /* Ensures all elements align vertically */
-  justify-content: center; /* Centers the content horizontally */
-  gap: 1rem;
-  height: 2.5rem; /* Uniform height for alignment */
-}
-
-.label {
-  font-size: 1rem;
+.search-text {
+  font-size: 1.125rem;
   color: var(--text-color);
-  font-weight: var(--font-semi-bold);
-  display: flex;
-  align-items: center; /* Ensures labels align with inputs */
+  max-width: 600px;
+  margin-bottom: 2rem;
 }
 
-.search-input {
-  width: 250px;
-  padding: 0.5rem; /* Match the padding with .version-input */
-  font-size: 1rem;
-  line-height: 1; /* Ensures consistent text height */
-  height: 2.5rem; /* Match height for alignment */
-  color: var(--text-color);
-  background-color: var(--body-color);
-  border: 2px solid var(--text-color);
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.3s ease;
-  vertical-align: middle;
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Two columns maximum */
+  gap: 20px;
+  width: 100%;
+  max-width: 600px; /* Limit the width */
 }
 
-.search-input:focus {
-  border-color: var(--first-color);
-}
-
-.version-input-group {
-  display: flex;
-  align-items: center; /* Ensures vertical alignment */
-  gap: 0.5rem;
-  height: 2.5rem; /* Match height for alignment */
-}
-
-.version-input {
-  padding: 0.5rem;
-  width: 3rem;
-  font-size: 1rem;
-  line-height: 1; /* Ensures consistent text height */
-  height: 2.5rem; /* Match height for alignment */
-  color: var(--text-color);
-  background-color: var(--body-color);
-  border: 2px solid var(--text-color);
-  border-radius: 4px;
-  text-align: center;
-  outline: none;
-  transition: border-color 0.3s ease;
-  vertical-align: middle;
-}
-
-.version-input:focus {
-  border-color: var(--first-color);
-}
-
-.version-separator {
-  font-size: 1.5rem;
-  color: var(--text-color);
-  display: flex;
-  align-items: center; /* Ensures the separator aligns properly */
-}
-
-.search-button {
-  padding: 0.5rem 1rem; /* Adjusted for consistency with input fields */
+.nav-button {
   background-color: var(--first-color);
   color: var(--button-color);
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: var(--font-semi-bold);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  height: 2.5rem; /* Match height for alignment */
+  transition: transform 0.2s ease, background-color 0.3s ease;
   outline: 2px solid var(--first-color);
   outline-offset: 2px;
 }
 
-.search-button:hover {
+.nav-button:hover {
   background-color: hsl(28, 88%, 50%);
-  transform: scale(1.05);
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-.search-button:active {
-  transform: scale(0.95);
+.nav-button:active {
+  transform: scale(0.95); /* Shrink slightly when clicked */
 }
 
-.search-message {
-  font-size: 1rem;
-  color: var(--first-color);
-  margin-top: 1rem;
-  font-weight: var(--font-semi-bold);
-}
-
-.search-results-table {
-  width: 100%;
-  margin-top: 2rem;
-  border-collapse: collapse;
-  color: var(--title-color);
-}
-
-.search-results-table th,
-.search-results-table td {
-  border: 1px solid var(--text-color);
-  padding: 0.75rem;
-  text-align: center;
-}
-
-.search-results-table th {
-  background-color: var(--first-color);
-}
-
-.search-results-table tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.1);
+/* Responsive Design */
+@media (max-width: 600px) {
+  .button-container {
+    grid-template-columns: 1fr; /* Switch to one column on small screens */
+  }
 }
