@@ -1,39 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
-
-/* Global Reset */
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-:root {
-  --header-height: 3.5rem;
-  --first-color: hsl(28, 88%, 62%);
-  --title-color: hsl(0, 0%, 95%);
-  --text-color: hsl(0, 0%, 75%);
-  --body-color: hsl(0, 0%, 6%);
-  --button-color: hsl(0, 0%, 0%);
-  --body-font: "Montserrat", sans-serif;
-  --second-font: "Dancing Script", cursive;
-  --h2-font-size: 1.25rem;
-  --small-font-size: 0.813rem;
-  --font-semi-bold: 600;
-  --z-tooltip: 10;
-  --z-fixed: 100;
-}
-
-/* Global Styles */
-body {
-  background-color: var(--body-color);
-  color: var(--text-color);
-  font-family: var(--body-font);
-  line-height: 1.6;
-  text-align: center;
-  padding-top: var(--header-height); /* To avoid overlap with the fixed navbar */
-}
-
-/* Upload Container */
 .upload-container {
   display: flex;
   flex-direction: column;
@@ -45,7 +9,6 @@ body {
   color: var(--text-color);
 }
 
-/* Title */
 .upload-title {
   font-size: 2.5rem;
   font-family: var(--second-font);
@@ -53,13 +16,21 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Input Fields */
-.file-input-container {
+.upload-input-options {
+  display: flex;
+  justify-content: space-between; /* Align URL and file inputs horizontally */
+  align-items: center;
+  gap: 2rem; /* Space between the inputs */
+  width: 100%; /* Ensures full width for spacing */
+  max-width: 600px; /* Limits width of the input area */
   margin-bottom: 1.5rem;
+}
+
+.file-input-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem; /* Consistent spacing with search styles */
+  align-items: flex-start; /* Align labels and inputs to the left */
+  gap: 0.5rem;
 }
 
 .file-input-label {
@@ -69,8 +40,9 @@ body {
   font-weight: var(--font-semi-bold);
 }
 
+.upload-input,
 .file-input {
-  width: 250px; /* Same as search input width */
+  width: 250px;
   padding: 0.5rem;
   font-size: 1rem;
   color: var(--text-color);
@@ -81,29 +53,41 @@ body {
   transition: border-color 0.3s ease;
 }
 
+.upload-input:focus,
 .file-input:focus {
   border-color: var(--first-color);
 }
 
-.upload-input {
-  width: 250px; /* Same width as the search input */
+.version-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.version-input {
   padding: 0.5rem;
+  width: 3rem;
   font-size: 1rem;
   color: var(--text-color);
   background-color: var(--body-color);
   border: 2px solid var(--text-color);
   border-radius: 4px;
+  text-align: center;
   outline: none;
   transition: border-color 0.3s ease;
 }
 
-.upload-input:focus {
+.version-input:focus {
   border-color: var(--first-color);
 }
 
-/* Upload Button */
+.version-separator {
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
 .upload-button {
-  padding: 0.5rem 1rem; /* Consistent with search button */
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   font-family: var(--body-font);
   font-weight: var(--font-semi-bold);
@@ -124,13 +108,4 @@ body {
 
 .upload-button:active {
   transform: scale(0.95);
-}
-
-/* Message Display */
-.upload-message {
-  font-size: 1rem;
-  color: var(--first-color);
-  margin-top: 1rem;
-  font-weight: var(--font-semi-bold);
-  text-align: center;
 }

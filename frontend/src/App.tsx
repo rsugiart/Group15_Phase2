@@ -19,7 +19,8 @@ function App() {
   const [token, setToken] = useState<string>('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState<string[]>([]);
-  const [permissions, setPermissions] = useState<string[]>([]);
+  // const [permissions, setPermissions] = useState<string[]>([]);
+  const [permissions, setPermissions] = useState<string[]>(["upload", "download", "search"]);
   // setToken(localStorage.getItem('accessToken') || '');
   // setPermissions(localStorage.getItem('permissions')?.split(',') || []);
   
