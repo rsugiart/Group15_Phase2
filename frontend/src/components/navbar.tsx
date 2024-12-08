@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ loggedIn = true }) => {
           </NavLink>
         ) : (
           <>
-            <NavLink to="/" className="nav__logo">
+            <NavLink to="/get-started" className="nav__logo">
               Internal Package Registry
             </NavLink>
             {loggedIn && (
