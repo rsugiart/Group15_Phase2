@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Upload.css';
-import PackageUpload from '../../components/upload-button';
 
 const Upload: React.FC = () => {
+  const [url, setUrl] = useState('');
   const [major, setMajor] = useState('');
   const [minor, setMinor] = useState('');
   const [patch, setPatch] = useState('');
@@ -10,18 +10,38 @@ const Upload: React.FC = () => {
   return (
     <div className="upload-container">
       <h1 className="upload-title">Upload a Package</h1>
-      <div className="file-input-container">
-        <label className="file-input-label" htmlFor="file-upload">
-          Choose a File:
-        </label>
-        <input
-          type="file"
-          id="file-upload"
-          className="file-input"
-          accept=".zip,.tar.gz,.tgz"
-          aria-label="Choose a file to upload, accepts .zip, .tar.gz, or .tgz"
-        />
+      <div className="upload-input-options">
+        {/* URL Input */}
+        <div className="file-input-container">
+          <label className="file-input-label" htmlFor="url-upload">
+            Package URL:
+          </label>
+          <input
+            type="text"
+            id="url-upload"
+            className="upload-input"
+            placeholder="Enter package URL"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            aria-label="Enter a URL to upload the package from"
+          />
+        </div>
+
+        {/* File Input */}
+        <div className="file-input-container">
+          <label className="file-input-label" htmlFor="file-upload">
+            Choose a File:
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            className="file-input"
+            accept=".zip,.tar.gz,.tgz"
+            aria-label="Choose a file to upload, accepts .zip, .tar.gz, or .tgz"
+          />
+        </div>
       </div>
+
       <div className="file-input-container">
         <label className="file-input-label" htmlFor="package-name">
           Package Name:
@@ -34,8 +54,9 @@ const Upload: React.FC = () => {
           aria-label="Enter the name of the package you are uploading"
         />
       </div>
+
       <div className="file-input-container">
-        <label className="file-input-label">Package Version:</label>
+        <label className="file-input-label">Version:</label>
         <div className="version-input-group">
           <input
             type="text"
@@ -65,6 +86,7 @@ const Upload: React.FC = () => {
           />
         </div>
       </div>
+
       <button className="upload-button" aria-label="Click to upload the package">
         Upload
       </button>
