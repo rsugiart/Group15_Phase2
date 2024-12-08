@@ -12,6 +12,8 @@ const Upload: React.FC<UploadPageProps> = ({token}) => {
   const [patch, setPatch] = useState('');
   const [packageName, setPackageName] = useState('');
   const [message, setMessage] = useState<string>('');
+  const [isSecret, setIsSecret] = useState<boolean>(false);
+  const [userGroup, setUserGroup] = useState<string>('default');
 
   const upload = async () => {
 
@@ -50,8 +52,8 @@ const Upload: React.FC<UploadPageProps> = ({token}) => {
   return (
     <div className="upload-container">
       <h1 className="upload-title">Upload a Package</h1>
+
       <div className="upload-input-options">
-        {/* URL Input */}
         <div className="file-input-container">
           <label className="file-input-label" htmlFor="url-upload">
             Package URL:
@@ -66,7 +68,6 @@ const Upload: React.FC<UploadPageProps> = ({token}) => {
           />
         </div>
 
-        {/* File Input */}
         <div className="file-input-container">
           <label className="file-input-label" htmlFor="file-upload">
             Choose a File:
@@ -96,7 +97,7 @@ const Upload: React.FC<UploadPageProps> = ({token}) => {
       </div>
 
       <div className="file-input-container">
-        <label className="file-input-label">Version:</label>
+        <label className="version-input-label">Version:</label>
         <div className="version-input-group">
           <input
             type="text"
@@ -126,9 +127,51 @@ const Upload: React.FC<UploadPageProps> = ({token}) => {
           />
         </div>
       </div>
+      <div className="upload-input-options">
+        <div className="file-input-container">
+          <label className="file-input-label" htmlFor="user-group">
+            User Group:
+          </label>
+          <select
+            id="user-group"
+            className="upload-input"
+            value={userGroup}
+            onChange={(e) => setUserGroup(e.target.value)}
+            aria-label="Select the user group for this package"
+          >
+            <option value="default">Default</option>
+            <option value="experimental">Experimental</option>
+            <option value="internal">Internal</option>
+          </select>
+        </div>
 
-      <button className="upload-button" aria-label="Click to upload the package" onClick={upload}>
-        Upload
+        <div className="file-input-container">
+          <label className="file-input-label">Mark as Secret:</label>
+          <div className="secret-toggle-group">
+            <button
+              className={`toggle-button ${isSecret ? 'active' : ''}`}
+              onClick={() => setIsSecret(true)}
+              aria-label="Mark package as secret"
+            >
+              True
+            </button>
+            <button
+              className={`toggle-button ${!isSecret ? 'active' : ''}`}
+              onClick={() => setIsSecret(false)}
+              aria-label="Do not mark package as secret"
+            >
+              False
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button
+        className="upload-button"
+        aria-label="Click to upload the package"
+        onClick={upload}
+      >
+        Upload!
       </button>
     </div>
   );

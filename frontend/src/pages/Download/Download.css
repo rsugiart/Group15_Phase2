@@ -11,10 +11,10 @@
   }
   
   .download-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-family: var(--second-font);
     color: var(--title-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
   
   .download-input-container {

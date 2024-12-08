@@ -44,6 +44,7 @@
   font-size: 1.5rem;
   color: var(--title-color);
   cursor: pointer;
+  display: block; /* Always visible when logged in */
   transition: transform 0.3s ease; /* Smooth icon animation */
 }
 
@@ -52,38 +53,37 @@
 }
 
 .nav__menu {
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  top: 100%; /* Dropdown appears below the navbar */
-  right: 0;
-  background: rgba(0, 0, 0, 0.9); /* Dark background for better visibility */
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  z-index: var(--z-fixed);
-  animation: fadeIn 0.3s ease; /* Add a fade-in effect for the dropdown */
+  display: none; /* Hidden by default */
+  flex-direction: row; /* Menu items appear in a row */
+  background: transparent; /* Transparent to blend with navbar */
+  padding: 0;
+  position: static; /* Positioned directly on the navbar */
+  height: 100%; /* Matches navbar height */
+  align-items: center;
 }
 
 .nav__menu.show-menu {
-  display: flex;
+  display: flex; /* Show menu when toggled */
 }
 
 .nav__list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  gap: 1rem; /* Add spacing between items */
+  align-items: center;
 }
 
 .nav__item {
-  margin: 0.5rem 0;
+  margin: 0;
 }
 
 .nav__link {
   text-decoration: none;
   color: var(--title-color);
   font-weight: var(--font-semi-bold);
-  padding: 0.5rem 0;
+  padding: 0.5rem 1rem;
   transition: color 0.3s ease, background-color 0.3s ease;
 }
 
@@ -111,31 +111,38 @@
   transform: scale(1.05); /* Add a slight zoom effect */
 }
 
-/* Keyframes for dropdown fade-in effect */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Responsive Styles */
+.nav__toggle {
+  display: block; /* Always display the toggle button */
 }
 
-/* Responsive Styles */
-@media (min-width: 769px) {
-  .nav__menu {
-    display: flex; /* Always show the menu on desktop */
-    flex-direction: row;
-    position: static;
-    background: none;
-    box-shadow: none;
-    padding: 0;
-    animation: none; /* No animation for desktop */
-  }
+.nav__menu {
+  display: none; /* Initially hidden */
+}
 
-  .nav__item {
-    margin: 0 1rem;
-  }
+.nav__menu.show-menu {
+  display: flex; /* Shown when toggled */
+}
+
+.nav__item {
+  margin: 0;
+}
+
+/* Centered logo for home and login pages */
+.nav__logo-centered {
+  text-align: center;
+  font-size: var(--h2-font-size);
+  font-family: var(--second-font);
+  color: var(--first-color);
+  margin: 0 auto;
+  line-height: var(--header-height);
+  text-decoration: none;
+}
+
+.is-centered-page .nav__toggle {
+  display: none; /* Hide toggle button on centered pages */
+}
+
+.is-centered-page .nav__menu {
+  display: none; /* Hide menu on centered pages */
 }

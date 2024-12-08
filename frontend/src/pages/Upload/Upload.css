@@ -64,6 +64,14 @@
   gap: 0.5rem;
 }
 
+.version-input-label {
+  margin-top: 25px;
+  font-size: 1rem;
+  color: var(--title-color);
+  font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+}
+
 .version-input {
   padding: 0.5rem;
   width: 3rem;
@@ -86,10 +94,19 @@
   color: var(--text-color);
 }
 
-.upload-button {
-  padding: 0.5rem 1rem;
+.secret-input-label {
+  margin-top: -25px;
   font-size: 1rem;
+  color: var(--title-color);
   font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+}
+
+.upload-button {
+  margin-top: 40px;
+  padding: 0.5rem 1rem;
+  font-size: 2rem;
+  font-family: var(--second-font);
   font-weight: var(--font-semi-bold);
   color: var(--button-color);
   background-color: var(--first-color);
@@ -109,3 +126,39 @@
 .upload-button:active {
   transform: scale(0.95);
 }
+
+.secret-toggle-group {
+  display: flex;
+  gap: 0.5rem; /* Space between buttons */
+}
+
+.toggle-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+  color: var(--text-color);
+  background-color: var(--body-color);
+  border: 2px solid var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-button.active {
+  background-color: var(--first-color);
+  color: var(--button-color);
+  border-color: var(--first-color);
+}
+
+.toggle-button:hover {
+  background-color: hsl(28, 88%, 50%);
+  color: #000;
+  border-color: var(--first-color);
+  transform: scale(1.05);
+}
+
+.toggle-button:active {
+  transform: scale(0.95);
+}
+
