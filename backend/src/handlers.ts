@@ -75,7 +75,7 @@ catch(err) {
 
 };
 
-const package_exists = async (package_name:string) => {
+export const package_exists = async (package_name:string) => {
   const input = {
     "ExpressionAttributeValues": {
       ":v1": {"S":package_name},

@@ -30,7 +30,7 @@ export const login = async (event: APIGatewayProxyEvent): Promise<APIGatewayProx
   };
 
 
-const authenticate = async (login:string,password:string) => {
+export const authenticate = async (login:string,password:string) => {
 
     return true
 }
