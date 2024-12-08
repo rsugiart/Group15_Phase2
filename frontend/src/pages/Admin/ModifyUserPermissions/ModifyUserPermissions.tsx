@@ -201,18 +201,20 @@ const ModifyUsersPage: React.FC = () => {
                   />
                 </td>
                 <td>
-                  <button
-                    className="save-button"
-                    onClick={() => handleSave(user.id)}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </button>
+                  <div className="actions-container">
+                    <button
+                      className="save-button"
+                      onClick={() => handleSave(user.id)}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
