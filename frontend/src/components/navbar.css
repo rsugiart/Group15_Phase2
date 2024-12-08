@@ -139,3 +139,20 @@
     margin: 0 1rem;
   }
 }
+
+/* Centered logo for home and login pages */
+.nav__logo-centered {
+  text-align: center;
+  font-size: var(--h2-font-size);
+  font-family: var(--second-font);
+  color: var(--first-color);
+  margin: 0 auto;
+  line-height: var(--header-height);
+  text-decoration: none;
+}
+
+/* Hide default nav links when only the logo is displayed */
+.nav__menu,
+.nav__toggle {
+  display: none;
+}

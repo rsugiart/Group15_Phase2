@@ -50,10 +50,10 @@ body {
 
 /* Title */
 .login-title {
-  font-size: var(--h2-font-size);
-  color: var(--title-color);
+  font-size: 2.5rem; /* Matches other titles */
   font-family: var(--second-font);
-  margin-bottom: 1rem;
+  color: var(--title-color);
+  margin-bottom: 2rem;
 }
 
 /* Input Fields */
