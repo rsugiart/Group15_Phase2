@@ -127,3 +127,12 @@ body {
 .login-link:hover {
   text-decoration: underline;
 }
+
+/* Registry Logo Styling */
+.registry-logo {
+  width: 100px; /* Adjust the size of the logo */
+  height: auto; /* Maintain the aspect ratio */
+  display: block; /* Treat the image as a block element */
+  margin: 0 auto 1rem auto; /* Center horizontally and add spacing below */
+}
+

@@ -66,6 +66,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setPermissions,setIsAdmin,setToken
 
   return (
     <div className="login-container">
+      <img src="../registry_logo.png" alt="Registry Logo" className="registry-logo" />
       <h1 className="login-title">Welcome Back</h1>
       <input
         type="text"
