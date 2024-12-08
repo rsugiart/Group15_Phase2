@@ -66,12 +66,12 @@ a {
   margin-bottom: 2rem;
 }
 
-.button-container {
+.admin-button-container {
   display: grid;
-  grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Two columns maximum */
+  grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Three columns maximum */
   gap: 20px;
   width: 100%;
-  max-width: 600px; /* Limit the width */
+  max-width: 900px; /* Limit the width */
 }
 
 .nav-button {

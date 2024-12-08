@@ -8,12 +8,15 @@ function AdminPage() {
       <p className="admin-text">
         Choose from the options below to explore our platform features.
       </p>
-      <div className="button-container">
+      <div className="admin-button-container">
         <button className="nav-button" onClick={() => window.location.href = '/admin/create-user'}>
           Create a User
         </button>
         <button className="nav-button" onClick={() => window.location.href = '/admin/modify-user-permissions'}>
           Modify User Permissions
+        </button>
+        <button className="nav-button" onClick={() => window.location.href = '/search'}>
+          Reset Registry
         </button>
       </div>
     </div>
