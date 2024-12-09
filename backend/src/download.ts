@@ -78,7 +78,7 @@ export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatew
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(
             {
-              Error: "Package not found"
+              Error: "Package not found "
             })
         }
       }
