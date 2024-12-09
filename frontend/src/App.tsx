@@ -7,6 +7,12 @@ import Navbar from './components/navbar';
 import Home from './pages/Home/Home';
 import Download from './pages/Download/Download';
 import Upload from './pages/Upload/Upload';
+import Upload_Package from './pages/Upload/Upload_Package/Upload_Package';
+import UploadByFile from './pages/Upload/Upload_Package/ByFile/UploadByFile';
+import UploadByURL from './pages/Upload/Upload_Package/ByURL/UploadByURL';
+import Update from './pages/Upload/Update/Update';
+import UpdateByFile from './pages/Upload/Update/ByFile/UpdateByFile';
+import UpdateByURL from './pages/Upload/Update/ByURL/UpdateByURL';
 import Search from './pages/Search/Search';
 import GetRatingPage from './pages/Search/Get_Rating/get_rating';
 import ViewRegistryPage from './pages/Search/View Registry/view_registry';
@@ -66,7 +72,55 @@ function App() {
           path="/upload"
           element={
             <ProtectedRoute permissions={permissions} permission='upload'>
-              <Upload token={token}/>
+              <Upload/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload/upload-package"
+          element={
+            <ProtectedRoute permissions={permissions} permission='upload'>
+              <Upload_Package/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload/upload-package/upload-by-file"
+          element={
+            <ProtectedRoute permissions={permissions} permission='upload'>
+              <UploadByFile token={token}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload/upload-package/upload-by-url"
+          element={
+            <ProtectedRoute permissions={permissions} permission='upload'>
+              <UploadByURL token={token}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload/update"
+          element={
+            <ProtectedRoute permissions={permissions} permission='upload'>
+              <Update/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload/update/update-by-file"
+          element={
+            <ProtectedRoute permissions={permissions} permission='upload'>
+              <UpdateByFile token={token}/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload/update/update-by-url"
+          element={
+            <ProtectedRoute permissions={permissions} permission='upload'>
+              <UpdateByURL token={token}/>
             </ProtectedRoute>
           }
         />
