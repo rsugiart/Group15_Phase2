@@ -42,7 +42,7 @@ a {
 }
 
 /* Upload Page Styles */
-.upload-container {
+.upload_package-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,14 +51,14 @@ a {
   padding: 2rem;
 }
 
-.upload-title {
+.upload_package-title {
   font-size: 2.5rem;
   color: var(--title-color);
   margin-bottom: 2rem;
   font-family: var(--second-font);
 }
 
-.upload-text {
+.upload_package-text {
   font-size: 1.125rem;
   color: var(--text-color);
   max-width: 600px;
