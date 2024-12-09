@@ -136,3 +136,15 @@ body {
   margin: 0 auto 1rem auto; /* Center horizontally and add spacing below */
 }
 
+.success-message {
+  color: hsl(120, 80%, 50%); /* Success message color */
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
