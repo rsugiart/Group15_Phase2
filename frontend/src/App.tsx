@@ -81,7 +81,7 @@ function App() {
         <Route
           path="/search/get-rating"
           element={
-            <ProtectedRoute permissions={permissions} permission='search'>
+             <ProtectedRoute permissions={permissions} permission='search'>
               <GetRatingPage token={token}/>
             </ProtectedRoute>
           } 
