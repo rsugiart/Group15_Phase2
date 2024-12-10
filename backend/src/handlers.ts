@@ -12,6 +12,8 @@ import {RateParameters} from "./interfaces.js";
 import { off } from "process";
 import safeRegex from "safe-regex";
 import { verify_token } from "./authenticate.js";
+import { c } from "tar";
+import { analyzeURL } from "./rating/main.js";
 
 const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 const client = new DynamoDBClient({ region: 'us-east-1' });
@@ -217,24 +219,31 @@ const package_exists = async (package_name:string) => {
 export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   
   try {
-
-    const body = JSON.parse(event.body as string);
-    const package_name = body.Name;
-    console.log(body)
-    const auth_header = event.headers["x-authorization"];
-    const [success,message] = await verify_token(auth_header,"upload") || [];
+    const auth_header = event.headers['x-authorization']
+    const [success,message,group] = await verify_token(auth_header,"upload") || [];
     if (!success) {
       return {
         statusCode: 403,
-        headers: {
-          "Content-Type": "application/json"
-      },
         body: JSON.stringify(
           {
-            message: auth_header
+            message: message
           })
       }
     }
+    if (!group) {
+      throw new Error("Error");
+    }
+    
+    const body = JSON.parse(event.body as string);
+    const package_name = body.Name;
+    var isSecret;
+    if (body.hasOwnProperty("isSecret")) {
+      isSecret = body.isSecret;
+    }
+    else {
+      isSecret = false;
+    }
+
     if (await package_exists(package_name)) {
       return {
         statusCode: 409,
@@ -282,12 +291,13 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
         else {
           version = "1.0.0";
         }
+        url = info.repository.url;
 
       }
       else {
         version = body.Version;
       }
-
+      // package_cost = await getPackageSize(zipStream);
       
     }
     else {
@@ -305,7 +315,6 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
             if (!(await isUrlValid(zipUrl))) {
               zipUrl = `https://github.com/${owner}/${name}/archive/refs/tags/${version}.zip`
             }
-  
           }
           else {
             const api_url = `https://api.github.com/repos/${owner}/${name}`;
@@ -345,9 +354,16 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
           tarballUrl = response.data.dist.tarball;
         }
         else {
-          response = await axios.get(`https://registry.npmjs.org/${package_name}`);
-          version = response.data['dist-tags'].latest;
-          tarballUrl = response.data.versions[version].dist.tarball
+          if (body.hasOwnProperty('Version') && body.Version!="") {
+            version = body.Version;
+            response = await axios.get(`https://registry.npmjs.org/${package_name}/${version}`);
+            tarballUrl = response.data.dist.tarball;
+          }
+          else {
+            response = await axios.get(`https://registry.npmjs.org/${package_name}`);
+            version = response.data['dist-tags'].latest;
+            tarballUrl = response.data.versions[version].dist.tarball
+          }
 
         }
 
@@ -367,13 +383,14 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
 
     }
     
-    // const result = await analyzeURL("https://github.com/lodash/lodash");
+    // const result =  await analyzeURL(url);
     // if (!result) {
     //   throw new Error("Erro");
     // }
+    // const rating:RateParameters = result
     // console.log(result);
-    // if (url.includes("npmjs.com/package")) {
-    //   if (result.BusFactor <0.6 || result.ResponsiveMaintainer <0.6 || result.RampUp <0.6 || result.Correctness <0.6 || result.License <0.6 || result.GoodPinningPractice <0.6 || result.PullRequest <0.6 || result.NetScore <0.6) {
+    // if (uploaded_through=="URL") {
+    //   if (result.NetScore<0.45) {
     //     return {
     //       statusCode: 500,
     //       headers: { "Content-Type": "application/json" },
@@ -384,6 +401,7 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
     //     };
     //   }
     // }
+    // const rating_result = JSON.stringify(rating);
     // const rating = JSON.stringify(result);
 
     if (!stream) {
@@ -414,7 +432,7 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
       "RampUpLatency": 0.6,
       "ResponsiveMaintainer": 0.6,
       "ResponsiveMaintainerLatency": 0.6,
-      "LicenseScore": 0.6,
+      "LicenseScore": 1,
       "LicenseScoreLatency": 0.6,
       "GoodPinningPractice": 0.6,
       "GoodPinningPracticeLatency": 0.6,
@@ -423,6 +441,7 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
       "NetScore": 0.6,
       "NetScoreLatency": 0.6
     }
+    const rating_result = JSON.stringify(rating);
 
     const command = new PublishPackageVersionCommand(input);
     let response = await codeartifact_client.send(command);
@@ -434,7 +453,7 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
     //     PackageName : package_name,
     //   })
     // } 
-    const rating_result = JSON.stringify(rating);
+    
     const db_input = {
       "TableName": tableName,
       "Item": {
@@ -455,7 +474,14 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
         },
         "packageCost": {
           "N": (package_cost/Math.pow(2,20)).toString()
+        },
+        "isSecret": {
+          "S": isSecret.toString()
+        },
+        "group": {
+          "S": group.toString()
         }
+
 
       },
       "ReturnConsumedCapacity": ReturnConsumedCapacity.TOTAL,
@@ -531,8 +557,20 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
 
 export const update_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 try {
-  const id = event.pathParameters?.id as string;
   const body = JSON.parse(event.body as string);
+  const auth_header = event.headers['x-authorization']
+  const [success,message] = await verify_token(auth_header,"upload") || [];
+  console.log(success)
+  if (!success) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify(
+        {
+          message: message
+        })
+    }
+  }
+  const id = event.pathParameters?.id as string;
   console.log(body)
   if(!(id.includes("...."))){
     return {
@@ -726,9 +764,16 @@ try {
       tarballUrl = response.data.dist.tarball;
     }
     else {
-      response = await axios.get(`https://registry.npmjs.org/${package_name}`);
-      version = response.data['dist-tags'].latest;
-      tarballUrl = response.data.versions[version].dist.tarball
+      if (body.metadata.hasOwnProperty('Version')) {
+        version = body.metadata.Version;
+        response = await axios.get(`https://registry.npmjs.org/${package_name}/${version}`);
+        tarballUrl = response.data.dist.tarball;
+      }
+      else {
+        response = await axios.get(`https://registry.npmjs.org/${package_name}`);
+        version = response.data['dist-tags'].latest;
+        tarballUrl = response.data.versions[version].dist.tarball
+      }
 
     }
 
@@ -749,6 +794,43 @@ try {
   if (!stream) {
     throw new Error("Stream is undefined.");
   }
+  // const result =  await analyzeURL(url);
+  //   if (!result) {
+  //     throw new Error("Erro");
+  //   }
+  //   const rating:RateParameters = result
+  //   // console.log(result);
+  //   if (uploaded_through=="URL") {
+  //     if (result.NetScore<0.45) {
+  //       return {
+  //         statusCode: 500,
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(
+  //         {
+  //           Error: "Package could not be ingested due to low rating"
+  //         })
+  //       };
+  //     }
+  //   }
+  const rating:RateParameters = {
+    "BusFactor": 0.6,
+    "BusFactorLatency": 0.6,
+    "Correctness": 0.6,
+    "CorrectnessLatency": 0.6,
+    "RampUp": 0.6,
+    "RampUpLatency": 0.6,
+    "ResponsiveMaintainer": 0.6,
+    "ResponsiveMaintainerLatency": 0.6,
+    "LicenseScore": 1,
+    "LicenseScoreLatency": 0.6,
+    "GoodPinningPractice": 0.6,
+    "GoodPinningPracticeLatency": 0.6,
+    "PullRequest": 0.6,
+    "PullRequestLatency": 0.6,
+    "NetScore": 0.6,
+    "NetScoreLatency": 0.6
+  }
+  const rating_result = JSON.stringify(rating);
 
   const { hash: assetSHA256, buffer: assetContent } = await calculateSHA256AndBuffer(stream);
   const code_artifact_input = { // PublishPackageVersionRequest
@@ -775,7 +857,7 @@ try {
         "S": new_version
       },
       "rating": {
-        "N": "0"
+        "N": rating_result
       },
       "productID": {
         "S": `${package_name}....${new_version}`
@@ -783,7 +865,6 @@ try {
       "uploadedThrough": {
         "S": uploaded_through
       }
-
     },
     "ReturnConsumedCapacity": ReturnConsumedCapacity.TOTAL,
   };
@@ -948,6 +1029,7 @@ async function processQuery(
       return { results, nextOffset };
   }
 }
+
 function compareVersions(v1: string, v2: string): number {
   const [major1, minor1, patch1] = v1.split(".").map(Number);
   const [major2, minor2, patch2] = v2.split(".").map(Number);
@@ -1117,6 +1199,81 @@ export const get_by_regex = async (
   }
 };
 
+// Utility function to compare versions
+function compareVersionsResolving(version1: string, version2: string): number {
+  const v1Parts = version1.split('.').map(Number);
+  const v2Parts = version2.split('.').map(Number);
+
+  for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
+    const v1 = v1Parts[i] || 0;
+    const v2 = v2Parts[i] || 0;
+
+    if (v1 > v2) return 1;
+    if (v1 < v2) return -1;
+  }
+  return 0;
+}
+
+
+async function getGitHubUrl(packageName: string, versionRange: string): Promise<string | null> {
+  try {
+    console.log("Entering githuburl function");
+    const resolvedVersion = await resolveVersion(packageName, versionRange);
+    const response = await axios.get(`https://registry.npmjs.org/${packageName}/${resolvedVersion}`);
+    const packageData = response.data;
+
+    const repository = packageData.repository;
+    if (repository && repository.url) {
+      // Transform the git URL to an HTTPS URL
+      let gitUrl = repository.url;
+      
+      // Remove any git+ prefix
+      gitUrl = gitUrl.replace(/^git\+/, "");
+
+      // Transform git:// URLs to https:// URLs
+      if (gitUrl.startsWith("git://")) {
+        gitUrl = gitUrl.replace(/^git:\/\//, "https://");
+      }
+
+      // Remove trailing .git if present
+      gitUrl = gitUrl.replace(/\.git$/, "");
+
+      return gitUrl;
+    }
+    return null;
+  } catch (error: any) {
+    console.error(`Failed to fetch GitHub URL for ${packageName}@${versionRange}:`, error.message);
+    return null;
+  }
+}
+
+// Fetch all versions of a package and resolve the highest version satisfying a range
+async function resolveVersion(packageName: string, versionRange: string): Promise<string> {
+  try {
+    const response = await axios.get(`https://registry.npmjs.org/${packageName}`);
+    const versions = Object.keys(response.data.versions);
+
+    if (versionRange.startsWith('~')) {
+      const baseVersion = versionRange.slice(1).split('.')[0];
+      const filtered = versions.filter((v) => v.startsWith(baseVersion));
+      return filtered.sort(compareVersionsResolving).pop() || '';
+    }
+
+    if (versionRange.startsWith('^')) {
+      const baseVersion = versionRange.slice(1).split('.')[0];
+      const filtered = versions.filter((v) => v.startsWith(baseVersion));
+      return filtered.sort(compareVersionsResolving).pop() || '';
+    }
+
+    // Exact match or latest version
+    if (versions.includes(versionRange)) return versionRange;
+    return versions.pop() || 'latest';
+  } catch (error: any) {
+    console.error(`Failed to resolve version for ${packageName}@${versionRange}:`, error.message);
+    throw error;
+  }
+}
+
 async function getPackageSize(zipStream: Readable): Promise<number> {
   return new Promise((resolve, reject) => {
       let totalSize = 0;
@@ -1138,9 +1295,123 @@ async function getPackageSize(zipStream: Readable): Promise<number> {
   });
 }
 
+
+// // Get package cost from npm registry
+async function getDependencyCost(packageName: string,owner:string, version:string): Promise<number> {
+  try {
+    // console.log(resolvedVersion)
+    // console.log(versionRange)
+    var zipUrl
+    zipUrl = `https://github.com/${owner}/${packageName}/archive/refs/tags/v${version}.zip`
+    if (!(await isUrlValid(zipUrl))) {
+      zipUrl = `https://github.com/${owner}/${packageName}/archive/refs/tags/${version}.zip`
+    }
+    console.log("zipurl:",zipUrl)
+    const zipStreamResponse = await axios.get(zipUrl, { responseType: "stream" });
+    const package_cost = await getPackageSize(zipStreamResponse.data)
+    return package_cost/1024;
+  } catch (error: any) {
+    console.error(`Failed to fetch details for ${packageName}@${version}:`, error.message);
+    return 0;
+  }
+}
+// async function getDependencyCost(packageName: string, versionRange: string = "latest"): Promise<number> {
+//   try {
+//     const resolvedVersion = await resolveVersion(packageName, versionRange);
+//     console.log(versionRange)
+//     const response = await axios.get(`https://registry.npmjs.org/${packageName}/${resolvedVersion}`);
+//     const packageData = response.data;
+
+//     const distSize = packageData.dist?.unpackedSize || 0; // Unpacked size in bytes
+//     const cost = distSize / 1024; // Convert to KB
+//     return cost;
+//   } catch (error: any) {
+//     console.error(`Failed to fetch details for ${packageName}@${versionRange}:`, error.message);
+//     return 0;
+//   }
+// }
+
+// Recursive function to calculate total package cost
+var idx=0;
+async function calculateTotalCost(
+  repoUrl: string,
+  version:string,
+  visited: Set<string> = new Set()
+): Promise<number> {
+  if (visited.has(repoUrl)) {
+    return 0; // Avoid cycles
+  }
+  visited.add(repoUrl);
+  console.log("repoUrl:",repoUrl)
+
+  const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)(?:\.git)?/);
+  if (!match) throw new Error("Invalid GitHub URL");
+  idx++;
+  const [_, owner, repo] = match;
+  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/package.json`;
+
+  const response = await axios.get(apiUrl, {
+    headers: {
+      Authorization: `token ${process.env.GITHUB_TOKEN}`,
+    },
+  });
+
+  const packageJson = JSON.parse(
+    Buffer.from(response.data.content, "base64").toString("utf-8")
+  );
+
+  // Calculate the cost of the main package
+  const mainPackageCost = await getDependencyCost(repo,owner, version);
+  //const mainPackageCost = await getDependencyCost(repo, packageJson.version);
+  let totalCost = mainPackageCost;
+  console.log("mainPackageCost:",mainPackageCost)
+  console.log(repoUrl)
+
+  // return totalCost;
+
+  // Process dependencies only (exclude devDependencies)
+  const dependencies: { [key: string]: string } = packageJson.dependencies || {};
+  for (const [dependency, versionRange] of Object.entries(dependencies)) {
+    console.log("Dependency:",dependency)
+    if (!versionRange) {
+      throw new Error(`Invalid version range for ${dependency}`);
+    }
+    console.log(versionRange)
+    // const resolvedVersion = await resolveVersion(dependency, String(versionRange));
+    console.log(typeof(versionRange))
+    const dependencyRepoUrl = await getGitHubUrl(dependency,versionRange); // Simplistic GitHub URL mapping
+    const resolvedVersion = await resolveVersion(dependency, versionRange);
+    // const resolvedVersion = versionRange;
+    // const dependencyRepoUrl = `https://github.com/${dependency}`
+    console.log(versionRange)
+    console.log(dependencyRepoUrl,resolvedVersion)
+    if (!dependencyRepoUrl) {
+      throw new Error(`Dependency not found: ${dependency}`);
+    }
+    try {
+      totalCost += await calculateTotalCost(dependencyRepoUrl, resolvedVersion,visited);
+    } catch (error) {
+      // Fallback: Calculate dependency cost directly if GitHub repo not found
+      const dependencyCost = await getDependencyCost(dependency,dependency, String(versionRange));
+      totalCost += dependencyCost;
+    }
+  }
+  // console.log("TotalCost:",totalCost)
+  // console.log(repoUrl)
+
+  return totalCost;
+}
+
 export const get_cost = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     const id = event.pathParameters?.id as string
+    var dependency=false;
+    if (event.body!=null) {
+      const body = JSON.parse(event.body as string);
+      if (body.hasOwnProperty('dependency')) {
+        dependency = body.dependency
+      }
+    }
     if(!(id.includes("...."))){
       return {
         statusCode: 404,
@@ -1151,7 +1422,6 @@ export const get_cost = async (event: APIGatewayProxyEvent): Promise<APIGatewayP
           })
       }
     }
-
     const package_name = id.split("....")[0]
     const version = id.split("....")[1]
     if (!(await package_version_exists(package_name,version))) {
@@ -1165,55 +1435,32 @@ export const get_cost = async (event: APIGatewayProxyEvent): Promise<APIGatewayP
       }
     }
     console.log(id);
+    console.log(dependency);
 
+    const url = await getGitHubUrl(package_name,version);
+    if (!url) {
+      throw new Error("Error");
+    }
+    const mod = url.substring(19);
+    const sep = mod.indexOf('/');
+    const owner = mod.substring(0, sep);
+    const name = mod.substring(sep+1);
+    var cost;
+    if (!dependency) {
+      console.log(url)
+      console.log("owner:",owner)
+      console.log("name:",name)
+      cost = await getDependencyCost(name,owner,version);
+    }
+    else {
+      console.log("Entering Dependency")
+      cost = await calculateTotalCost(url,version);
+    }
+    cost = cost/1024;
 
-    const input = {
-      "ExpressionAttributeValues": {
-        ":v1": {"S":package_name},
-        ":v2": {"S":version}
-      },
-      "TableName": tableName,
-      "KeyConditionExpression": "packageName = :v1 AND version = :v2",
-      "ProjectionExpression": "packageCost"
-    };
-    const db_command = new QueryCommand(input)
-    const db_response = await client.send(db_command)
-
-    if (!db_response.Items) {
-      return {
-        statusCode: 404,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          {
-            Error: "Package not found"
-          })
-      }
-    }
-    if (db_response.Items.length== 0) {  
-      return {
-        statusCode: 404,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-        {
-          Error: "Package Not Found"
-        })
-      };
-    }
-  
-    const cost = db_response.Items[0].packageCost.N
-    if (!cost) {
-      return {
-        statusCode: 400,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          {
-            Error: "There is missing field(s) in the PackageID"
-          })
-      };
-    }
     let response:any = {}
     response[id] = {
-      "totalCost": parseFloat(cost)
+      "totalCost": cost
     }
 
 

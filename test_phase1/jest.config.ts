@@ -1,3 +1,9 @@
+import type { Config } from 'jest';
+
+const config: Config = {
+    preset: 'ts-jest',
+    testEnvironment: 'node',
+};
 export default {
     preset: 'ts-jest',
     testEnvironment: 'node',
@@ -11,4 +17,5 @@ export default {
         '<rootDir>/src/**/*.{ts,tsx}',
     ],
     silent: true,
+    
 };
