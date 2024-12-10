@@ -21,7 +21,13 @@ const tableName = "PackagesTable";
 const docClient = new AWS.DynamoDB.DocumentClient();
 const USERS_TABLE = process.env.USERS_TABLE || "UsersTable";
 
-
+/**
+ * Checks if a new version can be uploaded based on existing versions.
+ *
+ * @param {string[]} existingVersions - The list of existing package versions.
+ * @param {string} newVersion - The new version to check.
+ * @returns {boolean} - Returns `true` if the new version is valid for upload, otherwise `false`.
+ */
 function canUploadVersion(existingVersions: string[], newVersion: string): boolean {
     // Parse a version string into an object with major, minor, and patch
     const parseVersion = (version: string): { major: number; minor: number; patch: number } => {
@@ -56,6 +62,12 @@ function canUploadVersion(existingVersions: string[], newVersion: string): boole
     return true;
 }
 
+/**
+ * Checks if a given URL is valid by sending a HEAD request.
+ *
+ * @param {string} url - The URL to validate.
+ * @returns {Promise<boolean>} - Resolves to `true` if the URL is valid, otherwise `false`.
+ */
 async function isUrlValid(url:string) {
   try {
       const response = await fetch(url, { method: 'HEAD' });
@@ -66,6 +78,12 @@ async function isUrlValid(url:string) {
   }
 }
 
+/**
+ * Resets the CodeArtifact repository and DynamoDB table by deleting all packages and entries.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event triggering the reset.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns an HTTP response indicating the result of the reset operation.
+ */
 export const reset = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // return {
   //   statusCode: 200,
@@ -161,7 +179,12 @@ export const reset = async (event: APIGatewayProxyEvent): Promise<APIGatewayProx
   }
 };
 
-
+/**
+ * Returns the planned tracks as a JSON response.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns a JSON response containing planned tracks.
+ */
 export const track = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     return {
         statusCode: 200,
@@ -215,7 +238,12 @@ const package_exists = async (package_name:string) => {
 
 }
 
-
+/**
+ * Uploads a package to AWS CodeArtifact and stores metadata in DynamoDB.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing package data.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns a JSON response indicating the success or failure of the upload.
+ */
 export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   
   try {
@@ -555,6 +583,12 @@ export const upload_package = async (event: APIGatewayProxyEvent): Promise<APIGa
      
   };
 
+  /**
+ * Updates an existing package version with new content or metadata.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing update details.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns a JSON response indicating the result of the update operation.
+ */
 export const update_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 try {
   const body = JSON.parse(event.body as string);
@@ -926,6 +960,14 @@ catch(error) {
 }
 }
 
+/**
+ * Processes a query to fetch package versions based on conditions.
+ *
+ * @param {any} query - The query object containing search criteria.
+ * @param {string} offset - The pagination offset.
+ * @param {number} versionExists - Indicates if a specific version exists (1) or not (0).
+ * @returns {Promise<{ results: any[]; nextOffset: string | null }>} - Returns matching results and the next pagination offset.
+ */
 async function processQuery(
   query: any,
   offset: string,
@@ -1030,6 +1072,13 @@ async function processQuery(
   }
 }
 
+/**
+ * Compares two semantic version strings.
+ *
+ * @param {string} v1 - The first version string.
+ * @param {string} v2 - The second version string.
+ * @returns {number} - Returns `1` if `v1 > v2`, `-1` if `v1 < v2`, and `0` if they are equal.
+ */
 function compareVersions(v1: string, v2: string): number {
   const [major1, minor1, patch1] = v1.split(".").map(Number);
   const [major2, minor2, patch2] = v2.split(".").map(Number);
@@ -1039,6 +1088,12 @@ function compareVersions(v1: string, v2: string): number {
   return (patch1 || 0) - (patch2 || 0);
 }
 
+/**
+ * Lists packages from the DynamoDB table based on queries and pagination.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing query parameters.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns a list of packages and a pagination offset.
+ */
 export const list_packages = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
       const offset = event.queryStringParameters?.offset || "0";
@@ -1106,6 +1161,12 @@ export const list_packages = async (event: APIGatewayProxyEvent): Promise<APIGat
   }
 };
 
+/**
+ * Retrieves packages matching a regular expression from the DynamoDB table.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the regex query.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns matching packages or an error if no matches are found.
+ */
 export const get_by_regex = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -1199,6 +1260,13 @@ export const get_by_regex = async (
   }
 };
 
+/**
+ * Resolves and compares semantic versions, handling missing version parts as `0`.
+ *
+ * @param {string} version1 - The first version string.
+ * @param {string} version2 - The second version string.
+ * @returns {number} - Returns `1` if `version1 > version2`, `-1` if `version1 < version2`, and `0` if they are equal.
+ */
 // Utility function to compare versions
 function compareVersionsResolving(version1: string, version2: string): number {
   const v1Parts = version1.split('.').map(Number);
@@ -1214,7 +1282,13 @@ function compareVersionsResolving(version1: string, version2: string): number {
   return 0;
 }
 
-
+/**
+ * Resolves the GitHub repository URL for a given npm package and version range.
+ *
+ * @param {string} packageName - The name of the npm package.
+ * @param {string} versionRange - The version range of the package.
+ * @returns {Promise<string | null>} - Returns the GitHub repository URL or `null` if not found.
+ */
 async function getGitHubUrl(packageName: string, versionRange: string): Promise<string | null> {
   try {
     console.log("Entering githuburl function");
@@ -1247,6 +1321,13 @@ async function getGitHubUrl(packageName: string, versionRange: string): Promise<
   }
 }
 
+/**
+ * Resolves the highest version of a package satisfying a given range.
+ *
+ * @param {string} packageName - The name of the npm package.
+ * @param {string} versionRange - The version range to resolve.
+ * @returns {Promise<string>} - Returns the resolved version.
+ */
 // Fetch all versions of a package and resolve the highest version satisfying a range
 async function resolveVersion(packageName: string, versionRange: string): Promise<string> {
   try {
@@ -1274,6 +1355,12 @@ async function resolveVersion(packageName: string, versionRange: string): Promis
   }
 }
 
+/**
+ * Calculates the size of a ZIP stream in bytes.
+ *
+ * @param {Readable} zipStream - The ZIP file stream.
+ * @returns {Promise<number>} - Returns the size of the ZIP in bytes.
+ */
 async function getPackageSize(zipStream: Readable): Promise<number> {
   return new Promise((resolve, reject) => {
       let totalSize = 0;
@@ -1295,7 +1382,12 @@ async function getPackageSize(zipStream: Readable): Promise<number> {
   });
 }
 
-
+/**
+ * Calculates the cost of a package or its dependencies based on size.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the package ID and dependency flag.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns the calculated cost or an error if not found.
+ */
 // // Get package cost from npm registry
 async function getDependencyCost(packageName: string,owner:string, version:string): Promise<number> {
   try {
@@ -1332,6 +1424,12 @@ async function getDependencyCost(packageName: string,owner:string, version:strin
 // }
 
 // Recursive function to calculate total package cost
+/**
+ * Calculates the cost of a package or its dependencies based on size.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the package ID and dependency flag.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns the calculated cost or an error if not found.
+ */
 var idx=0;
 async function calculateTotalCost(
   repoUrl: string,
@@ -1402,6 +1500,12 @@ async function calculateTotalCost(
   return totalCost;
 }
 
+/**
+ * Calculates the cost of a package or its dependencies based on size.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the package ID and dependency flag.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns the calculated cost or an error if not found.
+ */
 export const get_cost = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     const id = event.pathParameters?.id as string

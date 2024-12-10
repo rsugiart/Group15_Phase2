@@ -66,6 +66,14 @@ const query = `
   }
 `;
 
+/**
+ * Calculates the dependency fraction (DependFrac) for a GitHub repository.
+ * DependFrac is the ratio of dependencies with major and minor versioning
+ * (e.g., `~1.2`, `^1.2`, or `=1.2`) to the total number of dependencies.
+ *
+ * @param {object} variables - Contains the repository's owner and name.
+ * @returns {Promise<number>} - The calculated dependency fraction (0 to 1) or -1 if an error occurs.
+ */
 export async function dependFrac(variables: { owner: string, name: string }): Promise<number> {
   const pattern = /^[~^=] \d+\.\d+/
   const stats = {
@@ -115,6 +123,14 @@ export async function dependFrac(variables: { owner: string, name: string }): Pr
     });
 }
 
+/**
+ * Helper function to calculate the dependency fraction.
+ * DependFrac = (# dependencies with major and minor versioning) / (total dependencies).
+ *
+ * @param {object} stats - Contains `majmin` (count of dependencies with versioning)
+ *                         and `total` (total dependencies).
+ * @returns {number} - The dependency fraction (0 to 1) or 0 if there are no dependencies.
+ */
 function calcDependFrac(stats: any): number {
   // Dependency Fraction: # of dependencies with major and minor versioning / total dependencies
   logMessage(1, `DependFrac: ${stats.majmin} out of ${stats.total}`);
@@ -124,6 +140,9 @@ function calcDependFrac(stats: any): number {
   return stats.majmin / stats.total;
 }
 
+/**
+ * Main function to test `dependFrac` with a specific repository.
+ */
 async function main() {
   await dependFrac({owner:"cloudinary",name:"cloudinary_npm"});
 }

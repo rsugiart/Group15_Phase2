@@ -76,6 +76,17 @@ const stats = {
   list_files: [] as Array<number>
 };
 
+/**
+ * Analyzes the license of a GitHub repository to determine its compatibility with LGPLv2.1.
+ * If a LICENSE file exists, it checks the text for compatible licenses. 
+ * If not, it attempts to extract a license from the README file.
+ *
+ * @param {object} variables - Contains the repository's owner and name.
+ * @returns {Promise<number>} - Returns:
+ *  1 if the license is compatible with LGPLv2.1,
+ *  0 if the license is incompatible,
+ * -1 if license information is unavailable.
+ */
 export async function analyzeLicense(variables: { owner: string, name: string }): Promise<number> {
   return client.request<RepositoryQueryResponse>(query, variables)
     .then(response => {
@@ -134,11 +145,18 @@ export async function analyzeLicense(variables: { owner: string, name: string })
 
 // HELPER FUNCTIONS 
 
+
 function clampAndFit01(value: number, in_min: number, in_max: number): number {
   const clampedValue = Math.min(Math.max(value, in_min), in_max);
   return ((clampedValue - in_min) / (in_max - in_min));
 }
 
+/**
+ * Checks if a given license text contains any licenses compatible with LGPLv2.1.
+ *
+ * @param {string} licenseText - The license text to analyze.
+ * @returns {boolean} - True if the license is compatible, false otherwise.
+ */
 // Utility function to check if a license is compatible with LGPLv2.1
 export function isLicenseCompatibleWithLGPLv21(licenseText: string): boolean {
   const compatibleLicenses = [
@@ -156,6 +174,12 @@ export function isLicenseCompatibleWithLGPLv21(licenseText: string): boolean {
   return compatibleLicenses.some((license) => licenseText.includes(license));
 }
 
+/**
+ * Extracts license information from a README file using a regex pattern.
+ *
+ * @param {string} readmeContent - The content of the README file.
+ * @returns {string | null} - Extracted license text or null if not found.
+ */
 // Extract license from README using regex
 function extractLicenseFromReadme(readmeContent: string): string | null {
   logMessage(2, 'License - Extracting license from README.md');

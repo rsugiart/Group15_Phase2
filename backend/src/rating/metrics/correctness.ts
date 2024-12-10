@@ -63,6 +63,13 @@ const stats = {
   list_commits_dates: [] as Array<Date>,
 };
 
+/**
+ * Calculates the Correctness and Development (CAD) metric for a GitHub repository.
+ * The CAD metric is defined as the ratio of the number of commits to the age of the repository in days, capped at 1.
+ *
+ * @param {object} variables - Contains the repository's owner and name.
+ * @returns {Promise<number>} - The calculated CAD metric (0 to 1) or -1 if an error occurs.
+ */
 export async function calculateCAD(variables: { owner: string, name: string }): Promise<number> {
   return client.request<RepositoryQueryResponse>(query, variables, stats)
     .then(response => {
@@ -100,7 +107,13 @@ export async function calculateCAD(variables: { owner: string, name: string }): 
 }
 
 // HELPER FUNCTIONS
-
+/**
+ * Helper function to calculate the number of days between two dates.
+ *
+ * @param {Date} date1 - The earlier date.
+ * @param {Date} date2 - The later date.
+ * @returns {number} - The number of days between the two dates.
+ */
 function getDaysBetweenDates(date1: Date, date2: Date): number {
   const diffTime = Math.abs(date2.getTime() - date1.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

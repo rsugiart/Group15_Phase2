@@ -72,6 +72,14 @@ const query = `
   }
 `;
 
+/**
+ * Fetches the commit history of a GitHub repository and calculates its bus factor.
+ * The bus factor is a metric that evaluates the number of unique contributors
+ * to the repository’s commit history, within a given range (1 to 5).
+ *
+ * @param {object} variables - The repository's owner and name.
+ * @returns {Promise<number>} - The calculated bus factor (0 to 1).
+ */
 export async function metricBusFactor(variables: { owner: string, name: string }): Promise<number> {
   const stats = {
     list_commits_authors: [] as Array<string>
@@ -113,6 +121,14 @@ export async function metricBusFactor(variables: { owner: string, name: string }
     });
 }
 
+/**
+ * Calculates the bus factor based on the number of unique commit authors.
+ * Scales the result between 0 and 1, where 1 represents 5 or more unique authors
+ * and 0 represents 1 unique author.
+ *
+ * @param {object} stats - The stats object containing the list of commit authors.
+ * @returns {number} - The calculated bus factor.
+ */
 function calcBusFactor(stats: any): number {
   // BUS FACTOR: 1 if > 5 or more collaborators, 0 if 1 collaborator
   const uniqueArray = Array.from(new Set(stats.list_commits_authors));
@@ -127,6 +143,14 @@ function calcBusFactor(stats: any): number {
 
 // HELPER FUNCTIONS 
 
+/**
+ * Clamps a value between a specified range (in_min, in_max) and scales it to a range of 0 to 1.
+ *
+ * @param {number} value - The input value to clamp and scale.
+ * @param {number} in_min - The minimum value of the input range.
+ * @param {number} in_max - The maximum value of the input range.
+ * @returns {number} - The clamped and scaled value.
+ */
 function clampAndFit01(value: number, in_min: number, in_max: number): number {
   const clampedValue = Math.min(Math.max(value, in_min), in_max);
   return ((clampedValue - in_min) / (in_max - in_min));

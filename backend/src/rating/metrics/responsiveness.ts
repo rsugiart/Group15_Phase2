@@ -77,6 +77,14 @@ const stats = {
   list_commits_dates: [] as Array<Date>,
 };
 
+/**
+ * Calculates the responsiveness metric for a GitHub repository.
+ * Responsiveness measures how frequently and recently commits are made.
+ * 
+ * @param {object} variables - Contains the repository's owner and name.
+ * @returns {Promise<number>} - A value between 0 and 1 representing the responsiveness score.
+ *                              Returns -1 if data is unavailable or an error occurs.
+ */
 export async function metricResponsiveness(variables: { owner: string, name: string }): Promise<number> {
   return client.request<RepositoryQueryResponse>(query, variables, stats)
     .then(response => {
@@ -113,6 +121,13 @@ export async function metricResponsiveness(variables: { owner: string, name: str
     });
 }
 
+/**
+ * Calculates the responsiveness score based on commit recency and frequency.
+ * 
+ * @param {object} stats - Contains `list_commits_dates` (list of commit dates).
+ * @returns {number} - The responsiveness score between 0 and 1.
+ */
+
 function calcResponsiveness(stats: any): number {
   // RESPONSIVENESS:
   // 40% RECENCY: 1 if most recent commit < 2 weeks ago, 0 if > 3 years
@@ -148,12 +163,26 @@ function calcResponsiveness(stats: any): number {
 
 
 // HELPER FUNCTIONS
-
+/**
+ * Scales a value between 0 and 1 based on a specified range.
+ * 
+ * @param {number} value - The value to be scaled.
+ * @param {number} in_min - The minimum value of the range.
+ * @param {number} in_max - The maximum value of the range.
+ * @returns {number} - The scaled value between 0 and 1.
+ */
 function clampAndFit01(value: number, in_min: number, in_max: number): number {
   const clampedValue = Math.min(Math.max(value, in_min), in_max);
   return ((clampedValue - in_min) / (in_max - in_min));
 }
 
+/**
+ * Calculates the number of days between two dates.
+ * 
+ * @param {Date} date1 - The first date.
+ * @param {Date} date2 - The second date.
+ * @returns {number} - The number of days between the two dates.
+ */
 function getDaysBetweenDates(date1: Date, date2: Date): number {
   const diffTime = Math.abs(date2.getTime() - date1.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

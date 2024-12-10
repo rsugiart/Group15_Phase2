@@ -8,6 +8,12 @@ const client = new DynamoDBClient({ region: 'us-east-1' });
 const tableName = "PackagesTable";
 
 
+/**
+ * Lambda function to retrieve the rating of a specific package version.
+ * 
+ * @param {APIGatewayProxyEvent} event - The event containing the request information.
+ * @returns {Promise<APIGatewayProxyResult>} The result of the API call, including the package rating or an error.
+ */
 export const get_rating= async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
       const id = event.pathParameters?.id as string

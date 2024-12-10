@@ -11,6 +11,44 @@ import axios from 'axios';
 import { logMessage } from './log.js';
 import { log } from 'console';
 
+/**
+ * Analyzes a given URL (GitHub or npm) to calculate various repository quality metrics.
+ * 
+ * The function supports URLs pointing to GitHub repositories or npm packages. If an npm URL
+ * is provided, it resolves the corresponding GitHub repository and performs the analysis.
+ * Metrics include responsiveness, ramp-up time, bus factor, license compatibility, and correctness.
+ * 
+ * @param {string} url - The URL to analyze (GitHub repository or npm package URL).
+ * 
+ * @returns {Promise<object | null>} - An object containing the calculated metrics and their
+ * respective latencies, or `null` if the analysis fails.
+ * 
+ * Metrics:
+ * - NetScore: Weighted score based on individual metrics.
+ * - Responsiveness, RampUpTime, BusFactor, License, Correctness: Scores between 0 and 1.
+ * - Latencies: Time taken to compute each metric in seconds.
+ * 
+ * Example Output:
+ * ```json
+ * {
+ *   "URL": "https://github.com/example/repo",
+ *   "NetScore": 0.89,
+ *   "NetScore_Latency": 0.345,
+ *   "RampUp": 0.8,
+ *   "RampUp_Latency": 0.234,
+ *   "Correctness": 0.9,
+ *   "Correctness_Latency": 0.123,
+ *   "BusFactor": 0.75,
+ *   "BusFactor_Latency": 0.678,
+ *   "ResponsiveMaintainer": 0.85,
+ *   "ResponsiveMaintainer_Latency": 0.456,
+ *   "License": 1.0,
+ *   "License_Latency": 0.123
+ * }
+ * ```
+ */
+
+
 // Main function to execute the metrics and repository analysis
 
 // Check URL for GitHub or npm

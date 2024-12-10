@@ -20,6 +20,12 @@ const client = new DynamoDBClient({ region: 'us-east-1' });
 const tableName = "PackagesTable";
 const docClient = new AWS.DynamoDB.DocumentClient();
 
+/**
+ * Retrieves all users from the DynamoDB Users table.
+ * 
+ * @param {APIGatewayProxyEvent} event - The event containing the request details.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns a list of all users or an error message.
+ */
 export const get_users = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const params = {
         TableName: USERS_TABLE,
@@ -53,6 +59,12 @@ export const get_users = async (event: APIGatewayProxyEvent): Promise<APIGateway
 
 }
 
+/**
+ * Modifies the permissions of a specific user in the DynamoDB Users table.
+ * 
+ * @param {APIGatewayProxyEvent} event - The event containing the request details, including the username and new permissions.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns a success message with updated attributes or an error message.
+ */
 export const modify_user = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     
     try {
@@ -114,6 +126,12 @@ export const modify_user = async (event: APIGatewayProxyEvent): Promise<APIGatew
       }
 }
 
+/**
+ * Deletes a specific user from the DynamoDB Users table.
+ * 
+ * @param {APIGatewayProxyEvent} event - The event containing the request details, including the username to delete.
+ * @returns {Promise<APIGatewayProxyResult>} - Returns a success message or an error message.
+ */
 export const delete_user = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
         // Extract username from path parameters

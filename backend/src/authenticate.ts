@@ -21,6 +21,12 @@ const client = new DynamoDBClient({ region: 'us-east-1' });
 // authentication functions
 //
 // ====================================================================
+/**
+ * Registers a new user in the DynamoDB table.
+ * 
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the request body with user details (username, password, permissions).
+ * @returns {Promise<APIGatewayProxyResult>} - A promise that resolves with the status of the user creation operation.
+ */
 export const register = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     
     const body = JSON.parse(event.body as string);
@@ -68,7 +74,12 @@ export const register = async (event: APIGatewayProxyEvent): Promise<APIGatewayP
     }
 };
 
-
+/**
+ * Authenticates a user by verifying their username and password.
+ * 
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the request body with username and password.
+ * @returns {Promise<APIGatewayProxyResult>} - A promise that resolves with the authentication status and a token if successful.
+ */
   export const authenticate_user = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
     const body = JSON.parse(event.body as string);
     const username = body.User.name;
@@ -114,7 +125,13 @@ export const register = async (event: APIGatewayProxyEvent): Promise<APIGatewayP
     }
   };
 
-
+/**
+ * Verifies the provided JWT token and checks if the user has the required permission.
+ * 
+ * @param {string | undefined} auth_header - The authorization header containing the JWT token.
+ * @param {string} permission - The required permission to be checked for the user.
+ * @returns {Promise<[boolean, string]>} - A promise that resolves to a tuple: [verification success, error/message string].
+ */
 export const verify_token = async (auth_header:string|undefined, permission:string) => {
     const token = auth_header && auth_header.split(' ')[1]
     console.log("token:",token)  
@@ -155,7 +172,12 @@ export const verify_token = async (auth_header:string|undefined, permission:stri
 }
 
 
-
+/**
+ * Logs in a user by verifying their credentials and returning an access token.
+ * 
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the request body with username and password.
+ * @returns {Promise<APIGatewayProxyResult>} - A promise that resolves with the login status and an access token if successful.
+ */
 export const login = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
     const body = JSON.parse(event.body as string);
     const username = body.username;

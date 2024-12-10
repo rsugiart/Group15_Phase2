@@ -47,7 +47,13 @@ const query1 = `
   }
 `;
 
-
+/**
+ * Calculates the Pull Request Fraction (PRFrac) for a GitHub repository.
+ * PRFrac is the ratio of pull requests with at least one review to the total number of pull requests.
+ *
+ * @param {object} variables - Contains the repository's owner and name.
+ * @returns {Promise<number>} - The calculated PRFrac (0 to 1) or -1 if an error occurs.
+ */
 export async function prFrac(variables: { owner: string, name: string }): Promise<number> {
     const stats = {
         reviewed: 0 as number,
@@ -117,6 +123,14 @@ export async function prFrac(variables: { owner: string, name: string }): Promis
         });
 }
 
+/**
+ * Helper function to calculate PRFrac.
+ * PRFrac = (# of PRs with reviews) / (total PRs).
+ *
+ * @param {object} stats - Contains `reviewed` (count of PRs with reviews)
+ *                         and `total` (total PRs).
+ * @returns {number} - The calculated PRFrac or 0 if there are no PRs.
+ */
 function calcprFrac(stats: any): number {
     // prFrac: # prs with review / total prs
     logMessage(1, `PRFrac: ${stats.reviewed} out of ${stats.total}`);
@@ -127,6 +141,12 @@ function calcprFrac(stats: any): number {
     return stats.reviewed / stats.total;
 }
 
+/**
+ * Fetches the total number of pull requests for a GitHub repository.
+ *
+ * @param {object} variables - Contains the repository's owner and name.
+ * @returns {Promise<number>} - The total number of pull requests or -1 if an error occurs.
+ */
 async function calctotal(variables: { owner: string, name: string }): Promise<number> {
   return client.request<RepositoryQueryResponse>(query1, variables)
     .then(response => {
@@ -152,6 +172,9 @@ async function calctotal(variables: { owner: string, name: string }): Promise<nu
     });
 }
 
+/**
+ * Main function to test the `prFrac` functionality with a specific repository.
+ */
 async function main() {
   await prFrac({owner:"lodash",name:"lodash"});
 }

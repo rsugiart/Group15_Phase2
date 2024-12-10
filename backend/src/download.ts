@@ -23,7 +23,13 @@ const codeartifact_client = new CodeartifactClient({ region: 'us-east-2' });
 const client = new DynamoDBClient({ region: 'us-east-1' });
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-
+/**
+ * Checks if a specific package version exists in the DynamoDB table.
+ *
+ * @param {string} package_name - The name of the package to check.
+ * @param {string} version - The version of the package to check.
+ * @returns {Promise<boolean>} - A promise that resolves to `true` if the package version exists, or `false` otherwise.
+ */
 export const package_version_exists = async (package_name:string,version:string) => {
   const input = {
     "ExpressionAttributeValues": {
@@ -44,6 +50,12 @@ export const package_version_exists = async (package_name:string,version:string)
 
 }
 
+/**
+ * Retrieves metadata and content for a specific package version from AWS CodeArtifact.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the package ID in path parameters.
+ * @returns {Promise<APIGatewayProxyResult>} - A promise that resolves to the package metadata and base64-encoded content if found, or an error response.
+ */
 export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => { 
   try {
     console.log("Enter")
@@ -158,6 +170,12 @@ export const get_package = async (event: APIGatewayProxyEvent): Promise<APIGatew
   
   };
 
+  /**
+ * Serves a package file for download by providing a ZIP file response.
+ *
+ * @param {APIGatewayProxyEvent} event - The API Gateway event containing the package name, version, and content in the request body.
+ * @returns {Promise<APIGatewayProxyResult>} - A promise that resolves to a response containing the ZIP file as a base64-encoded string with appropriate headers.
+ */
   export const download_package = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {  
     
 

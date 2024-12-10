@@ -6,6 +6,10 @@ import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
 // Task type definition
 type Task = () => Promise<any>;
 
+/**
+ * Initializes the worker pool by creating workers up to the pool size.
+ * Ensures workers are ready to process tasks.
+ */
 // ThreadPool class manages a pool of workers to handle concurrent tasks
 class ThreadPool {
   private workers: Worker[] = [];

@@ -16,7 +16,12 @@ import { PassThrough } from 'stream';
 import JSZip from "jszip";
 // import JSZip from "jszip";
 
-
+/**
+ * Calculates the SHA256 hash and collects all data from a readable stream into a buffer.
+ *
+ * @param {NodeJS.ReadableStream} stream - The readable stream containing data.
+ * @returns {Promise<{ hash: string, buffer: Buffer }>} - A promise that resolves to the SHA256 hash and the combined buffer.
+ */
 export async function calculateSHA256AndBuffer(stream: NodeJS.ReadableStream): Promise<{ hash: string, buffer: Buffer }> {
     return new Promise((resolve, reject) => {
         const hash = createHash("sha256");
@@ -37,6 +42,12 @@ export async function calculateSHA256AndBuffer(stream: NodeJS.ReadableStream): P
     });
   }
   
+/**
+ * Converts a TAR stream to a ZIP stream.
+ *
+ * @param {Readable} tarStream - The readable stream containing the TAR data.
+ * @returns {Readable} - A readable stream containing the converted ZIP data.
+ */
 export function tarToZip(tarStream: Readable): Readable {
     const zipStream = new PassThrough();
     const archive = archiver('zip', { zlib: { level: 9 } });
@@ -65,6 +76,12 @@ export function tarToZip(tarStream: Readable): Readable {
     return zipStream;  // Return the readable zip stream
   }
   
+  /**
+ * Converts a ZIP stream into a Base64-encoded string.
+ *
+ * @param {Readable} zipStream - The readable stream containing ZIP data.
+ * @returns {Promise<string>} - A promise that resolves to the Base64-encoded string of the ZIP data.
+ */
   export async function zipStreamToBase64(zipStream: Readable): Promise<string> {
     const chunks: Buffer[] = [];
   
@@ -81,7 +98,12 @@ export function tarToZip(tarStream: Readable): Readable {
     });
   }
   
-  
+  /**
+ * Extracts and reads the `package.json` file from a Base64-encoded ZIP archive.
+ *
+ * @param {string} base64Zip - The Base64-encoded ZIP archive.
+ * @returns {Promise<string | undefined>} - A promise that resolves to the content of the `package.json` file or undefined if not found.
+ */
   export async function get_package_json(base64Zip: string) {
     try {
       // Decode Base64 to binary data in a Uint8Array

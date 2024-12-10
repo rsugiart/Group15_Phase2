@@ -103,6 +103,15 @@ const stats = {
   list_files: [] as Array<number>
 };
 
+/**
+ * Calculates the Ramp-Up Time metric for a GitHub repository.
+ * Ramp-Up Time is determined by examining the file structure and file sizes in the repository.
+ * It is influenced by the number of files and the average file size.
+ *
+ * @param {object} variables - Contains the repository's owner and name.
+ * @returns {Promise<number>} - A value between 0 and 1 representing the ramp-up time score.
+ *                              Returns -1 if data is unavailable or an error occurs.
+ */
 export async function metricRampUpTime(variables: { owner: string, name: string }): Promise<number> {
   return client.request<RepositoryQueryResponse>(query, variables)
     .then(response => {
@@ -161,6 +170,13 @@ export async function metricRampUpTime(variables: { owner: string, name: string 
     });
 }
 
+/**
+ * Calculates the ramp-up time score based on file count and average file size.
+ * 
+ * @param {object} stats - Contains `amt_files` (total number of files)
+ *                         and `list_files` (list of file sizes).
+ * @returns {number} - The ramp-up time score between 0 and 1.
+ */
 function calcRampUpTime(stats: any): number {
   //RAMP UP TIME: (views first 2 levels of files)
   //50% NUM FILES: 1 if < 5 files, 0 if > 300
@@ -185,7 +201,14 @@ function calcRampUpTime(stats: any): number {
 
 
 // HELPER FUNCTIONS 
-
+/**
+ * Scales a value between 0 and 1 based on a specified range.
+ *
+ * @param {number} value - The value to be scaled.
+ * @param {number} in_min - The minimum value of the range.
+ * @param {number} in_max - The maximum value of the range.
+ * @returns {number} - The scaled value between 0 and 1.
+ */
 function clampAndFit01(value: number, in_min: number, in_max: number): number {
   const clampedValue = Math.min(Math.max(value, in_min), in_max);
   return ((clampedValue - in_min) / (in_max - in_min));
