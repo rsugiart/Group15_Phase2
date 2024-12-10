@@ -1,3 +1,4 @@
+/*Set up Phase 1 Jest Test Runner for test 6-10*/
 import { runCommand } from '../rating/jestRunner';
 import { describe, it, expect, afterAll } from '@jest/globals';
 import * as fs from 'fs';
