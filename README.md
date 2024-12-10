@@ -1,13 +1,11 @@
+<p align="center">
+  <img src="images/registry_logo.png" alt="Registry Logo" width="50"/>
+</p>
+
 # Group15_Phase2
 Repository Inherited from: Sydney Chang, Sam Johnson, Harrison Smith, Doha Hafez, Jana Gamal
 
 Contributors: Areej Mirani, Ethan Hunt, Yingchen Jin, Varun Venkatesh, Ruth Sugiarto
-
-
-
-<p align="center">
-  <img src="images/registry_logo.png" alt="Registry Logo" width="50"/>
-</p>
 
 
 Welcome to Group 15's Package Registry Webservice!!
