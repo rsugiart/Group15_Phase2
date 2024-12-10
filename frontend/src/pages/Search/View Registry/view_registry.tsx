@@ -11,10 +11,21 @@ export interface ViewRegistryPageProps {
   token: string;
 }
 
+/**
+ * ViewRegistryPage component displays a list of all packages in the registry.
+ * Fetches registry data from the backend using the provided token and displays it in a table format.
+ *
+ * @param {string} token - Authentication token used to fetch registry data.
+ * @returns {JSX.Element} - The rendered ViewRegistryPage component.
+ */
 const ViewRegistryPage: React.FC<ViewRegistryPageProps> = ({ token }) => {
   const [registryData, setRegistryData] = useState<RegistryEntry[]>([]);
   const [message, setMessage] = useState<string>('');
 
+   /**
+   * Fetches package registry data when the component mounts.
+   * Updates the state with the fetched data or an error message.
+   */
   useEffect(() => {
     const fetchRegistryData = async () => {
       setMessage('Fetching registry data...');

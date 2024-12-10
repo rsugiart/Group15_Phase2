@@ -7,6 +7,12 @@ interface RegistryEntry {
   ID: string;
 }
 
+/**
+ * SearchByVersionPage component allows users to search for a specific package by its name and version.
+ * Users can input the package name and version (major.minor.patch) to retrieve detailed information.
+ *
+ * @returns {JSX.Element} - The rendered SearchByVersionPage component.
+ */
 const SearchByVersionPage: React.FC = () => {
   const [packageName, setPackageName] = useState<string>('');
   const [versionParts, setVersionParts] = useState<{ major: string; minor: string; patch: string }>({
@@ -17,12 +23,22 @@ const SearchByVersionPage: React.FC = () => {
   const [results, setResults] = useState<RegistryEntry | null>(null);
   const [message, setMessage] = useState<string>('');
 
+  /**
+   * Handles changes to the version input fields, ensuring only numeric values are entered.
+   *
+   * @param {'major' | 'minor' | 'patch'} part - The version part being updated (major, minor, or patch).
+   * @param {string} value - The new value for the version part.
+   */
   const handleVersionChange = (part: 'major' | 'minor' | 'patch', value: string) => {
     if (/^\d*$/.test(value)) {
       setVersionParts((prev) => ({ ...prev, [part]: value }));
     }
   };
 
+  /**
+   * Handles the search functionality by sending a request to the backend with the package name and version.
+   * Updates the results state with the retrieved data or displays an error message.
+   */
   const handleSearch = async () => {
     const { major, minor, patch } = versionParts;
 

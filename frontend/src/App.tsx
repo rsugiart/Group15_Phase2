@@ -27,13 +27,24 @@ import ProtectedRoute from './components/useAuth';
 import {jwtDecode} from 'jwt-decode';
 import { checkTokenExpiration } from './utils/jwt_utils';
 
-
+/**
+ * App component is the root of the application.
+ * It manages routing and authentication for different parts of the platform.
+ * Includes protected routes that require specific user permissions.
+ *
+ * @returns {JSX.Element} - The rendered App component.
+ */
 function App() {
   const [token, setToken] = useState<string>(localStorage.getItem('accesstoken') || '');
   const [isAdmin, setIsAdmin] = useState<string[]>(JSON.parse(localStorage.getItem('isAdmin') || '[]'));
   const [permissions, setPermissions] = useState<string[]>(JSON.parse(localStorage.getItem('permissions') || '[]'));
   // const navigate = useNavigate();
   // console.log("Token:", token)
+  
+  /**
+   * Loads stored authentication details from localStorage and sets them in state.
+   * Runs on component mount or when the token changes.
+   */
   useEffect(() => {
     const stored_token = localStorage.getItem('accessToken') || '';
     setToken(stored_token);

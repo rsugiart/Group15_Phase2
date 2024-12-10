@@ -1,6 +1,12 @@
 import React from 'react';
 import './Upload.css';
 
+/**
+ * Upload component serves as the landing page for package upload and update functionalities.
+ * Provides navigation buttons to upload a new package or update an existing package.
+ *
+ * @returns {JSX.Element} - The rendered Upload component.
+ */
 function Upload() {
   return (
     <div className="upload-container">

@@ -1,6 +1,13 @@
 import React from 'react';
 import './Search.css';
 
+/**
+ * Search component serves as the landing page for various search-related features.
+ * Provides navigation buttons to access different search functionalities, such as getting ratings,
+ * searching by version, searching by regex, and viewing the registry.
+ *
+ * @returns {JSX.Element} - The rendered Search component.
+ */
 function Search() {
   return (
     <div className="search-container">

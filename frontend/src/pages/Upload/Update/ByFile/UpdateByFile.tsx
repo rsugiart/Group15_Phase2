@@ -5,6 +5,13 @@ export interface UpdateByFilePageProps {
   token: string;
 }
 
+/**
+ * UpdateByFile component allows users to update a package by uploading a file and providing package details.
+ * Users can specify the package name, version, secret status, and upload supported file types.
+ *
+ * @param {string} token - Authentication token for making API requests.
+ * @returns {JSX.Element} - The rendered UpdateByFile component.
+ */
 const UpdateByFile: React.FC<UpdateByFilePageProps> = ({token}) => {
   const [packageUrl, setPackageUrl] = useState('');
   const [major, setMajor] = useState('');
@@ -15,6 +22,9 @@ const UpdateByFile: React.FC<UpdateByFilePageProps> = ({token}) => {
   const [isSecret, setIsSecret] = useState<boolean>(false);
   const [userGroup, setUserGroup] = useState<string>('default');
 
+  /**
+   * Handles the package update process by making an API request with the provided details.
+   */
   const updateByFile = async () => {
 
     if (!packageUrl) {

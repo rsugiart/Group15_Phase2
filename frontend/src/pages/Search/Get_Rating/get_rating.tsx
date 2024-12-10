@@ -24,6 +24,13 @@ export interface GetRatingPageProps {
   token: string;
 }
 
+/**
+ * GetRatingPage component allows users to retrieve the rating and metrics of a specific package version.
+ * Users can input a package name and version (major.minor.patch) to fetch and display the rating details.
+ *
+ * @param {string} token - Authentication token for making API requests.
+ * @returns {JSX.Element} - The rendered GetRatingPage component.
+ */
 const GetRatingPage: React.FC<GetRatingPageProps> = ({ token }) => {
   const [packageName, setPackageName] = useState('');
   const [major, setMajor] = useState('');
@@ -32,6 +39,11 @@ const GetRatingPage: React.FC<GetRatingPageProps> = ({ token }) => {
   const [results, setResults] = useState<RateParameters | null>(null);
   const [message, setMessage] = useState('');
 
+
+  /**
+   * Handles the retrieval of the package rating and metrics from the API.
+   * Validates input fields and updates the results state with fetched data.
+   */
   const handleGetRating = async () => {
     if (!packageName || !major || !minor || !patch) {
       setMessage('Please fill in all fields.');

@@ -7,11 +7,21 @@ interface RegistryEntry {
   ID: string;
 }
 
+/**
+ * SearchByRegexPage component allows users to search the package registry using a regular expression pattern.
+ * Displays the search results in a table format with package name, version, and ID.
+ *
+ * @returns {JSX.Element} - The rendered SearchByRegexPage component.
+ */
 const SearchByRegexPage: React.FC = () => {
   const [regex, setRegex] = useState<string>('');
   const [results, setResults] = useState<RegistryEntry[]>([]);
   const [message, setMessage] = useState<string>('');
 
+  /**
+   * Handles the search functionality by making a request to the backend
+   * with the provided regex pattern and updates the results state.
+   */
   const handleSearch = async () => {
     if (!regex) {
       setMessage('Please enter a valid regex string.');

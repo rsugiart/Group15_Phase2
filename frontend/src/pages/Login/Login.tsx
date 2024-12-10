@@ -8,6 +8,15 @@ interface LoginPageProps {
   setToken: (token: string) => void;
 }
 
+/**
+ * LoginPage component for user authentication.
+ * Handles user login, validates inputs, and redirects authenticated users to the platform's main page.
+ *
+ * @param {Function} setPermissions - Function to set the user's permissions after login.
+ * @param {Function} setIsAdmin - Function to set the user's admin status.
+ * @param {Function} setToken - Function to set the authentication token.
+ * @returns {JSX.Element} - The rendered LoginPage component.
+ */
 const LoginPage: React.FC<LoginPageProps> = ({ setPermissions, setIsAdmin, setToken }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -19,6 +28,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ setPermissions, setIsAdmin, setTo
 
   const navigate = useNavigate();
 
+  /**
+   * Validates username and password inputs.
+   * Ensures both fields have a minimum length of 4 characters.
+   *
+   * @returns {boolean} - True if inputs are valid, false otherwise.
+   */
   const validateInputs = (): boolean => {
     let valid = true;
 
@@ -39,6 +54,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ setPermissions, setIsAdmin, setTo
     return valid;
   };
 
+  /**
+   * Handles user login by sending a PUT request to the server.
+   * Validates inputs, processes the response, and stores user data locally.
+   */
   const handleLogin = async () => {
     if (!validateInputs()) {
       return;

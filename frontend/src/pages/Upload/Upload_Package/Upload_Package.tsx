@@ -1,6 +1,12 @@
 import React from 'react';
 import './Upload_Package.css';
 
+/**
+ * Upload_Package component serves as the landing page for uploading packages.
+ * Provides navigation options to upload a package either by URL or by file.
+ *
+ * @returns {JSX.Element} - The rendered Upload_Package component.
+ */
 function Upload_Package() {
     return (
         <div className="upload_package-container">

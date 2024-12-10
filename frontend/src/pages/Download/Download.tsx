@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import './Download.css';
 
+/**
+ * Download component allows users to download a specific package by providing the package name and version.
+ * Validates the input and triggers a simulated file download based on the provided details.
+ *
+ * @returns {JSX.Element} - The rendered Download component.
+ */
 const Download: React.FC = () => {
   const [packageName, setPackageName] = useState<string>('');
   const [versionParts, setVersionParts] = useState<{ major: string; minor: string; patch: string }>({
@@ -9,12 +15,22 @@ const Download: React.FC = () => {
     patch: '',
   });
 
+  /**
+   * Handles changes to the version input fields, ensuring only numeric values are entered.
+   *
+   * @param {'major' | 'minor' | 'patch'} part - The version part being updated (major, minor, or patch).
+   * @param {string} value - The new value for the version part.
+   */
   const handleVersionChange = (part: 'major' | 'minor' | 'patch', value: string) => {
     if (/^\d*$/.test(value)) { // Ensure only numbers are entered
       setVersionParts((prev) => ({ ...prev, [part]: value }));
     }
   };
 
+  /**
+   * Handles the download button click event.
+   * Validates the inputs and simulates a file download based on the provided package name and version.
+   */
   const handleDownload = () => {
     const { major, minor, patch } = versionParts;
 

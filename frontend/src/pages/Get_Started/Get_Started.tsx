@@ -1,6 +1,13 @@
 import React from 'react';
 import './Get_Started.css';
 
+
+/**
+ * GetStarted component serves as a starting point for users to explore the platform's features.
+ * Provides navigation buttons to access the Search, Upload, and Download pages.
+ *
+ * @returns {JSX.Element} - The rendered GetStarted component.
+ */
 function GetStarted() {
   return (
     <div className="get-started-container">

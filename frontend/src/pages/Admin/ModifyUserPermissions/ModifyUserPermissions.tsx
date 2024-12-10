@@ -12,6 +12,13 @@ interface User {
   };
 }
 
+
+/**
+ * ModifyUsersPage component for administrators to view, update, or delete user permissions.
+ * Fetches user data from the server, displays it in a table, and allows modifications.
+ *
+ * @returns {JSX.Element} - The rendered ModifyUsersPage component.
+ */
 const ModifyUsersPage: React.FC = () => {
   // Mock Data
   const [users, setUsers] = useState<User[]>([]);
@@ -50,6 +57,14 @@ const ModifyUsersPage: React.FC = () => {
     fetchUsers();
   }, []);
 
+
+  /**
+   * Handles changes to a user's permissions.
+   *
+   * @param {number} userId - The ID of the user whose permissions are being changed.
+   * @param {keyof User["permissions"]} permission - The permission being toggled.
+   * @param {boolean} value - The new value of the permission.
+   */
   const handlePermissionChange = (
     userId: number,
     permission: keyof User["permissions"],
@@ -67,6 +82,12 @@ const ModifyUsersPage: React.FC = () => {
     );
   };
 
+
+   /**
+   * Saves updated permissions for a specific user to the server.
+   *
+   * @param {number} userId - The ID of the user to update.
+   */
   const handleSave = async (userId: number) => {
     const user = users.find((user) => user.id === userId);
     const oldUser = oldUsers.find((user) => user.id === userId);
@@ -116,6 +137,12 @@ const ModifyUsersPage: React.FC = () => {
     }
   };
 
+
+   /**
+   * Deletes a user from the system.
+   *
+   * @param {number} userId - The ID of the user to delete.
+   */
   const handleDelete = async (userId: number) => {
     const user = users.find((user) => user.id === userId);
     try {

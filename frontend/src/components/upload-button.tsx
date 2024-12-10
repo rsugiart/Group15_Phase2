@@ -5,13 +5,24 @@ import axios from 'axios';
 // dotenv.config()
 import JSZip from "jszip";
 
-
+/**
+ * PackageUpload component for uploading a zip file and associating it with a package name.
+ * Converts the file to a base64 string and sends it to an API.
+ *
+ * @returns {JSX.Element} - The rendered PackageUpload component.
+ */
 const PackageUpload: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     // const [base64, setBase64] = useState<string>('');
     const [message, setMessage] = useState<string>('');
     const [packageName, setPackageName] = useState<string>('');
 
+    /**
+     * Handles the selection of a zip file and updates the state.
+     * Displays an error message if the selected file is not a zip file.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} event - The file input change event.
+     */
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
         if (selectedFile && selectedFile.type === 'application/zip') {
@@ -23,6 +34,11 @@ const PackageUpload: React.FC = () => {
         }
     };
 
+    /**
+     * Handles changes to the package name input field and updates the state.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} event - The text input change event.
+     */
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value;
         if (input) {
@@ -32,6 +48,13 @@ const PackageUpload: React.FC = () => {
         }
 
     };
+
+     /**
+     * Converts a file to a base64 string.
+     *
+     * @param {File} file - The file to be converted.
+     * @returns {Promise<string>} - A promise that resolves to the base64 string representation of the file.
+     */
     const covertToBase64 = (file: File) => {
         return new Promise<string>((resolve, reject) => {
             const reader = new FileReader();

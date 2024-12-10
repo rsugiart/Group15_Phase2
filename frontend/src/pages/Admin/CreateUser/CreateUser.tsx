@@ -7,6 +7,12 @@ interface Permissions {
   search: boolean;
 }
 
+/**
+ * CreateUserPage component for administrators to create new users.
+ * Allows setting username, password, permissions, and assigning users to groups.
+ *
+ * @returns {JSX.Element} - The rendered CreateUserPage component.
+ */
 const CreateUserPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -20,11 +26,23 @@ const CreateUserPage: React.FC = () => {
   const [newGroupName, setNewGroupName] = useState<string>("");
   const [isCreatingGroup, setIsCreatingGroup] = useState<boolean>(false);
 
+
+/**
+ * Handles changes to permission checkboxes and updates the permissions state.
+ *
+ * @param {React.ChangeEvent<HTMLInputElement>} e - The change event from the checkbox.
+ */
   const handlePermissionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setPermissions({ ...permissions, [name]: checked });
   };
 
+
+ /**
+   * Handles changes in the group dropdown and toggles the group creation mode.
+   *
+   * @param {React.ChangeEvent<HTMLSelectElement>} e - The change event from the dropdown.
+   */
   const handleGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === "create-group") {
@@ -47,6 +65,13 @@ const CreateUserPage: React.FC = () => {
     }
   };
 
+
+  /**
+   * Handles the form submission to create a new user.
+   * Validates inputs and sends a POST request to the server.
+   *
+   * @param {React.FormEvent} e - The form submission event.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userGroup) {

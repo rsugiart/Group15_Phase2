@@ -5,6 +5,13 @@ export interface UploadByURLPageProps {
   token: string;
 }
 
+/**
+ * UploadByURL component allows users to upload a package by providing a URL and additional details.
+ * Users can input the package name, version, and secret status, and perform the upload via the specified URL.
+ *
+ * @param {string} token - Authentication token for making API requests.
+ * @returns {JSX.Element} - The rendered UploadByURL component.
+ */
 const UploadByURL: React.FC<UploadByURLPageProps> = ({token}) => {
   const [packageUrl, setPackageUrl] = useState('');
   const [major, setMajor] = useState('');
@@ -15,6 +22,9 @@ const UploadByURL: React.FC<UploadByURLPageProps> = ({token}) => {
   const [isSecret, setIsSecret] = useState<boolean>(false);
   const [userGroup, setUserGroup] = useState<string>('default');
 
+   /**
+   * Handles the package upload process by making an API request with the provided details.
+   */
   const uploadByURL = async () => {
 
     if (!packageUrl) {

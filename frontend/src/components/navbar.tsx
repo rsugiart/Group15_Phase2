@@ -6,7 +6,14 @@ import "./navbar.css";
 interface NavbarProps {
   loggedIn?: boolean; // Make loggedIn optional
 }
-
+/**
+ * Navbar component for the application.
+ * Displays navigation links based on the user's authentication state and current page.
+ * Includes a responsive menu for small screens and hides the navbar on scroll.
+ *
+ * @param {boolean} [loggedIn=true] - Optional prop to indicate if the user is logged in.
+ * @returns {JSX.Element} - The rendered Navbar component.
+ */
 const Navbar: React.FC<NavbarProps> = ({ loggedIn = true }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [hidden, setHidden] = useState(false);

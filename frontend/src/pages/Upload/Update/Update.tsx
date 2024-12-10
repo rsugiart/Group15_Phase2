@@ -1,6 +1,12 @@
 import React from 'react';
 import './Update.css';
 
+/**
+ * Update component serves as the landing page for updating packages.
+ * Provides navigation options to update a package either by URL or by uploading a file.
+ *
+ * @returns {JSX.Element} - The rendered Update component.
+ */
 function Update() {
     return (
         <div className="update_package-container">

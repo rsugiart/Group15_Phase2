@@ -1,6 +1,12 @@
 import React from 'react';
 import './Home.css';
 
+/**
+ * Home component serves as the landing page for the platform.
+ * Displays a welcome message and provides navigation to the login page.
+ *
+ * @returns {JSX.Element} - The rendered Home component.
+ */
 function Home() {
   return (
     <div className="home-container">

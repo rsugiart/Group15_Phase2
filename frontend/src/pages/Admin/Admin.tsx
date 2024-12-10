@@ -1,6 +1,13 @@
 import React from 'react';
 import './Admin.css';
 
+
+/**
+ * AdminPage component serves as the administrator's dashboard.
+ * Provides navigation options to create users, modify user permissions, and reset the registry.
+ *
+ * @returns {JSX.Element} - The rendered AdminPage component.
+ */
 function AdminPage() {
   return (
     <div className="admin-container">

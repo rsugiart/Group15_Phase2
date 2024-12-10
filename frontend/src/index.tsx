@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+/**
+ * Entry point of the React application.
+ * Initializes the root React component and renders the application.
+ * Includes functionality to measure app performance using `reportWebVitals`.
+ */
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

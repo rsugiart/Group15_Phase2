@@ -5,6 +5,13 @@ export interface UpdateByURLPageProps {
   token: string;
 }
 
+/**
+ * UpdateByURL component allows users to update a package by specifying a URL and providing additional details.
+ * Users can input the package name, version, and secret status, and perform the update via the given URL.
+ *
+ * @param {string} token - Authentication token for making API requests.
+ * @returns {JSX.Element} - The rendered UpdateByURL component.
+ */
 const UpdateByURL: React.FC<UpdateByURLPageProps> = ({token}) => {
   const [packageUrl, setPackageUrl] = useState('');
   const [major, setMajor] = useState('');
@@ -15,6 +22,9 @@ const UpdateByURL: React.FC<UpdateByURLPageProps> = ({token}) => {
   const [isSecret, setIsSecret] = useState<boolean>(false);
   const [userGroup, setUserGroup] = useState<string>('default');
 
+  /**
+   * Handles the package update process by making an API request with the provided details.
+   */
   const updateByURL = async () => {
 
     if (!packageUrl) {
