@@ -1,3 +1,7 @@
+/*
+Playwright Test Config File: 
+  This configures our projects, test suite directory, and parallel testing setup.
+*/
 import { defineConfig, devices } from '@playwright/test';
 
 /**
