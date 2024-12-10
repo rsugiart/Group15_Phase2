@@ -94,7 +94,6 @@ video of demo
 
 
 see documentation [here](docs/SYSTEM_DEPLOYMENT.md)
-database image ?
 
 
 ---
@@ -107,7 +106,6 @@ database image ?
 
 
 see documentation [here](docs/THREAT_MODEL.md)
-threatmodeler image ?
 
 
 ---
