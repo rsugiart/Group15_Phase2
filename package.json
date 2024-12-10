@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Samojo3303/461Project#readme",
   "dependencies": {
+    "@playwright/test": "^1.49.0",
     "@types/aws-sdk": "^0.0.42",
     "archiver": "^7.0.1",
     "axios": "^1.7.7",

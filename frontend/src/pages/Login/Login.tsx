@@ -16,7 +16,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setPermissions, setIsAdmin, setTo
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [usernameError, setUsernameError] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string>('');
-  
+
   const navigate = useNavigate();
 
   const validateInputs = (): boolean => {
@@ -73,7 +73,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ setPermissions, setIsAdmin, setTo
         localStorage.setItem('accessToken', result.accessToken.split(' ')[1]);
         localStorage.setItem('permissions', JSON.stringify(result.permissions));
         setIsLoggedIn(true);
-        navigate('/get-started');
+        setMessage('Login successful! Redirecting...');
+
+        // Wait for 2 seconds before navigating to /get-started
+        setTimeout(() => {
+          navigate('/get-started');
+        }, 2000);
       } else {
         setMessage(result.message || 'Username or password is invalid.');
       }
@@ -118,8 +123,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setPermissions, setIsAdmin, setTo
         {isLoading ? 'Logging in...' : 'Login'}
       </button>
 
-      {message && <div className="error-message">{message}</div>}
-      {isLoggedIn && <div className="success-message">Login successful! Redirecting...</div>}
+      {message && <div className={`message ${isLoggedIn ? 'success-message' : 'error-message'}`}>{message}</div>}
     </div>
   );
 };
