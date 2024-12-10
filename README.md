@@ -88,7 +88,6 @@ Location to Project:
 
 see documentation [here](docs/SYSTEM_DEPLOYMENT.md)
 ![Image of landing page](images/frontend.png)
-video of demo
 
 
 ---
