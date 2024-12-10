@@ -22,8 +22,12 @@ Group 15 aims to develop a package registry for companies such as ACME to view a
 
 see documentation [here](docs/API_DOCS.md)
 
+## AWS Tech Stack
+Location to Project:
 
-
+  API Link: https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/ 
+  
+  Web UI Link: https://main.d1pnln7u3cyuhe.amplifyapp.com/
 
 ### General Overview:
 
