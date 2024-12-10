@@ -6,7 +6,7 @@ Contributors: Areej Mirani, Ethan Hunt, Yingchen Jin, Varun Venkatesh, Ruth Sugi
 
 
 <p align="center">
-  <img src="images/registry_logo.png" alt="Registry Logo" width="200"/>
+  <img src="images/registry_logo.png" alt="Registry Logo" width="50"/>
 </p>
 
 
