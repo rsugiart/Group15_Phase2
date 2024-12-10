@@ -1,0 +1,189 @@
+.upload-by-file-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers content horizontally */
+  justify-content: center; /* Centers content vertically */
+  min-height: 100vh; /* Full viewport height for vertical centering */
+  padding: 2rem;
+  background-color: var(--body-color);
+  color: var(--text-color);
+  text-align: center; /* Centers text within the container */
+}
+
+.upload-by-file-title {
+  font-size: 2.5rem;
+  font-family: var(--second-font);
+  color: var(--title-color);
+  margin-bottom: 2rem;
+}
+
+.upload-by-file-input-options {
+  display: flex;
+  flex-direction: column; /* Stack inputs vertically */
+  align-items: center; /* Center-align inputs and labels */
+  gap: 1.5rem; /* Space between input groups */
+  width: 100%; /* Ensure consistency in alignment */
+  max-width: 600px; /* Limit width of the input area */
+}
+
+.file-input-container {
+  display: flex;
+  flex-direction: column; /* Stack labels and inputs vertically */
+  align-items: center; /* Center-align labels and inputs */
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 400px; /* Limit width for consistent layout */
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.file-input-label {
+  font-size: 1rem;
+  color: var(--title-color);
+  font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.upload-by-file-input,
+.file-input {
+  width: 100%; /* Full width within the container */
+  max-width: 400px; /* Limit maximum width */
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: var(--body-color);
+  border: 2px solid var(--text-color);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  text-align: center; /* Center the input text */
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+}
+
+.upload-by-file-input:focus,
+.file-input:focus {
+  border-color: var(--first-color);
+}
+
+.version-input-group {
+  display: flex;
+  justify-content: center; /* Centers inputs and separators horizontally */
+  align-items: center; /* Aligns elements vertically */
+  gap: 0.5rem;
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+}
+
+.version-input-label {
+  font-size: 1rem;
+  color: var(--title-color);
+  font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.version-input {
+  padding: 0.5rem;
+  width: 3rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: var(--body-color);
+  border: 2px solid var(--text-color);
+  border-radius: 4px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s ease;
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+
+.version-input:focus {
+  border-color: var(--first-color);
+}
+
+.version-separator {
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.secret-toggle-group {
+  display: flex;
+  justify-content: center; /* Centers toggle buttons horizontally */
+  gap: 0.5rem;
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+}
+
+.toggle-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: var(--body-font);
+  font-weight: var(--font-semi-bold);
+  color: var(--text-color);
+  background-color: var(--body-color);
+  border: 2px solid var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+}
+
+.toggle-button.active {
+  background-color: var(--first-color);
+  color: var(--button-color);
+  border-color: var(--first-color);
+}
+
+.toggle-button:hover {
+  background-color: hsl(28, 88%, 50%);
+  color: #000;
+  border-color: var(--first-color);
+  transform: scale(1.05);
+}
+
+.toggle-button:active {
+  transform: scale(0.95);
+}
+
+.upload-by-file-button {
+  margin-top: 2rem; /* Space above the button */
+  padding: 0.5rem 1rem;
+  font-size: 2rem;
+  font-family: var(--title-font);
+  font-weight: var(--font-semi-bold);
+  color: var(--button-color);
+  background-color: var(--first-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
+}
+
+.upload-by-file-button:hover {
+  background-color: hsl(28, 88%, 50%);
+  transform: scale(1.05);
+}
+
+.upload-by-file-button:active {
+  transform: scale(0.95);
+}

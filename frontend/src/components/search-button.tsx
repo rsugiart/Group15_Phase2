@@ -1,10 +1,9 @@
 import { url } from 'inspector';
-import React, {useState } from 'react';
+import React, {useState,FC } from 'react';
+import { GetRatingPageProps } from '../pages/Search/Get_Rating/get_rating';
 
-const SearchButton: React.FC = () => {
+const SearchButton: React.FC<GetRatingPageProps> = ({token}) => {
     const [packageUrl, setPackageUrl] = useState<string>('');
-    const [packageName, setPackageName] = useState<string>('');
-    const [image, setImage] = useState<string>('');
     const [message, setMessage] = useState<string>('');
 
     const getPackageNameGithub = (url: string):string => {
@@ -14,7 +13,7 @@ const SearchButton: React.FC = () => {
         return name
     }
     //getting package name from npm url
-    const getPackageNameNpm= (url: string):string => {
+    const getPackageNameNpm= async (url: string):Promise<string> => {
         const specificVersionRegex = /\/v\/\d+\.\d+\.\d+/;
         const match = url.match(specificVersionRegex);
         if (match) {
@@ -47,7 +46,8 @@ const SearchButton: React.FC = () => {
             const response = await fetch(`https://t65oyfcrxb.execute-api.us-east-1.amazonaws.com/package/lodash`, {
               method: "GET",
               headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-Authorization": "bearer " + token
               }
             });
             const result = await response.json();
@@ -79,28 +79,31 @@ const SearchButton: React.FC = () => {
             setMessage('No Input');
             return;
         }
+        let packageName = "";
         if (packageUrl.includes("npmjs.com/package")) {
-            const packageName = getPackageNameNpm(packageUrl);
-            setPackageName(packageName);
+            packageName = await getPackageNameNpm(packageUrl);
+            console.log(packageName)
         }
         else if (packageUrl.includes("github.com")) {
-            const packageName = getPackageNameGithub(packageUrl);
-            setPackageName(packageName)
+            packageName = getPackageNameGithub(packageUrl);
         }
-
         try {
-            const response = await fetch(`https://t65oyfcrxb.execute-api.us-east-1.amazonaws.com/package`, {
+            console.log("token:", token)
+            console.log("package name:", packageName)
+            const response = await fetch(`https://iyi2t3azi4.execute-api.us-east-1.amazonaws.com/package`, {
               method: "POST",
               headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-Authorization": "bearer " + token
               },
-              body: JSON.stringify({Name: packageName,url:packageUrl})
+              body: JSON.stringify({Name: packageName,URL:packageUrl})
             });
             const result = await response.json();
             console.log(result)
             
         }
         catch (error) {
+            console.log(error)
             setMessage(String(error))
         }
     

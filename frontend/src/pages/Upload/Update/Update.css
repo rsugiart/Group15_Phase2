@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700&display=swap");
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --header-height: 3.5rem;
+  --first-color: hsl(28, 88%, 62%);
+  --title-color: hsl(0, 0%, 95%);
+  --text-color: hsl(0, 0%, 75%);
+  --body-color: hsl(0, 0%, 6%);
+  --button-color: hsl(0, 0%, 0%);
+  --body-font: "Montserrat", sans-serif;
+  --second-font: "Dancing Script", cursive;
+  --h2-font-size: 1.25rem;
+  --small-font-size: 0.813rem;
+  --font-semi-bold: 600;
+  --z-tooltip: 10;
+  --z-fixed: 100;
+}
+
+/* Global Styles */
+body {
+  background-color: var(--body-color);
+  color: var(--text-color);
+  font-family: var(--body-font);
+  line-height: 1.6;
+  text-align: center;
+  padding-top: var(--header-height); /* To avoid overlap with the fixed navbar */
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Upload Page Styles */
+.update_package-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.update_package-title {
+  font-size: 2.5rem;
+  color: var(--title-color);
+  margin-bottom: 2rem;
+  font-family: var(--second-font);
+}
+
+.update_package-text {
+  font-size: 1.125rem;
+  color: var(--text-color);
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Two columns maximum */
+  gap: 20px;
+  width: 100%;
+  max-width: 600px; /* Limit the width */
+}
+
+.nav-button {
+  background-color: var(--first-color);
+  color: var(--button-color);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: var(--font-semi-bold);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
+}
+
+.nav-button:hover {
+  background-color: hsl(28, 88%, 50%);
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.nav-button:active {
+  transform: scale(0.95); /* Shrink slightly when clicked */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .button-container {
+    grid-template-columns: 1fr; /* Switch to one column on small screens */
+  }
+}

@@ -1,0 +1,119 @@
+/* Page Styling */
+.modify-users-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centers content vertically */
+  min-height: 100vh;
+  background-color: hsl(0, 0%, 6%);
+  color: hsl(0, 0%, 75%);
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Welcome Message */
+.modify-users-welcome {
+  font-size: 2rem;
+  color: hsl(28, 88%, 62%);
+  margin-bottom: 2rem;
+  font-family: "Dancing Script", cursive;
+  text-align: center;
+}
+
+/* Users Container */
+.users-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center the container and its content */
+  margin: 0 auto; /* Center horizontally */
+  background-color: hsl(0, 0%, 10%);
+  border: 2px solid hsl(0, 0%, 75%);
+  border-radius: 10px;
+  padding: 2rem;
+  width: 100%; /* Adjusted width for better centering */
+  max-width: 1500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modify-users-title {
+  font-size: 1.5rem;
+  color: hsl(0, 0%, 95%);
+  font-family: "Dancing Script", cursive;
+  margin-bottom: 1.5rem;
+}
+
+/* Table Styling */
+.users-table {
+  width: 100%; /* Take full width of the container */
+  border-collapse: collapse;
+  margin: 0 auto; /* Center the table horizontally */
+  color: hsl(0, 0%, 75%);
+}
+
+.users-table th,
+.users-table td {
+  border: 1px solid hsl(0, 0%, 30%);
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.users-table th {
+  background-color: hsl(0, 0%, 15%);
+  color: hsl(0, 0%, 95%);
+}
+
+.users-table tr:nth-child(even) {
+  background-color: hsl(0, 0%, 12%);
+}
+
+/* Action Buttons: Align Save and Delete */
+.actions-container {
+  display: flex;
+  justify-content: center; /* Align buttons horizontally */
+  gap: 1rem; /* Add spacing between the buttons */
+}
+
+/* Save Button */
+.save-button {
+  padding: 0.5rem 1rem;
+  background-color: hsl(120, 60%, 40%); /* WCAG-compliant green */
+  color: hsl(0, 0%, 0%); /* black text */
+  font-weight: var(--font-semi-bold);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.save-button:hover,
+.save-button:focus {
+  background-color: hsl(120, 60%, 35%); /* Darker green for hover/focus state */
+  transform: scale(1.02);
+  outline: 2px solid hsl(120, 60%, 35%); /* Outline for focus accessibility */
+}
+
+.save-button:active {
+  transform: scale(0.98);
+}
+
+/* Delete Button */
+.delete-button {
+  padding: 0.5rem 1rem;
+  background-color: hsl(0, 75%, 60%);
+  color: hsl(0, 0%, 0%);
+  font-weight: var(--font-semi-bold);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: hsl(0, 75%, 70%);
+  transform: scale(1.02);
+}
+
+.delete-button:active {
+  transform: scale(0.98);
+}

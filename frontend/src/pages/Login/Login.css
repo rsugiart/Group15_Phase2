@@ -9,16 +9,19 @@
 
 :root {
   --header-height: 3.5rem;
-  --first-color: hsl(28, 88%, 62%);
-  --title-color: hsl(0, 0%, 95%);
-  --text-color: hsl(0, 0%, 75%);
-  --body-color: hsl(0, 0%, 6%);
+  --first-color: hsl(28, 88%, 62%); /* Button color */
+  --first-color-hover: hsl(28, 88%, 52%); /* Button hover color */
+  --title-color: hsl(0, 0%, 95%); /* Title text */
+  --text-color: hsl(0, 0%, 87%); /* Main text (contrast compliant) */
+  --body-color: hsl(0, 0%, 10%); /* Background color */
+  --button-color: hsl(0, 0%, 0%); /* Button text color */
   --body-font: "Montserrat", sans-serif;
   --second-font: "Dancing Script", cursive;
   --h2-font-size: 1.5rem;
-  --input-padding: 0.75rem;
+  --input-padding: 1rem;
   --input-border-radius: 6px;
   --input-border: 2px solid hsl(0, 0%, 75%);
+  --error-color: hsl(0, 80%, 50%); /* Error message color */
 }
 
 /* Page Background */
@@ -30,6 +33,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  padding-top: var(--header-height); /* To avoid overlap with the fixed navbar */
 }
 
 /* Login Container */
@@ -46,10 +50,10 @@ body {
 
 /* Title */
 .login-title {
-  font-size: var(--h2-font-size);
-  color: var(--title-color);
+  font-size: 2.5rem; /* Matches other titles */
   font-family: var(--second-font);
-  margin-bottom: 1rem;
+  color: var(--title-color);
+  margin-bottom: 2rem;
 }
 
 /* Input Fields */
@@ -68,6 +72,8 @@ body {
 
 .login-input:focus {
   border-color: var(--first-color);
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
 }
 
 /* Login Button */
@@ -75,22 +81,32 @@ body {
   width: 100%;
   padding: var(--input-padding);
   font-size: 1rem;
-  color: var(--title-color);
+  color: var(--button-color);
   background-color: var(--first-color);
   border: none;
   border-radius: var(--input-border-radius);
   cursor: pointer;
-  font-weight: var(--font-semi-bold);
+  font-weight: bold;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
 }
 
-.login-button:hover {
-  background-color: hsl(28, 88%, 50%);
+.login-button:hover,
+.login-button:focus {
+  background-color: var(--first-color-hover);
   transform: scale(1.02);
 }
 
 .login-button:active {
   transform: scale(0.98);
+}
+
+/* Error Message */
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 /* Additional Text */
@@ -103,9 +119,32 @@ body {
 .login-link {
   color: var(--first-color);
   text-decoration: none;
-  font-weight: var(--font-semi-bold);
+  font-weight: bold;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
 }
 
 .login-link:hover {
   text-decoration: underline;
 }
+
+/* Registry Logo Styling */
+.registry-logo {
+  width: 100px; /* Adjust the size of the logo */
+  height: auto; /* Maintain the aspect ratio */
+  display: block; /* Treat the image as a block element */
+  margin: 0 auto 1rem auto; /* Center horizontally and add spacing below */
+}
+
+.success-message {
+  color: hsl(120, 80%, 50%); /* Success message color */
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+

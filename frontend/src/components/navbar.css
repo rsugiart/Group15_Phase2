@@ -1,73 +1,156 @@
+/* Navbar Styles */
 .header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background-color: transparent;
-    z-index: var(--z-fixed);
-   }
-   
-   .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    padding:10px 20px;
-    height: var(--header-height);
-    margin: 1rem;
-   }
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: transparent; /* Slight transparency for better UX */
+  z-index: var(--z-fixed);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth hide/show and background transition */
+}
 
-   .nav_item {
-    margin: 0 10px;
-    padding: 5px 10px;
-   }
-   
-   .nav__logo {
-    color: var(--first-color);
-    transition: color 0.4s;
-    font-size: var(--h2-font-size);
-    font-family: var(--second-font);
-   }
-   
-   .nav__toggle,
-   .nav__close {
-    font-size: 1.5rem;
-    color: var(--title-color);
-    cursor: pointer;
-   }
-   
-   .nav__cta {
-    background-color: var(--first-color);
-    color: var(--title-color);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    padding: 0.75rem 1.5rem;
-   }
-   .nav__list {
-    display: flex;
-    flex-direction: row;
-    row-gap: 20px;
-    gap: 120px;
-   }
-   
-   .nav__link {
-    color: var(--title-color);
-    font-weight: var(--font-semi-bold);
-    transition: color 0.4s;
-   }
-   
-   .nav__link:hover {
-    color: var(--first-color);
-   }
-   
-   .nav__close {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-   }
-   
-   .show-menu {
-    right: 0;
-   }
+.header.hidden {
+  transform: translateY(-100%); /* Hide the navbar by moving it off the top */
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 1rem; /* Add padding to the navbar */
+  height: var(--header-height);
+}
+
+.nav__logo {
+  font-size: var(--h2-font-size);
+  font-family: var(--second-font);
+  color: var(--first-color);
+  text-decoration: none;
+  transition: color 0.3s ease; /* Smooth logo color transition */
+  font-size: clamp(1.5rem, 4vw, 3rem); /* Larger range for logos */
+
+}
+
+.nav__logo:hover {
+  color: var(--title-color-alt); /* Optional hover effect for logo */
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.nav__toggle {
+  font-size: 1.5rem;
+  color: var(--title-color);
+  cursor: pointer;
+  display: block; /* Always visible when logged in */
+  transition: transform 0.3s ease; /* Smooth icon animation */
+}
+
+.nav__toggle:hover {
+  transform: scale(1.1); /* Subtle scale effect on hover */
+}
+
+.nav__menu {
+  display: none; /* Hidden by default */
+  flex-direction: row; /* Menu items appear in a row */
+  background: transparent; /* Transparent to blend with navbar */
+  padding: 0.25rem 0; /* Reduce padding */
+  position: static; /* Positioned directly on the navbar */
+  height: 100%; /* Matches navbar height */
+  align-items: center;
+  margin-left: 0.05rem;
+}
+
+.nav__menu.show-menu {
+  display: flex; /* Show menu when toggled */
+}
+
+.nav__list {
+  list-style: none;
+  padding: 0.5;
+  margin: 0;
+  display: flex;
+  gap: 10rem; /* Reduce spacing between items */
+  align-items: center;
+}
+
+.nav__item {
+  margin: 0;
+}
+
+.nav__link {
+  text-decoration: none;
+  color: var(--title-color);
+  font-weight: var(--font-semi-bold);
+  padding: 0.15rem 0.3rem; /* Compact padding */
+  transition: color 0.3s ease, background-color 0.3s ease;
+  font-size: clamp(0.5rem, 1vw, 1rem); /* Min: 0.8rem, Preferred: 2vw, Max: 1.2rem */
+  gap: 10rem; /* Reduce spacing between items */
+}
+
+.nav__link:hover {
+  color: var(--first-color);
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+}
+
+.nav__cta {
+  background-color: var(--first-color);
+  color: hsl(0, 0%, 0%);
+  font-weight: var(--font-semi-bold);
+  border: none;
+  border-radius: 4px;
+  padding: 0.15rem 0.3rem; /* Compact padding */
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
+  font-size: clamp(0.5rem, 1vw, 1rem); /* Smaller range for buttons */
+  gap: 10rem; /* Reduce spacing between items */
+
+}
+
+.nav__cta:hover {
+  background-color: var(--title-color-alt);
+  color: #fff;
+  transform: scale(1.05); /* Add a slight zoom effect */
+}
+
+/* Responsive Styles */
+.nav__toggle {
+  display: block; /* Always display the toggle button */
+}
+
+.nav__menu {
+  display: none; /* Initially hidden */
+}
+
+.nav__menu.show-menu {
+  display: flex; /* Shown when toggled */
+}
+
+.nav__item {
+  margin: 0;
+}
+
+/* Centered logo for home and login pages */
+.nav__logo-centered {
+  text-align: center;
+  font-size: var(--h2-font-size);
+  font-family: var(--second-font);
+  color: var(--first-color);
+  margin: 0 auto;
+  line-height: var(--header-height);
+  text-decoration: none;
+}
+
+.is-centered-page .nav__toggle {
+  display: none; /* Hide toggle button on centered pages */
+}
+
+.is-centered-page .nav__menu {
+  display: none; /* Hide menu on centered pages */
+}
