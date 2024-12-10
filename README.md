@@ -24,27 +24,50 @@ see documentation [here](docs/API_DOCS.md)
 
 ### General Overview:
 
+#### **Compute**
+- **Selected**: AWS Lambda
+  - **Justification**: Serverless, auto-scalable, and efficient for handling REST API calls without the need to manage backend servers.
+- **Considered**: Amazon EC2, AWS Fargate
 
-##### General Overview:
-**Code Implementation**
-AWS Lambda
-- creates serverless REST API
-- move functions from GitHub to Lambda
-- dynamically change if function doesn't work properly
-- performance analysis easy to generate
+#### **Storage**
+- **Selected**: Amazon DynamoDB
+  - **Justification**: Scalable, low-latency NoSQL database that integrates seamlessly with Lambda for real-time data needs.
+- **Considered**: Amazon RDS, Amazon S3
 
+#### **API Management**
+- **Selected**: Amazon API Gateway
+  - **Justification**: Reliable for routing HTTP requests to Lambda functions; follows RESTful API patterns.
+- **Considered**: Application Load Balancer (ALB)
 
-**Storage**
-Amazon Code Artifact
-- store packages in registry
-- CodeArtifact tailored to store big software packages
-DynamoDB
-- used to store metadata of package
+#### **Security**
+- **Selected**: AWS IAM
+  - **Justification**: Provides least-privilege access, ensuring secure interactions between Lambda and DynamoDB.
+- **Considered**: None
 
+#### **Logging**
+- **Selected**: Amazon CloudWatch
+  - **Justification**: Comprehensive monitoring and logging capabilities for tracking performance and operational health.
+- **Considered**: None
 
-**Deployment**
-AWS EC2
--  create instances that will run all code
+#### **Continuous Integration/Delivery**
+- **Selected**: AWS CodePipeline, AWS CodeBuild
+  - **Justification**: Streamlines CI/CD processes, enabling automated testing, building, and deployment for consistent development and delivery.
+- **Considered**: None
+
+#### **Auto-Scaling**
+- **Selected**: AWS Lambda (Inherent Auto-Scaling)
+  - **Justification**: Automatically adjusts the number of active instances based on incoming traffic, ensuring efficient handling of workloads.
+- **Considered**: None
+
+#### **Frontend Deployment**
+- **Selected**: AWS Amplify
+  - **Justification**: Seamlessly deploys and hosts frontend applications with CI/CD integration for rapid updates.
+- **Considered**: Amazon S3 with CloudFront
+
+#### **Backend Deployment**
+- **Selected**: AWS Lambda
+  - **Justification**: Serverless backend deployment reduces the need for manual infrastructure management and integrates with other AWS services like DynamoDB and API Gateway.
+- **Considered**: AWS Elastic Beanstalk, AWS ECS
 
 
 ---
