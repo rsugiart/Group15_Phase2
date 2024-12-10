@@ -5,7 +5,9 @@ Contributors: Areej Mirani, Ethan Hunt, Yingchen Jin, Varun Venkatesh, Ruth Sugi
 
 
 
-![Registry Logo](images/registry-logo.png)
+![Registry Logo](images/registry_logo.png)
+
+
 Welcome to Group 15's Package Registry Webservice!!
 
 
